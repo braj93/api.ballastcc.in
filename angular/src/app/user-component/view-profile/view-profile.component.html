@@ -1,0 +1,50 @@
+<div *ngFor="let alert of userService.alerts">
+    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+</div>
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a class="btn-text-icon back-page-btn" [routerLink]="['/user/profile-settings']"><i class="icons-create"></i> Edit Profile</a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <table class="card-table-style">
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Name:</strong></td>
+                                            <td><h6>{{user_detail?.name}}</h6></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Email:</strong></td>
+                                            <td><p><a href="mailto:{{user_detail?.email}}">{{user_detail?.email}}</a></p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Business Name:</strong></td>
+                                            <td><p>{{user_detail?.business_name}}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Package:</strong></td>
+                                            <td><p>{{user_detail?.package}}</p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Last Login:</strong></td>
+                                            <td><p>{{user_detail?.login_at == '' ? '--' : user_detail?.login_at | date: 'mediumDate'}}</p></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

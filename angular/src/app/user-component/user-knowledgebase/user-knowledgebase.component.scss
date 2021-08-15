@@ -1,0 +1,124 @@
+.filter-block {
+	margin: 10px 0 0;
+}
+
+.search-filed {
+	position: relative;
+	i {
+		width: 30px;
+		height: 30px;
+		position:absolute;
+		left: 10px;
+		top: 50%;
+		margin-top: -15px;
+		font-size: 30px;
+	}
+	input[type="text"]{
+		padding-left: 40px;
+		max-width: 300px; 
+	}
+}
+
+.filter-dd {
+	width: 120px;
+	.dropdown-toggle {
+		    display: block;
+		    border: 1px solid #ddd;
+		    padding: 10px;
+		    cursor: pointer;
+		    border-radius: 6px;
+		    position:relative;
+		    background: #fff;
+		    &:after{
+		    	position: absolute;
+			    right: 10px;
+			    top: 17px;
+			    border-top: 6px solid;
+			    border-right: 6px solid transparent;
+			    border-bottom: 0;
+			    border-left: 6px solid transparent;
+			    color: #777;
+		    }
+	}
+}
+.dropdown-menu {
+	li {
+		padding:10px;
+		border-top:1px solid #ddd;
+		&:first-child {
+			border:none;
+		}
+	}
+}
+
+
+.listing-block {
+	list-style: none;
+	padding:0;
+	margin-bottom: 0;
+	> li { 
+		margin-bottom: 25px;
+		.liting-card {
+			border:1px solid #ddd;
+			border-radius:6px;
+		    height: 100%;
+		    position: relative;
+	        overflow: hidden;
+		    cursor: pointer;
+		    transition: all 0.3s ease-in-out;
+		    &:hover {
+		    	box-shadow: 0 5px 25px 	rgba(0, 0, 0, 0.1)
+		    }
+			.thumb {
+				height: 220px;
+				width: 100%;
+				overflow: hidden;
+				img {
+					width: 100%;
+				}
+			} 
+			.listing-card-content {
+				padding:10px 20px;
+				h2 {
+					font-size: 20px;
+					font-weight: 400;
+				    margin: 0;
+				    padding: 10px 0;
+				    text-transform: capitalize;
+				}
+				p {
+				    margin-bottom: 0;
+				}
+			}
+		}
+	}
+}
+
+.block-footer {
+	padding:20px 0 0;
+	border-top:1px solid #ddd;
+	margin-top: 20px;
+}
+
+.pagination {
+	float: right;
+	// border:1px solid #ddd;
+	a {
+		font-size:16px;
+	}
+}
+.isDisabled {
+	pointer-events: none;
+  color: currentColor;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
+
+.isSelected {
+  color: red;
+  cursor: not-allowed;
+  background-color: red;
+}
+
+

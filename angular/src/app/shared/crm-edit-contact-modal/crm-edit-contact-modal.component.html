@@ -1,0 +1,125 @@
+<div *ngFor="let alert of alerts">
+    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+</div>
+<div class="modal-header">
+    <h3 class="modal-title mt-0">Edit Contact</h3>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="modalForm" (ngSubmit)="submitForm()">
+        <div class="form-content row">
+            <div class="col-md-6">
+                <div class="form-field">
+                    <label class="text-left">Name <span class="required">*</span></label>
+                    <input formControlName="crm_contact_name" class="input-field" type="text" />
+                    <errors class="error-msz" [control]="modalForm.controls.crm_contact_name"></errors>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-field">
+                    <label class="text-left">Email <span class="required">*</span></label>
+                    <input formControlName="crm_contact_email" class="input-field" type="text" readonly />
+                    <errors class="error-msz" [control]="modalForm.controls.crm_contact_email"></errors>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-field">
+                    <label class="text-left">Phone</label>
+                    <input formControlName="crm_contact_phone" class="input-field" type="text" />
+                    <!-- <errors class="error-msz" [control]="modalForm.controls.crm_contact_phone"></errors> -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-field">
+                    <label class="text-left">Street</label>
+                    <input formControlName="crm_contact_street" class="input-field" type="text" />
+                    <!-- <errors class="error-msz" [control]="modalForm.controls.crm_contact_street"></errors> -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-field">
+                    <label class="text-left">City</label>
+                    <input formControlName="crm_contact_city" class="input-field" type="text" />
+                    <!-- <errors class="error-msz" [control]="modalForm.controls.crm_contact_city"></errors> -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-field">
+                    <div class="form-content row">
+                        <div class="col-sm-6">
+                            <label class="text-left">BirthDay Month </label>
+                            <select formControlName="birthday_month">
+                                <option value="">Select Month</option>
+                                <option *ngFor="let month of months" [ngValue]="month">
+                                    {{ month }}
+                                </option>
+                            </select>
+                            <errors class="error-msz" [control]="modalForm.controls.birthday_month"></errors>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="text-left">BirthDay Year </label>
+                            <select formControlName="birthday_year">
+                                <option value="">Select Year</option>
+                                <option *ngFor="let year of years" [ngValue]="year">
+                                    {{ year }}
+                                </option>
+                            </select>
+                            <errors class="error-msz" [control]="modalForm.controls.birthday_year"></errors>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-field">
+                    <label class="text-left">State</label>
+                    <select formControlName="crm_contact_state">
+                        <option value="">Select State</option>
+                        <option *ngFor="let state of states" [ngValue]="state.id">
+                            {{ state.name }}
+                        </option>
+                    </select>
+                    <!-- <errors class="error-msz" [control]="modalForm.controls.crm_contact_state"></errors> -->
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-field">
+                    <label class="text-left">Zipcode</label>
+                    <input formControlName="crm_contact_zipcode" class="input-field" type="text" />
+                    <!-- <errors class="error-msz" [control]="modalForm.controls.crm_contact_zipcode"></errors> -->
+                </div> 
+            </div>
+            <div class="col-md-6">
+                <div class="form-field">
+                    <label class="text-left">Source <span class="required">*</span></label>
+                    <select formControlName="source_type" (change)="sourceTypeChange()">
+                        <option value="">Select Source</option>
+                        <option *ngFor="let source_type of source_types" [ngValue]="source_type.name">
+                            {{ source_type.name | titlecase }}
+                        </option>
+                    </select>
+                    <errors class="error-msz" [control]="modalForm.controls.source_type"></errors>
+                </div>
+            </div>
+            <div class="col-md-6" *ngIf="show_other">
+                <div class="form-field">
+                    <label class="text-left">Other</label>
+                    <input formControlName="source_type_other" class="input-field" type="text" />
+                    <errors class="error-msz" [control]="modalForm.controls.source_type_other"></errors>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-field">
+                    <label class="text-left">More Info</label>
+                    <textarea formControlName="more_info"></textarea>
+                    <errors class="error-msz" [control]="modalForm.controls.more_info"></errors>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <button class="btn btn-primary mr-3" [disabled]="!modalForm.valid || isSubmitting" [ngClass]="{'btn-loading': isSubmitting}"> <div class="loader"></div>Update</button>
+                <button type="button" (click)="hideModal()" class="btn btn-default">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>

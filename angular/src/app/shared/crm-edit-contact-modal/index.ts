@@ -1,0 +1,1 @@
+export * from './crm-edit-contact-modal.component';

@@ -1,0 +1,46 @@
+<div class="main-content">
+    <div *ngFor="let alert of userService.alerts">
+        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+    </div>
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn-text-icon back-page-btn" (click)="goToBack()"><i
+                                class="icons-arrow-up"></i>Back</button>
+                    </div>
+                </div>
+                <div class="form-container">
+                    <div class="container-xsm">
+                        <form class="mb-0" [formGroup]="categoryForm" (ngSubmit)="submitForm()">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="form-content">
+                                        <div class="text-block mb-4">
+                                        </div>
+                                        <div class="form-field mb-4">
+                                            <label for="title_text">Category Title</label>
+                                            <input id="title_text" type="text" formControlName="name">
+                                            <errors class="pull-right required" [control]="categoryForm.controls.name">
+                                            </errors>
+                                        </div>
+                                        <div class="form-field mb-4 text-right">
+                                            <label for="title_text"></label>
+                                            <button type="submit" [disabled]="!categoryForm.valid || isSubmitting"
+                                                class="btn btn-primary text-white mr-3"
+                                                [ngClass]="{'btn-loading': isSubmitting}">
+                                                <div class="loader"></div>Submit
+                                            </button>
+                                            <button type="button" (click)="goToBack()" class="btn btn-default">Cancel</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

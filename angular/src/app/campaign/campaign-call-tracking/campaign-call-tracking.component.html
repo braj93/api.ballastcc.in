@@ -1,0 +1,119 @@
+<div class="main-content">
+    <div *ngFor="let alert of userService.alerts">
+        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+    </div>
+    <!-- <ul>
+        <li *ngFor="let campaign_tab of campaignService.campaign_tabs">
+            <div *ngIf="campaign_tab.is_tab">
+                    <span *ngIf="campaign_tab.active">*</span> <a href="{{ campaign_tab.url }}">{{campaign_tab.tilte}}</a> 
+            </div>
+        </li>
+    </ul> -->
+    <div class="tab-steps multi-step">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="modal-steps" [ngClass]="{'one':tabs_css === 1, 'two': tabs_css === 2, 'three':tabs_css === 3, '':tabs_css > 3}">
+                        <span *ngFor="let campaign_tab of campaignService.campaign_tabs" [ngClass]="{'d-none': !campaign_tab.is_tab}">
+                        <div class="step" [ngClass]="campaign_tab.active ? 'current' : 'completed'" *ngIf="campaign_tab.is_tab">
+                            <div class="dot"></div>
+                            <label class="label">
+                                <span *ngIf="campaign_tab.active">{{campaign_tab.tilte}}</span>
+                                <a *ngIf="!campaign_tab.active" [routerLink]="[campaign_tab.url]">{{campaign_tab.tilte}}</a>
+                            </label>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <tabset #staticTabs>
+                                <tab tab1 heading="Step 1" id="first"
+                                 [disabled]="disableSwitching">
+                                    <div class="form-container">
+                                        <form class="row justify-content-center" [formGroup]="submitFrom" (ngSubmit)="submitForm()">
+                                            <div class="col-md-6">
+                                                <div class="form-field">
+                                                    <label class="text-left">Name <span class="required">*</span></label>
+                                                    <input formControlName="number_name" class="input-field" type="text" />
+                                                    <errors class="error-msz" [control]="submitFrom.controls.number_name"></errors>
+                                                </div>
+                                                <div class="form-field">
+                                                    <label class="text-left">Forward Calls To	<span class="required">*</span></label>
+                                                    <input formControlName="destination_number" class="input-field" type="text" />
+                                                    <errors class="error-msz" [control]="submitFrom.controls.destination_number"></errors>
+                                                </div>
+                                                <div class="text-center">
+                                                    <button type="button" [disabled]="(!submitFrom.get('number_name').value &&  !submitFrom.get('destination_number').value)" (click)="selectTab(1)" class="btn btn-primary text-white mr-3" [ngClass]="{'btn-loading': isSubmitting}"> <div class="loader"></div>Next</button>
+                                                    <a class="btn btn-primary btn-default" [routerLink]="['/user/campaigns']">Cancel</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </tab>
+                                <tab tab2 heading="Step 2" [disabled]="disableSwitching"  id="second">
+                                    <div class="form-container">
+                                        <form class="row justify-content-center" [formGroup]="submitFrom" (ngSubmit)="submitForm()">
+                                            <div class="col-md-6">
+                                                        <div id="input-type" class="row">
+                                                            <div class="col-sm-12 mb-3">
+                                                                <label class="radio-inline">
+                                                                    <input *ngIf="isEdit" disabled id="now" type="radio" name="number_type" formControlName="number_type" value="DEFAULT"
+                                                                    (change)="areaCodeSelect()"
+                                                                    >
+                                                                    <input *ngIf="!isEdit" id="now" type="radio" name="number_type" formControlName="number_type" value="DEFAULT"
+                                                                    (change)="areaCodeSelect()"
+                                                                    >
+                                                                    Default Tracking Number
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-12 mb-3">
+                                                                <label class="radio-inline">
+                                                                    <input *ngIf="isEdit" disabled id="schedule" type="radio" name="number_type" formControlName="number_type" value="TOLLFREE"
+                                                                    (change)="areaCodeSelect()"
+                                                                    >
+                                                                    <input *ngIf="!isEdit" id="schedule" type="radio" name="number_type" formControlName="number_type" value="TOLLFREE"
+                                                                    (change)="areaCodeSelect()"
+                                                                    >Toll Free Tracking Number
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-12 mb-3">
+                                                                <label class="radio-inline">
+                                                                    <input *ngIf="isEdit" disabled id="schedule" type="radio" name="number_type" formControlName="number_type" value="AREACODE"
+                                                                    (change)="areaCodeSelect()"
+                                                                    >
+                                                                    <input *ngIf="!isEdit" id="schedule" type="radio" name="number_type" formControlName="number_type" value="AREACODE"
+                                                                    (change)="areaCodeSelect()"
+                                                                    >Tracking Number in a different area code
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-sm-12">
+                                                                <div *ngIf="submitFrom.get('number_type').value == 'AREACODE'">
+                                                                    <input placeholder="Area Code" class="regular-form" formControlName="area_code" type="text" [readonly]="isEdit">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                            </div>
+                                            <div class="col-md-12 mt-5">
+                                                <div class="text-center">
+                                                    <button class="btn btn-primary text-white mr-3" [disabled]="!submitFrom.valid || isSubmitting" [ngClass]="{'btn-loading': isSubmitting}"> <div class="loader"></div>{{isEdit ? 'Update' : 'Submit'}}</button>
+                                                    <a class="btn btn-primary btn-default" [routerLink]="['/user/campaigns']">Cancel</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

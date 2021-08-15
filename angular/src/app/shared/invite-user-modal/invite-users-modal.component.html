@@ -1,0 +1,58 @@
+<div *ngFor="let alert of alerts">
+    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+</div>
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Invite Users</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="hideModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="inviteUsersForm" (ngSubmit)="submitForm()">
+        <div class="form-content row">
+            <div class="col-md-12">
+                <div class="form-field" *ngIf="is_admin">
+                    <label class="text-left">User</label>
+                    <select formControlName="user_id" disabled="true">
+                        <option value="">Select User</option>
+                        <option *ngFor="let user of user_list" [ngValue]="user.user_guid">
+                            {{ user.name }}
+                        </option>
+                    </select>
+                    <errors class="error-msz" [control]="inviteUsersForm.controls.user_id"></errors>
+                </div>
+                <div class="form-field">
+                    <label class="text-left">Email of User<span class="required">*</span></label>
+                    <input formControlName="user_email" email-validate class="form-label" type="text" />
+                    <input formControlName="agency_id" class="form-label" type="hidden" />
+                    <errors class="error-msz" [control]="inviteUsersForm.controls.user_email"></errors>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-field">
+                        <label class="text-left">Plan<span class="required">*</span></label>
+                        <select formControlName="plan_id">
+                            <option value="null" >Select Plan</option>
+                            <option  *ngFor="let plan of plans" value="{{plan.id}}">{{ plan.name }}</option>
+                            <errors class="error-msz" [control]="inviteUsersForm.controls.plan_id"></errors>
+                        </select>
+                </div>
+            </div>
+            <div class="col-md-12" *ngIf="inviteUsersForm.get('plan_id').value">
+                <div class="form-field">
+                    <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                        <input type="checkbox" class="custom-control-input" id="is_agree" formControlName="is_agree" required>
+                        <label class="custom-control-label label-light" for="is_agree">I agree that adding this user will be billed to me at my wholesale rate.</label>
+                </div>
+                    <errors class="error-msz" [control]="inviteUsersForm.controls.is_agree"></errors>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div>
+                <button class="btn btn-primary text-white mr-3" [disabled]="!inviteUsersForm.valid || isSubmitting"[ngClass]="{'btn-loading': isSubmitting}"> <div class="loader"></div>Submit</button>
+                <button type="button" (click)="hideModal()" class="btn btn-default">Cancel</button>
+            </div>
+        </div>
+    </form>
+</div>    

@@ -1,0 +1,18 @@
+.nav-item a {
+	cursor: pointer;
+}
+.nav-item a[aria-expanded="true"]{
+  background-color: #f4f4f4;
+}
+.nav-item .collapse ul {
+  margin-top:0;
+}
+
+.nav-item .collapse ul li a {
+  padding: 5px 15px;
+  padding-left:60px;
+}
+.nav-item .collapse ul li a p {
+  font-size:13px;
+  color: #666;
+}

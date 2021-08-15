@@ -1,0 +1,228 @@
+body{
+    background-color: #fff;
+    color: $primary-dark-text;
+    font-weight: 400;
+    overflow-x: hidden;
+    font-size: 14px;
+    p {
+      color: $text-color;
+    }
+}
+
+legend {
+  border-bottom: 0;
+}
+
+.serif-font{
+    font-family: $font-family-serif;
+}
+
+// Prevent highlight on mobile
+* {
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-tap-highlight-color: transparent;
+  &:focus {
+    outline: 0;
+  }
+}
+.table th, .table td {
+    padding: 1rem 0.55rem;
+}
+.td-action {
+    display: flex;
+    a {
+      display: inline-block;
+      margin-right: 15px;
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+}
+.cancel-link {
+  font-weight: 500;
+}
+
+.section-title {
+  .title {
+    font-weight: 600;
+    margin-bottom: 3px;
+    margin-top: 10px;
+  }
+}
+
+.action-btn {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    .btn,
+    .cancel-link {
+      margin: 0 8px;
+    }
+}
+
+.inline-links {
+    a {
+        display: inline-block;
+        padding-right: 10px;
+        margin-right: 10px;
+        position: relative;
+        font-weight: 500;
+        color: #666;
+      &:after {
+        position: absolute;
+        content: "";
+        background: #a5a5a5;
+        height: 12px;
+        width: 1px;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+      }
+      &:last-child {
+        padding-right: 0;
+        margin-right: 0;
+        &:after {
+          display: none;
+        }
+      }
+    }
+}
+
+a{
+  color: #333333;
+  &:hover,
+  &:focus{
+      color: darken($theme-color, 5%);
+      text-decoration: none;
+  }
+
+  &.text-info{
+      &:hover, &:focus{
+          color: darken($brand-info, 5%);
+      }
+  }
+
+  & .material-icons {
+    vertical-align: middle;
+  }
+}
+
+.form-check,
+label{
+    font-size: 14px;
+    line-height: 1.42857;
+    color: $checkboxes-text-color;
+    font-weight: 400;
+}
+
+/*           Animations              */
+.animation-transition-general{
+    @include transition-all($general-transition-time, $transition-linear);
+}
+
+.animation-transition-slow{
+    @include transition-all($slow-transition-time, $transition-linear);
+}
+
+.animation-transition-fast{
+    @include transition-all($fast-transition-time, $transition-ease);
+}
+
+.caret,
+.sidebar a{
+    @include transition-all($fast-transition-time, $transition-ease-in);
+}
+#map {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: calc(100vh - 70px);
+    margin-top: 70px;
+}
+
+
+
+
+// theme style start
+
+.form-field {
+    label {
+      font-size: 14px;
+      font-weight: 400;
+      color: #666666;
+      display: block;
+      margin-bottom: 4px;
+      &.label-light {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 24px;
+      }
+    }
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    select,
+    textarea {
+      border: solid 1px #ced4da;
+      width: 100%;
+      min-height: 48px;
+      border-radius: 5px;
+      font-size: 16px;
+      padding: 5px 10px;
+    }
+    textarea {
+      min-height: 150px;
+    }
+}
+
+
+
+
+.search-header-block {
+  display: flex;
+  padding: 15px 10px 0;
+  justify-content: flex-end;
+}
+
+
+// Data table style start
+
+ngx-datatable {
+  .datatable-header-cell-wrapper {
+    font-size: 14px;
+    font-weight: 600;
+  }    
+}
+
+.ngx-datatable .datatable-footer .datatable-pager .pager li, 
+.ngx-datatable .datatable-footer .datatable-pager .pager li a {
+  padding: 0 10px;
+ }
+ .ngx-datatable .datatable-footer .datatable-pager .pager li a {
+    background: #e6e8ea;
+    margin: 0 5px;
+    height: 30px;
+    width: 30px;
+    border-radius: 30px;
+    vertical-align: top;
+    text-align: center;
+    padding: 0;
+    line-height: 30px;
+    font-weight: 600;
+}
+
+.ngx-datatable.material .datatable-footer .datatable-pager li.active a {
+    background-color: rgb(158, 158, 158) !important;
+    color: #fff !important;
+}
+
+.ngx-datatable.material .datatable-footer .datatable-pager .datatable-icon-left, 
+.ngx-datatable.material .datatable-footer .datatable-pager .datatable-icon-skip, 
+.ngx-datatable.material .datatable-footer .datatable-pager .datatable-icon-right, 
+.ngx-datatable.material .datatable-footer .datatable-pager .datatable-icon-prev {
+    line-height: 36px !important;
+}
+
+// Data table style end
+

@@ -1,0 +1,59 @@
+<div *ngFor="let alert of userService.alerts">
+    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+</div>
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <!-- <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">Knowledge Base</li>
+                        <li class="breadcrumb-item"><a href="#">View all</a></li>
+                    </ol>
+                </nav> -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button class="btn-text-icon back-page-btn" (click)="goToBack()"><i class="icons-arrow-up"></i>Back</button>
+                            </div>
+                        </div>
+                        <div class="kn-details">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="detail-thumb">
+                                        <!-- <img src="{{ detail.media_name }}"> -->
+                                        <iframe *ngIf="detail.is_url == 'TRUE'" #iframe id="iframe" width="100%" height="220" [src]="detail.video_embed_url | domSanitizer" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                        <img *ngIf="detail.is_url == 'FALSE'" src="{{detail.media_name}}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-7">
+                                    <h3>{{ detail.name }}</h3>
+                                    <h4>Category : {{ userService.getCommaSepratedString(detail.categories) }}</h4>
+                                    <p [innerHTML]="detail.description"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="related-content">
+                            <h2>Related Stuff</h2>
+                            <ul class="listing-block row">
+                                <li class="col-sm-3" *ngFor="let item of related_stuffs" [routerLink]="['/user/knowledgebase', item.knowledgebase_id]">
+                                    <div class="liting-card">
+                                        <div class="thumb">
+                                            <iframe *ngIf="item.is_url == 'TRUE'" #iframe id="iframe" width="100%" height="220" [src]="item.video_embed_url | domSanitizer" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                            <img *ngIf="item.is_url == 'FALSE'" src="{{item.media_name}}">
+                                        </div>
+                                        <h2>{{ item.name }}</h2>
+                                        <!-- <p *ngIf="item.description?.length > 153"  [innerHTML]="formattedText(item.description)"></p> -->
+                                        <!-- <p *ngIf="item.description?.length < 153"  [innerHTML]="item.description"></p> -->
+                                        <!-- <p>{{ (item.description?.length > 153) ? (item.description | slice : 0 : 153) + '...' : (item.description) }}</p> -->
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

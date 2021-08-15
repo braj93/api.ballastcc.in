@@ -1,0 +1,155 @@
+<div class="main-content">
+    <div *ngFor="let alert of userService.alerts">
+        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a class="btn-text-icon back-page-btn" [routerLink]="['/user', param_id, 'plan']"><i class="icons-create"></i> Update Plan</a>
+                            </div>
+                        </div>
+                        <div class="col-md-12 row">
+                            <div class="col-sm-4">
+                                <div class="info-item">
+                                    <span>Plan Name:</span>
+                                    <p>{{ details.subscription.plan.metadata.name | titlecase }}</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="info-item">
+                                    <span>Status:</span>
+                                    <p>{{ details.subscription.status | titlecase }}</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="info-item">
+                                    <span>Subscription Amount:</span>
+                                    <p>{{ getCurrency(details.subscription.plan.amount) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <h6>Upcoming Invoice</h6>
+                            </div>
+                            <div class="col-md-12">
+                                <table class="table">
+                                    <thead class="text-primary bg-lighten">
+                                        <th>Date</th>
+                                        <th>Description</th>
+                                        <th>QTY</th>
+                                        <!-- <th>Unit Price</th> -->
+                                        <th>Amount</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let row of details.upcoming_invoice.lines.data; let i = index">
+                                            <td>{{ getTime(row.period.start) }}  To {{ getTime(row.period.end) }}</td>
+                                            <td>{{ row.description }}</td>
+                                            <td>{{ row.quantity }}</td>
+                                            <!-- <td>{{ getCurrency(row.price.unit_amount) }}</td> -->
+                                            <td>{{ getCurrency(row.amount) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-sm-4">
+                                
+                            </div>
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-item text-right">
+                                    <span>Sub Total:</span>
+                                    <p>{{getCurrency(details.upcoming_invoice.subtotal)}}</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-item text-right">
+                                    <span>Total:</span>
+                                    <p>{{getCurrency(details.upcoming_invoice.total)}}</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-sm-4">
+                            </div>
+                            <div class="col-md-4">
+                                <div class="info-item text-right">
+                                    <span>Amount due:</span>
+                                    <p>{{getCurrency(details.upcoming_invoice.amount_due)}}</p>
+                                </div>
+                            </div>
+                            <!-- <div class="col-md-12 text-right">
+                                {{details.upcoming_invoice.description | json}}<br>
+                                {{details.upcoming_invoice.ending_balance | json}}<br>
+                                <pre>
+                                    {{details.upcoming_invoice.lines.data | json}}<br>
+                                </pre>
+                                <pre>
+                                    {{details.upcoming_invoice | json}}
+                                </pre>
+                            </div> -->
+                            
+                            <!-- <div class="col-md-12">
+                                <h6>Next Invoice</h6>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="info-item">
+                                    <span>Due on:</span>
+                                    <p>{{ getTime(details.upcoming_invoice.created) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="info-item">
+                                    <span>Subscription Amount:</span>
+                                    <p>{{ getCurrency(details.upcoming_invoice.amount_due) }}</p>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                            </div> -->
+                        </div>
+                        <div class="col-md-12">
+                            <h6>Invoices</h6>
+                        </div>
+                        <div class="table-responsive">
+                            <ngx-datatable #table class="material" [rows]="rows" [columnMode]="'force'"
+                                [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [scrollbarV]="false"
+                                [externalPaging]="true" [count]="counts" [offset]="page_no" [limit]="300">
+                                <ngx-datatable-column name="Amount" [sortable]="false">
+                                    <ng-template let-rowIndex="rowIndex" let-row="row" let-value="value"
+                                        ngx-datatable-cell-template>
+                                        {{ getCurrency(row.amount_paid) }}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Invoice Number" [sortable]="false">
+                                    <ng-template let-rowIndex="rowIndex" let-row="row" let-value="value"
+                                        ngx-datatable-cell-template>
+                                        {{row.number}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Status" [sortable]="false">
+                                    <ng-template let-rowIndex="rowIndex" let-row="row" let-value="value"
+                                        ngx-datatable-cell-template>
+                                        {{row.status | titlecase}}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                                <ngx-datatable-column name="Created" [sortable]="false">
+                                    <ng-template let-rowIndex="rowIndex" let-row="row" let-value="value"
+                                        ngx-datatable-cell-template>
+                                        {{getTime(row.created) }}
+                                    </ng-template>
+                                </ngx-datatable-column>
+                            </ngx-datatable>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

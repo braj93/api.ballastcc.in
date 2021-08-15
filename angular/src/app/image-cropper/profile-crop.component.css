@@ -1,0 +1,74 @@
+.nav-link {
+    cursor: pointer;
+}
+
+.tag-pill {
+    cursor: pointer;
+}
+
+/*.button-section {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    left: 10px;
+    z-index: 0;
+}*/
+
+.select-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/*.select-button .solid-btn--orange {
+    border-radius: 0;
+    width: 220px;
+    height: 76px;
+    cursor: pointer;
+}*/
+
+.button-section .solid-btn:first-child {
+    margin-left: 10px;
+}
+
+.button-section button+button {
+    margin-left: 10px;
+}
+
+.showCustomCroper {
+    display: none;
+}
+
+.showCropedImage {
+    display: none;
+}
+
+.dropdown-style2 li button {
+    padding: 8px 20px;
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
+.dropdown-style2 li button:hover {
+    color: #FF6C37;
+}
+
+.button-section .y-range-id {
+    padding: 11px 0;
+}
+
+.button-section .row {
+    margin: 0;
+}
+
+
+/* .y-cropping-i2{
+	position: relative;
+	z-index: -1;
+} */
+
+.y-cropping-ib input {
+    cursor: pointer;
+}

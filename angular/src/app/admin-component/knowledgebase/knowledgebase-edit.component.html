@@ -1,0 +1,88 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-md-12">
+                            <button class="btn-text-icon back-page-btn" (click)="back()"><i class="icons-arrow-up"></i>Back</button>
+                        </div>
+                        <div class="form-container">
+                            <form class="mb-0" [formGroup]="kbForm" (ngSubmit)="submitForm()">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-content">
+                                            <div class="form-field mb-4">
+                                                <label for="title_text">Title</label>
+                                                <input id="title_text" type="text" formControlName="name" class="input-field">
+                                                <errors class="pull-right required" [control]="kbForm.controls.name"></errors>
+                                            </div>
+                                        </div>
+                                        <div class="form-content">
+                                            <div class="form-field mb-4">
+                                                <label for="title_text">Category</label>
+                                                <ng-select class="tag-cloud-box" formControlName="categories" [items]="categories_list" bindLabel="name" [multiple]="true" placeholder="Please Select Category">
+                                                    </ng-select>
+                                                <errors class="pull-right required" [control]="kbForm.controls.categories"></errors>
+                                            </div>
+                                        </div>
+                                        <div class="form-content">
+                                            <div id="input-type" class="row">
+                                                <div class="col-sm-6">
+                                                    <label class="radio-inline">
+                                                        <input (change)="isUpload()" id="video_embed" type="radio" name="is_upload" formControlName="is_upload" value="video_embed">Video Embed URL
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label class="radio-inline">
+                                                        <input (change)="isUpload()" id="upload_file" type="radio" name="is_upload" formControlName="is_upload" value="upload_file">Upload File
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-content" *ngIf="kbForm.value.is_upload == 'video_embed'">
+                                            <div class="form-field mb-4">
+                                                <input id="title_text" type="text" formControlName="video_embed_url" placeholder="Please Enter Embed URL">
+                                                <errors class="pull-right required" [control]="kbForm.controls.video_embed_url"></errors>
+                                            </div>
+                                        </div>
+                                        <div class="form-content" *ngIf="kbForm.value.is_upload == 'upload_file'">
+                                            <div class="form-field mb-4">
+                                                <img *ngIf="form_details.file_name" src="{{form_details.file_name}}" alt="Avatar" style="vertical-align: middle;width: 50px; height: 50px; border-radius: 50%">
+                                                <input id="title_text" type="file" formControlName="knowledgebase_media_guid" (change)="onFileChanged($event)">
+                                                <span>Jpg, Png, Jpeg format allowed only</span>
+                                                <errors class="pull-right required" [control]="kbForm.controls.knowledgebase_media_guid"></errors>
+                                                <input formControlName="knowledgebase_media_id" class="form-label" type="hidden" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-content">
+                                            <div class="form-field mb-4">
+                                                <label for="title_text">Pricing Plans</label>
+                                                <ng-select class="tag-cloud-box" formControlName="pricing_plans" [items]="pricing_plan_list" bindLabel="name" [multiple]="true" placeholder="Please Select Pricing Plan">
+                                                    </ng-select>
+                                                <errors class="pull-right required" [control]="kbForm.controls.pricing_plans"></errors>
+                                            </div>
+                                        </div>
+                                        <div class="form-content">
+                                            <div class="form-field">
+                                                <label>Description</label>
+                                                <quill-editor formControlName="description" [modules]="quillConfig"></quill-editor>
+                                                <errors class="pull-right required" [control]="kbForm.controls.description"></errors>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <button [disabled]="!kbForm.valid||isSubmitting" type="submit" class="btn btn-primary text-white mr-3" [ngClass]="{'btn-loading': isSubmitting}"><div class="loader"></div>Update</button>
+                                        <button type="button" (click)="back()" class="btn btn-default">Cancel</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

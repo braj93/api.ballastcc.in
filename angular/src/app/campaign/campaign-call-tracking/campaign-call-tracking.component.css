@@ -1,0 +1,10 @@
+:host ::ng-deep .tab-container .nav.nav-tabs li a{
+    color: black !important;  
+}
+
+.step-diabled{
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+

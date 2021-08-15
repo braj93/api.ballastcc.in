@@ -1,0 +1,30 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <ngx-datatable #table class="material" [rows]="rows" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" [rowHeight]="50" [scrollbarV]="false" [externalPaging]="true" [count]="counts" [offset]="page_no" [limit]="parameters?.pagination?.limit" (page)='setPage($event)' (sort)="onSort($event)">
+                        <ngx-datatable-column name="Title" [sortable]="true">
+                            <ng-template let-rowIndex="rowIndex" let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row.title | titlecase}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Created on" [sortable]="false">
+                            <ng-template let-rowIndex="rowIndex" let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row.created_at == '' ? '--' : row.created_at | date: 'mediumDate'}}
+                            </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Actions" [sortable]="false">
+                            <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+                                <div class="td-action">
+                                     <!-- <a matTooltip="View" [matTooltipPosition]="'below'"><i class="icons-edit"></i></a> -->
+                                     <a matTooltip="View" [routerLink]="['/user/view-broadcast/', row.broadcast_sent_user_guid]" [matTooltipPosition]="'below'"><i class="icons-remove_red_eye"></i></a>
+                                </div>
+                            </ng-template>
+                        </ngx-datatable-column>
+                    </ngx-datatable>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

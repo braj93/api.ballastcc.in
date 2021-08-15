@@ -1,0 +1,86 @@
+<div *ngFor="let alert of userService.alerts">
+    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+</div>
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-md-12">
+                          <button class="btn-text-icon back-page-btn" (click)="goToBack()"><i class="icons-arrow-up"></i>Back</button>
+                      </div>
+                    </div>
+                    <div class="search-header-block row mb-3">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <!-- <label for="search">Search</label> -->
+                                <input type="text" class="regular-form" id="search" placeholder="Search by Name, Email" [(ngModel)]="parameters.keyword" (keyup)="search($event)">
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                          <button (click)="openInviteUsersModal()" class="btn btn-primary pull-right"><i class="icons-person"></i> Invite User</button>
+                        </div>
+                    </div>
+                    <div class="table-responsive">
+                        <ngx-datatable #table class="material" [rows]="rows" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50"
+                          [rowHeight]="50" [scrollbarV]="false" [externalPaging]="true" [count]="counts" [offset]="page_no" [limit]="parameters?.pagination?.limit" (page)='setPage($event)'(sort)="onSort($event)">
+                          <ngx-datatable-column name="Name">
+                            <ng-template let-rowIndex="rowIndex" let-row="row" let-value="value" ngx-datatable-cell-template>
+                                {{row.name | titlecase}}
+                            </ng-template>
+                          </ngx-datatable-column>
+                          <ngx-datatable-column name="Email" [sortable]="false">
+                            <ng-template let-rowIndex="rowIndex" let-row="row" let-value="value" ngx-datatable-cell-template>
+                              <a href="mailto:{{row.email}}">{{row.email}}</a>
+                            </ng-template>
+                          </ngx-datatable-column>
+                          <!-- <ngx-datatable-column name="User Type" [sortable]="false">
+                            <ng-template let-rowIndex="rowIndex" let-row="row" let-value="value" ngx-datatable-cell-template>
+                              {{userService.stringReplace(row.user_type, '_', ' ') | titlecase}}
+                            </ng-template>
+                          </ngx-datatable-column> -->
+                          <ngx-datatable-column name="Business Name" [sortable]="false">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                              {{row.business_name  | titlecase}}
+                            </ng-template>
+                          </ngx-datatable-column>
+                          <ngx-datatable-column name="Package" [sortable]="false">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                              {{row.package | titlecase}}
+                            </ng-template>
+                          </ngx-datatable-column>
+                          <ngx-datatable-column name="Status">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                              {{row.status | titlecase}}
+                            </ng-template>
+                          </ngx-datatable-column>
+                          <ngx-datatable-column name="Date of signup" [sortable]="false">
+                            <ng-template let-row="row" ngx-datatable-cell-template>
+                              {{row.created_at | date: 'mediumDate'}}
+                            </ng-template>
+                          </ngx-datatable-column>
+                        <ngx-datatable-column name="Actions" [sortable]="false">
+                                <ng-template let-rowIndex="rowIndex" let-row="row" ngx-datatable-cell-template>
+                                    <div class="td-action">
+                                        
+                                        <a matTooltip="Edit" [routerLink]="['/console/user-edit-profile', row.user_id]" [matTooltipPosition]="'below'"><i class="icons-create"></i></a>
+                                        
+                                        <!-- <a *ngIf="row.status=='ACTIVE'"  matTooltip="Deactivate" [matTooltipPosition]="'below'" (click)="chageStatus(row.user_id,'PENDING', rowIndex)">
+                                            <img style="height:20px;width:20px; cursor: pointer;" src="assets/img/active.png">
+                                        </a>
+                                        <a *ngIf="row.status=='PENDING'"  matTooltip="Activate" [matTooltipPosition]="'below'" (click)="chageStatus(row.user_id,'ACTIVE', rowIndex)">
+                                            <img style="height:20px;width:20px; cursor: pointer;" src="assets/img/inactive.png">
+                                        </a> -->
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </ngx-datatable>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,84 @@
+<div *ngFor="let alert of userService.alerts">
+    <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+</div>
+<div class="main-content">
+    <div class="container-fluid">
+          <div class="card">
+              <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn-text-icon back-page-btn" (click)="goToBack()"><i class="icons-arrow-up"></i>Back</button>
+                    </div>
+                </div>
+                <div class="container-xsm">
+                    <div class="form-container">
+                      <form [formGroup]="userForm" (ngSubmit)="submitForm()">
+                          <div class="form-content row">
+                              <div class="col-md-12">
+                                  <div class="form-field">
+                                      <label class="text-left">Name <span class="required">*</span></label>
+                                      <input formControlName="name" class="input-field" type="text" />
+                                      <errors class="error-msz" [control]="userForm.controls.name"></errors>
+                                  </div>
+                              </div>
+                              <div class="col-md-12">
+                                  <div class="form-field">
+                                      <label class="text-left">Email <span class="required">*</span></label>
+                                      <input formControlName="email" class="input-field" type="text" disabled />
+                                      <errors class="error-msz" [control]="userForm.controls.email"></errors>
+                                  </div>
+                              </div>
+                              <div class="col-md-12">
+                                  <div class="form-field">
+                                      <label class="text-left">Business Name <span class="required">*</span></label>
+                                      <input formControlName="business_name" class="input-field" type="text" [readonly]="isReadonly()"/>
+                                      <errors class="error-msz" [control]="userForm.controls.business_name"></errors>
+                                  </div>
+                              </div>
+                              <!-- <div class="col-md-12">
+                                  <div class="form-field">
+                                      <label class="text-left">Street <span class="required">*</span></label>
+                                      <input formControlName="crm_contact_street" class="input-field" type="text" />
+                                      <errors class="error-msz" [control]="userForm.controls.crm_contact_street"></errors>
+                                  </div>
+                              </div>
+                              <div class="col-md-12">
+                                  <div class="form-field">
+                                      <label class="text-left">City <span class="required">*</span></label>
+                                      <input formControlName="crm_contact_city" class="input-field" type="text" />
+                                      <errors class="error-msz" [control]="userForm.controls.crm_contact_city"></errors>
+                                  </div>
+                              </div>
+                              <div class="col-md-12">
+                                  <div class="form-field">
+                                      <label class="text-left">State <span class="required">*</span></label>
+                                      <select formControlName="crm_contact_state">
+                                          <option value="">Select State</option>
+                                          <option *ngFor="let state of states" [ngValue]="state.id">
+                                              {{ state.name }}
+                                          </option>
+                                      </select>
+                                      <errors class="error-msz" [control]="userForm.controls.crm_contact_state"></errors>
+                                  </div>
+                              </div>
+                              <div class="col-md-12">
+                                  <div class="form-field">
+                                      <label class="text-left">Zipcode <span class="required">*</span></label>
+                                      <input formControlName="crm_contact_zipcode" class="input-field" type="text" />
+                                      <errors class="error-msz" [control]="userForm.controls.crm_contact_zipcode"></errors>
+                                  </div> 
+                              </div> -->
+                            <div class="col-md-12">
+                                <div class="text-right">
+                                    <button class="btn btn-primary text-white mr-3" type="submit" [disabled]="!userForm.valid || isSubmitting" [ngClass]="{'btn-loading': isSubmitting}"> <div class="loader"></div>Update</button>
+                                    <button type="button" (click)="goToBack()" class="btn btn-default">Cancel</button>
+                                </div>
+                            </div>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
+              </div>
+          </div>
+    </div>
+</div>

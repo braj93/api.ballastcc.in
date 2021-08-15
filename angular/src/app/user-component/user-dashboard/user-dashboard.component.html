@@ -1,0 +1,101 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats down">
+                    <div class="card-content">
+                        <div class="cards-heading">
+                            <h3>Active Campaigns</h3>
+                            <span class="card-icon-cbox"><i class="icons-growth"></i></span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="count">
+                            <span>{{details.campaign_count}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats up">
+                    <div class="card-content">
+                        <div class="cards-heading">
+                            <h3>Active Landing Pages </h3>
+                            <span class="card-icon-cbox"><i class="icons-dashboard-1"></i></span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="count">
+                            <span>{{details.landing_page_count}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats up">
+                    <div class="card-content">
+                        <div class="cards-heading">
+                            <h3>Active Call Tracking</h3>
+                            <span class="card-icon-cbox"><i class="icons-call"></i></span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="count">
+                            <span>{{details.call_tracking_number_count}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats down">
+                    <div class="card-content">
+                        <div class="cards-heading">
+                            <h3>Active QR Codes</h3>
+                            <span class="card-icon-cbox"><i class="icons-qr-code"></i></span>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="count">
+                            <span>{{details.qr_leads_count}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Landing Page Ranking</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary bg-lighten">
+                                    <th>Rank</th>
+                                    <th>Landing Page Title</th>
+                                    <!-- <th>Business Name</th> -->
+                                    <th>#Views</th>
+                                </thead>
+                                <tbody *ngIf="rows.length > '0'">
+                                    <tr *ngFor="let row of rows; let i = index">
+                                        <td>{{ row.rank || 0}}</td>
+                                        <td>{{ row.page_title || '--'}}</td>
+                                        <!-- <td>{{ row.business_name || '--'}}</td> -->
+                                        <td>{{ row.views || 0}}</td>
+                                    </tr>
+                                <tbody *ngIf="rows.length == 0">
+                                    <tr>
+                                        <td colspan="3" style="text-align: center;">
+                                            <p class="no-table-data">No data to display</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

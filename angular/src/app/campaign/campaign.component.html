@@ -1,0 +1,86 @@
+<div class="main-content">
+    <div *ngFor="let alert of userService.alerts">
+        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+    </div>
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-4 col-xl-3 col-md-6 mb-3">
+                        <div class="form-group">
+                            <input type="text" class="regular-form" id="search" placeholder="Search by Name" [(ngModel)]="parameters.keyword" (keyup)="search($event)">
+
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-8 col-xl-9 mb-3">
+                        <button *ngIf="is_admin" class="btn btn-primary pull-right" (click)="goToCreateCampaign()"><i class="icons-plus"></i> New Campaign</button>
+                        <button *ngIf="!is_admin" class="btn btn-primary pull-right" (click)="goToCreateCampaign()" [disabled]="isNewCampaignDisabled()"><i class="icons-plus"></i> New Campaign</button>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="campaign-listing" *ngIf="rows.length > 0">
+                            <div class="compagin-listing-items" *ngFor="let row of rows; let i = index">
+                                <div class="campaign-thumb">
+                                    <div class="campaign-bg" [ngStyle]="{'background-image': !row?.preview_url ? 'url(\'assets/img/placeholder-img.jpg\')' : 'url(' + row?.preview_url + ')'}">
+                                    </div>
+                                </div>
+                                <div class="campaign-content">
+                                    <h3><a [routerLink]="['/user/campaigns/',row.campaign_guid,'view']"> {{ row.campaign_name }}</a></h3>
+                                    <p *ngIf="row.campaign_goal?.length > 153" [innerHTML]="formattedText(row.campaign_goal)"></p>
+                                    <p *ngIf="row.campaign_goal?.length < 153" [innerHTML]="row.campaign_goal"></p>
+                                    <ul class="campaign-stats">
+                                        <li>
+                                            <span>{{row?.tracking_data?.landing_page?.total_pageviews ? row?.tracking_data?.landing_page?.total_pageviews : '0'}}</span>
+                                            <label>views</label>
+                                        </li>
+                                        <li>
+                                            <span>{{row?.total_leads ? row?.total_leads : '0'}}</span>
+                                            <label>leads</label>
+                                        </li>
+                                        <li>
+                                            <span>{{row?.tracking_data?.call_tracking?.total_calls ? row?.tracking_data?.call_tracking?.total_calls : '0'}}</span>
+                                            <label>calls</label>
+                                        </li>
+                                    </ul>
+                                    <ul class="campaign-actions">
+                                        <li><a class="btn btn-primary btn-outline" [routerLink]="['/user/campaigns/', row.campaign_guid, 'edit']">Edit campaign</a></li>
+                                        <li *ngIf="row.is_landing_page == 'YES' && !row.template_values"><a [routerLink]="['/user/campaigns/',row.campaign_guid,'templates']" class="btn btn-primary btn-outline">Edit landing page</a></li>
+                                        <li *ngIf="row.is_landing_page == 'YES' && row.template_values"><a [routerLink]="['/user/campaigns/',row.campaign_guid,'design']" class="btn btn-primary btn-outline">Edit landing page</a></li>
+                                        <li *ngIf="row.is_landing_page == 'NO' && row.is_call_tracking_number == 'NO' && row.is_qr_code == 'YES'"><a [routerLink]="['/user/campaigns/',row.campaign_guid,'qr-code']" class="btn btn-primary btn-outline">Edit QR Code</a></li>
+                                        <li *ngIf="row.is_landing_page == 'NO' && row.is_call_tracking_number == 'YES' && row.is_qr_code == 'NO'"><a [routerLink]="['/user/campaigns/',row.campaign_guid,'call-tracking-number']" class="btn btn-primary btn-outline">Edit Call Tracking</a></li>
+                                        <li *ngIf="row.page_url && row.is_landing_page == 'YES'"><a target="_blank" href="{{row.page_url}}?preview=true" class="btn btn-outline btn-primary">Preview</a></li>
+                                        <li><a [routerLink]="['/user/campaigns/',row.campaign_guid,'view']" class="btn btn-text"><i class="icons-assignment"></i> view full report</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div *ngIf="rows?.length == 0" class="text-center">
+                    <p class="no-table-data">No data to display</p>
+                </div>
+                <div class="block-footer" *ngIf="pages?.length > 1">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a [class.isDisabled]="current_page === 1" class="page-link prev-nav-icon" aria-label="Previous" (click)="paginationAction('prev')">
+                                        <i class="icons-chevron-down"></i>
+                                    </a>
+                                </li>
+                                <li class="page-item" *ngFor="let page of pages">
+                                    <a [class.isSelected]="current_page === page+1" class="page-link" (click)="setPage(page+1)">{{page+1}}</a>
+                                </li>
+                                <li class="page-item">
+                                    <a [class.isDisabled]="current_page === last_index" class="page-link next-nav-icon" aria-label="Next" (click)="paginationAction('next')">
+                                        <i class="icons-chevron-down"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

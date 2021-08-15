@@ -1,0 +1,118 @@
+<div class="main-content">
+    <div *ngFor="let alert of userService.alerts">
+        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+    </div>
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn-text-icon back-page-btn" (click)="goToBack()"><i class="icons-arrow-up"></i>Back</button>
+                    </div>
+                </div>
+                <div class="form-container">
+                    <form [formGroup]="bform" (ngSubmit)="submitForm()">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-field">
+                                    <label class="text-left">Title<span class="required">*</span></label>
+                                    <input formControlName="title" class="input-field" type="text"/>
+                                    <errors class="error-msz" [control]="bform.controls.title"></errors>
+                                </div>
+                                <div class="form-field">
+                                    <label class="text-left">Message<span class="required">*</span></label>
+                                    <quill-editor formControlName="message" [modules]="quillConfig"></quill-editor>
+                                    <errors class="error-msz" [control]="bform.controls.message"></errors>
+                                </div>
+                            </div>
+                            <div class="col-sm-6 row">
+                                <div class="col-md-12">
+                                    <div class="form-field mb-2">
+                                        <label for="title_text">Users</label>
+                                        <div>
+                                            <div class="custom-control custom-checkbox my-1 mr-sm-2 custom-control-inline">
+                                                <input type="checkbox" class="custom-control-input" id="activeBox" formControlName="is_user_active">
+                                                <label class="custom-control-label label-light" for="activeBox">Active</label>
+                                            </div>
+                                            <div class="custom-control custom-checkbox my-1 mr-sm-2 custom-control-inline">
+                                                <input type="checkbox" class="custom-control-input" id="InactiveBox" formControlName="is_user_inactive">
+                                                <label class="custom-control-label label-light" for="InactiveBox">Inactive</label>
+                                            </div>
+                                        </div>
+                                        <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                                            <input type="checkbox" class="custom-control-input" id="signboxactive" formControlName="is_last_thirty_days_signed_up">
+                                            <label class="custom-control-label label-light" for="signboxactive">Signed up(in last 30 days) </label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                                            <input type="checkbox" class="custom-control-input" id="is_agency_users" formControlName="is_agency_users">
+                                            <label class="custom-control-label label-light" for="is_agency_users">Agency Admins</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                                            <input type="checkbox" class="custom-control-input" id="is_agency_envitee_users" formControlName="is_agency_envitee_users">
+                                            <label class="custom-control-label label-light" for="is_agency_envitee_users">Agency Users</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox my-1 mr-sm-2">
+                                            <input type="checkbox" class="custom-control-input" id="is_individual_users" formControlName="is_individual_users">
+                                            <label class="custom-control-label label-light" for="is_individual_users">Individual Users</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-field mt-4">
+                                        <div class="custom-control custom-checkbox mr-sm-2">
+                                            <input type="checkbox" class="custom-control-input" id="lastlogincheck" formControlName="is_last_login">
+                                            <label class="custom-control-label label-light" for="lastlogincheck">Last Login Between</label>
+                                        </div>
+                                        <div *ngIf="bform.get('is_last_login').value">
+                                        <input type="text" 
+                                        [bsConfig]="bsRangeConfig"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [(ngModel)]="bsRangeValue"
+                                        (bsValueChange)="onRangeValueChange($event)"
+                                        placeholder="Daterangepicker"
+                                        class="regular-form"
+                                        bsDaterangepicker readonly>
+                                        <input type="hidden" formControlName="last_login_from_date" [value]="formValue.last_login_from_date" readonly>
+                                        <input type="hidden" formControlName="last_login_to_date" [value]="formValue.last_login_to_date" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-content">
+                                    <div id="input-type" class="row">
+                                        <div class="col-sm-6">
+                                            <label class="radio-inline mr-4">
+                                                <input id="now" type="radio" name="broadcast_sent_type" formControlName="broadcast_sent_type" value="NOW"
+                                                (change)="scheduleChange()"
+                                                >Now
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input id="schedule" type="radio" name="broadcast_sent_type" formControlName="broadcast_sent_type" value="SCHEDULED"
+                                                (change)="scheduleChange()"
+                                                >Scheduled
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row align-items-center" *ngIf="bform.get('broadcast_sent_type').value == 'SCHEDULED'">
+                                    <div class="col-md-7">
+                                    <input [bsConfig]="bsConfig" [(bsValue)]="schedule_date" type="text" placeholder="Date" class="regular-form" (bsValueChange)="onValueChange($event)"  bsDatepicker readonly>
+                                    <input type="hidden" formControlName="broadcast_sent_date" [value]="schedule_date" readonly>
+                                    </div>
+                                    <div class="col-md-5">
+                                    <timepicker (ngModelChange)="changed($event)" formControlName="broadcast_sent_time"></timepicker>
+                                    <input type="hidden" formControlName="time_seconds" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <button *ngIf="detail.status != 'SENT'" type="submit" class="btn btn-primary mr-3" [disabled]="!bform.valid || isSubmitting" [ngClass]="{'btn-loading': isSubmitting}">
+                                    <div class="loader"></div>Update</button>
+                                <a class="btn btn-default" [routerLink]="['/console/broadcast']">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

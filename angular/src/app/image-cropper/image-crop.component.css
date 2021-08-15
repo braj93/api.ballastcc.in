@@ -1,0 +1,47 @@
+.nav-link {
+	cursor:pointer;
+}
+
+.tag-pill{
+	cursor:pointer;
+} 
+.banner {
+	width: 100%;
+	height: 446px;
+	background: #f2f2f2;
+	position: relative;
+}
+/*.button-section {
+	position: absolute;
+	bottom: 40px;
+	right: 40px;
+	z-index: 0;
+}
+*/
+.button-section button+button{
+	margin-left: 10px;
+}
+
+.showCustomCroper{
+	display: none;
+}
+
+.showCropedImage{
+	display: none;
+}
+
+.dropdown-style2 li button{
+	padding: 8px 20px;
+	display: block;
+	width: 100%;
+	text-align: left;
+}
+
+.dropdown-style2 li button:hover{
+	color: #FF6C37;
+}
+
+/* .y-cropping-i2{
+	position: relative;
+	z-index: -1;
+} */
