@@ -457,6 +457,12 @@ if (!function_exists('get_detail_by_guid')) {
             $select_fields = ($select_field) ? $select_field : "*";
             $table_name = "";
             switch ($entity_type) {
+                case 'batch':
+                    $table_name = 'batches';
+                    $select_fields = ($select_field) ? $select_field : "batch_id";
+                    $condition = array("batch_guid" => $entity_guid);
+                    break;
+
                 case 'pricing_plan':
                     $table_name = 'pricing_plans';
                     $select_fields = ($select_field) ? $select_field : "pricing_plan_id";
