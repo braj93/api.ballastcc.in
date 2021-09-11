@@ -1,0 +1,24 @@
+.login-body{
+    background-image: url("../../assets/img/login_background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh; 
+}
+/* .login-main-div{
+    background-image: url("../img/login_background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+} */
+.login-body .overlay-background{
+    background-color: rgba(0,0,0,0.5);
+/* position: absolute; */
+height: 100vh;
+}
+.form-signin{
+    /* max-width: 300px; */
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30%;
+    border-radius: 8px;
+}
