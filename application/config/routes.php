@@ -50,6 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'welcome';
+$route['admin'] = 'api/admin/auth';
 // $route['rio-aggregate'] = 'site/retail';
 $route['site/rio-aggregate'] = 'site/retail';
 $route['site/(:any)'] = 'site/$1';

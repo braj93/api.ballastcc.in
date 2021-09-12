@@ -2116,7 +2116,7 @@ class Users_model extends CI_Model {
 	// 	return $agency_invited_user_id;
 	// }
 
-	public function get_users_list($keyword = '', $limit = 0, $offset = 0, $column_name, $order_by, $status) {
+	public function get_users_list($limit = 0, $offset = 0) {
 		if ($limit > 0 && $offset >= 0) {
 			$this->db->limit($limit, $offset);
 			$this->db->select('u.user_sub_type, u.user_sub_type');
