@@ -110,8 +110,10 @@ class Share extends REST_Controller {
 		$filters = safe_array_key($this->_data, "filters", []);
 		$status = safe_array_key($filters, "status", '');
 		$this->load->model("users_model");
-		$this->_response["data"] = $this->users_model->get_users_list($keyword, $limit, $offset, $column_name, $order_by, $status);
-		$this->_response["counts"] = $this->users_model->get_users_list($keyword, 0, 0, $column_name, $order_by, $status);
+		$this->_response["data"] = $this->users_model->get_users_list( $limit, $offset, $column_name, $order_by, $status);
+		$this->_response["counts"] = $this->users_model->get_users_list( 0, 0, $column_name, $order_by, $status);
+		// $this->_response["data"] = $this->users_model->get_users_list($keyword, $limit, $offset, $column_name, $order_by, $status);
+		// $this->_response["counts"] = $this->users_model->get_users_list($keyword, 0, 0, $column_name, $order_by, $status);
 		$this->_response["message"] = "User List";
 		$this->set_response($this->_response);
 	}
