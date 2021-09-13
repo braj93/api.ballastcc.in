@@ -143,4 +143,58 @@ class Master_model extends CI_Model
         ]);
         // return TRUE;
     }
+
+    /** CREATE BOARDS
+     * @param type $name
+     */
+    public function create_board($name, $status)
+    {
+        $this->db->insert('boards', [
+            "board_guid" => get_guid(),
+            "name" => $name,
+            "status" => $status,
+            "created_at" => DATETIME,
+            "updated_at" => DATETIME,
+        ]);
+        $class_id = $this->db->insert_id();
+        return $class_id;
+    }
+
+    //  UPDATE CLASS
+    /**
+     *
+     * @param type $board_id
+     * @param type $name
+     * @param type $status
+     * @return boolean
+     */
+    public function update_board($board_id, $name, $status)
+    {
+        $batch = [
+            "name" => $name,
+            "status" => $status,
+            "updated_at" => DATETIME,
+        ];
+
+        $this->db->update('boards', $batch, array(
+            'board_id' => $board_id,
+        ));
+        return TRUE;
+    }
+
+    //  DELETE CLASS
+    /**
+     *
+     * @param type $batch_id
+     * 
+     */
+    public function delete_board($board_id)
+    {
+        $this->db->update('boards', [
+            'status' => 'DELETED'
+        ], [
+            'board_id' => $board_id,
+        ]);
+        // return TRUE;
+    }
 }
