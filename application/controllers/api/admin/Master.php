@@ -152,11 +152,6 @@ class Master extends REST_Controller
         $this->_response["service_name"] = "admin/addclass";
         $session_key = $this->rest->key;
         $this->form_validation->set_rules('name', 'Class Name', 'trim|required|min_length[2]|max_length[50]');
-        // $this->form_validation->set_rules('medium', 'Batch medium', 'trim|required');
-        // $this->form_validation->set_rules('start_date', 'Start Date', 'trim|required');
-        // $this->form_validation->set_rules('end_date', 'End Date', 'trim|required');
-        // $this->form_validation->set_rules('start', 'Start Time', 'trim|required');
-        // $this->form_validation->set_rules('end', 'End Time', 'trim|required');
         $this->form_validation->set_rules('status', 'Status', 'trim|required');
         if ($this->form_validation->run() == FALSE) {
             $errors = $this->form_validation->error_array();
@@ -165,11 +160,6 @@ class Master extends REST_Controller
             $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
         } else {
             $name = safe_array_key($this->_data, "name", "");
-            // $medium = safe_array_key($this->_data, "medium", "");
-            // $start_date = safe_array_key($this->_data, "start_date", "");
-            // $end_date = safe_array_key($this->_data, "end_date", "");
-            // $start = safe_array_key($this->_data, "start", "");
-            // $end = safe_array_key($this->_data, "end", "");
             $status = safe_array_key($this->_data, "status", "");
             $user_id = $this->master_model->create_class($name, $status);
             $this->_response["message"] = 'You have created new class successfully';
@@ -224,6 +214,80 @@ class Master extends REST_Controller
             $class_id = get_detail_by_guid($class_guid, 'class');
             $this->_response["data"] = $this->master_model->delete_class($class_id);
             $this->_response["message"] = "class deleted Successfully.";
+            $this->set_response($this->_response);
+        }
+    }
+
+           /**
+     * BOARDS REGISTRATION
+     */
+    public function add_board_post()
+    {
+        $this->_response["service_name"] = "admin/addboard";
+        $session_key = $this->rest->key;
+        $this->form_validation->set_rules('name', 'Board Name', 'trim|required|min_length[2]|max_length[50]');
+        $this->form_validation->set_rules('status', 'Status', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $errors = $this->form_validation->error_array();
+            $this->_response["message"] = current($errors);
+            $this->_response["errors"] = $errors;
+            $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+        } else {
+            $name = safe_array_key($this->_data, "name", "");
+            $status = safe_array_key($this->_data, "status", "");
+            $user_id = $this->master_model->create_board($name, $status);
+            $this->_response["message"] = 'You have created new Board successfully';
+            $this->set_response($this->_response);
+        }
+    }
+    public function get_boards_get()
+    {
+        $this->_response["service_name"] = "admin/get_boards";
+        $classes_data = $this->app->get_rows('boards', 'board_id, board_guid,name,status', []);
+        if (empty($classes_data)) {
+            $classes_data = [];
+        }
+        $this->_response["data"] = $classes_data;
+        $this->set_response($this->_response);
+    }
+
+    public function edit_board_post()
+    {
+        $this->_response["service_name"] = "admin/edit_boards";
+        $this->form_validation->set_rules('board_id', 'Board id', 'trim|required');
+        $this->form_validation->set_rules('name', 'Batch Name', 'trim|required|min_length[2]|max_length[50]');
+        $this->form_validation->set_rules('status', 'Status', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $errors = $this->form_validation->error_array();
+            $this->_response["message"] = current($errors);
+            $this->_response["errors"] = $errors;
+            $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+        } else {
+            $board_guid = safe_array_key($this->_data, "board_id", "");
+            $name = safe_array_key($this->_data, "name", "");
+            $status = safe_array_key($this->_data, "status", "");
+
+            $board_id = get_detail_by_guid($board_guid, 'board');
+            $this->_response["data"] = $this->master_model->update_board($board_id, $name, $status);
+            $this->_response["message"] = "Success.";
+            $this->set_response($this->_response);
+        }
+    }
+
+    public function delete_board_post()
+    {
+        $this->_response["service_name"] = "admin/delete_boards";
+        $this->form_validation->set_rules('board_id', 'Board id', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $errors = $this->form_validation->error_array();
+            $this->_response["message"] = current($errors);
+            $this->_response["errors"] = $errors;
+            $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+        } else {
+            $board_guid = safe_array_key($this->_data, "board_id", "");
+            $board_id = get_detail_by_guid($board_guid, 'board');
+            $this->_response["data"] = $this->master_model->delete_board($board_id);
+            $this->_response["message"] = "board deleted Successfully.";
             $this->set_response($this->_response);
         }
     }
