@@ -40,9 +40,9 @@ class Students_model extends CI_Model {
 	 * @param type $email
 	 * @return type
 	 */
-	public function create_student($first_name, $last_name, $father_name,  $mother_name, $dob, $class, $board, $medium, $batch, $registration_date, $profile_id, $school, $address, $mobile, $email, $status) {
+	public function create_student($first_name, $last_name, $father_name,  $mother_name, $dob, $class, $board, $medium, $total_fee, $batch, $registration_date, $profile_id, $school, $address, $mobile, $email, $status) {
 
-		$email = strtolower($email);
+		// $email = strtolower("$email");
 		$this->db->insert('students', [
 			"student_guid" => get_guid(),
 			"first_name" => $first_name,
@@ -53,6 +53,8 @@ class Students_model extends CI_Model {
 			"class" => $class,
 			"board" => $board,
 			"medium" => $medium,
+			"total_fee" => $total_fee,
+			"remain_fee" => $total_fee,
 			"batch" => $batch,
 			"registration_date" => $registration_date,
 			"profile_id" => $profile_id,
@@ -81,6 +83,8 @@ class Students_model extends CI_Model {
 			$this->db->select('IFNULL(cl.name,"") AS class');
 			$this->db->select('IFNULL(bo.name,"") AS board');
 			$this->db->select('s.medium, s.medium');
+			$this->db->select('s.total_fee, s.total_fee');
+			$this->db->select('s.remain_fee, s.remain_fee');
 			$this->db->select('IFNULL(ba.name,"") AS batch');
 			$this->db->select('s.registration_date, s.registration_date');
 			$this->db->select('s.address, s.address');
@@ -112,6 +116,8 @@ class Students_model extends CI_Model {
 					$list[$key]['class'] = $value['class'];
 					$list[$key]['board'] = $value['board'];
 					$list[$key]['medium'] = $value['medium'];
+					$list[$key]['total_fee'] = $value['total_fee'];
+					$list[$key]['remain_fee'] = $value['remain_fee'];
 					$list[$key]['batch'] = $value['batch'];
 					$list[$key]['registration_date'] = $value['registration_date'];
 					$list[$key]['address'] = $value['address'];
@@ -152,7 +158,7 @@ class Students_model extends CI_Model {
 	 * @param type $email
      * @return boolean
      */
-    public function update_student($student_id, $first_name, $last_name, $father_name,  $mother_name, $dob, $class, $board, $medium, $batch, $registration_date, $profile_id, $school, $address, $mobile, $email, $status)
+    public function update_student($student_id, $first_name, $last_name, $father_name,  $mother_name, $dob, $class, $board, $medium, $total_fee, $remain_fee, $batch, $registration_date, $profile_id, $school, $address, $mobile, $email, $status)
     {
         $batch = [
             "first_name" => $first_name,
@@ -163,6 +169,8 @@ class Students_model extends CI_Model {
 			"class" => $class,
 			"board" => $board,
 			"medium" => $medium,
+			"total_fee" => $total_fee,
+			"remain_fee" => $remain_fee,
 			"batch" => $batch,
 			"registration_date" => $registration_date,
 			"profile_id" => $profile_id,
