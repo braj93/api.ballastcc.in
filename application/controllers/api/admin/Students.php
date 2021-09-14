@@ -63,6 +63,7 @@ class Students extends REST_Controller {
 		$this->form_validation->set_rules('class', 'Class', 'trim|required');
 		$this->form_validation->set_rules('board', 'Board', 'trim|required');
 		$this->form_validation->set_rules('medium', 'Medium', 'trim|required');
+		$this->form_validation->set_rules('total_fee', 'Total Fee', 'trim|required');
 		$this->form_validation->set_rules('batch', 'Batch', 'trim|required');
 		$this->form_validation->set_rules('registration_date', 'Registration Date', 'trim|required');
 		$this->form_validation->set_rules('address', 'Address', 'trim|required');
@@ -82,6 +83,7 @@ class Students extends REST_Controller {
 			$class = safe_array_key($this->_data, "class", "");
 			$board = safe_array_key($this->_data, "board", "");
 			$medium = safe_array_key($this->_data, "medium", "");
+			$total_fee = safe_array_key($this->_data, "total_fee", "");
 			$batch = safe_array_key($this->_data, "batch", "");
 			$registration_date = safe_array_key($this->_data, "registration_date", "");
 			$profile_id = safe_array_key($this->_data, "profile_id", "");
@@ -90,7 +92,7 @@ class Students extends REST_Controller {
 			$mobile = safe_array_key($this->_data, "mobile", "");
 			$email = safe_array_key($this->_data, "email", "");
 			$status = safe_array_key($this->_data, "status", "");
-			$student_id = $this->students_model->create_student($first_name, $last_name, $father_name,  $mother_name, $dob, $class, $board, $medium, $batch, $registration_date, $profile_id, $school, $address, $mobile, $email, $status);
+			$student_id = $this->students_model->create_student($first_name, $last_name, $father_name,  $mother_name, $dob, $class, $board, $medium, $total_fee, $batch, $registration_date, $profile_id, $school, $address, $mobile, $email, $status);
 			$this->_response["message"] = 'Student registered successfully';
 			$this->set_response($this->_response);
 	
@@ -135,7 +137,7 @@ public function get_student_list_post() {
  * STUDENT UPDATE
  */
 public function edit_student_post() {
-	$this->_response["service_name"] = "students/edit_batches";
+	$this->_response["service_name"] = "students/edit_student";
 	$this->form_validation->set_rules('student_id', 'Student id', 'trim|required');
 	$this->form_validation->set_rules('first_name', 'First Name', 'trim|required|min_length[2]|max_length[50]|callback__check_alpha_space');
 	$this->form_validation->set_rules('last_name', 'Last Name', 'trim|required|min_length[2]|max_length[50]|callback__check_alpha_space');
@@ -144,6 +146,8 @@ public function edit_student_post() {
 	$this->form_validation->set_rules('class', 'Class', 'trim|required');
 	$this->form_validation->set_rules('board', 'Board', 'trim|required');
 	$this->form_validation->set_rules('medium', 'Medium', 'trim|required');
+	$this->form_validation->set_rules('total_fee', 'Total Fee', 'trim|required');
+	$this->form_validation->set_rules('remain_fee', 'Remaining Fee', 'trim|required');
 	$this->form_validation->set_rules('batch', 'Batch', 'trim|required');
 	$this->form_validation->set_rules('registration_date', 'Registration Date', 'trim|required');
 	$this->form_validation->set_rules('address', 'Address', 'trim|required');
@@ -165,6 +169,8 @@ public function edit_student_post() {
 		$class = safe_array_key($this->_data, "class", "");
 		$board = safe_array_key($this->_data, "board", "");
 		$medium = safe_array_key($this->_data, "medium", "");
+		$total_fee = safe_array_key($this->_data, "total_fee", "");
+		$remain_fee = safe_array_key($this->_data, "remain_fee", "");
 		$batch = safe_array_key($this->_data, "batch", "");
 		$registration_date = safe_array_key($this->_data, "registration_date", "");
 		$profile_id = safe_array_key($this->_data, "profile_id", "");
@@ -173,7 +179,7 @@ public function edit_student_post() {
 		$mobile = safe_array_key($this->_data, "mobile", "");
 		$email = safe_array_key($this->_data, "email", "");
 		$status = safe_array_key($this->_data, "status", "");
-		$this->_response["data"] = $this->students_model->update_student($student_id, $first_name, $last_name, $father_name,  $mother_name, $dob, $class, $board, $medium, $batch, $registration_date, $profile_id, $school, $address, $mobile, $email, $status);
+		$this->_response["data"] = $this->students_model->update_student($student_id, $first_name, $last_name, $father_name,  $mother_name, $dob, $class, $board, $medium, $total_fee, $remain_fee, $batch, $registration_date, $profile_id, $school, $address, $mobile, $email, $status);
 		$this->_response["message"] = "Success.";
 		$this->set_response($this->_response);
 	}
