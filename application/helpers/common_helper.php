@@ -462,7 +462,21 @@ if (!function_exists('get_detail_by_guid')) {
                     $select_fields = ($select_field) ? $select_field : "batch_id";
                     $condition = array("batch_guid" => $entity_guid);
                     break;
-
+                case 'board':
+                    $table_name = 'boards';
+                    $select_fields = ($select_field) ? $select_field : "board_id";
+                    $condition = array("board_guid" => $entity_guid);
+                    break;
+                case 'class':
+                    $table_name = 'classes';
+                    $select_fields = ($select_field) ? $select_field : "class_id";
+                    $condition = array("class_guid" => $entity_guid);
+                    break;
+                case 'student':
+                    $table_name = 'students';
+                    $select_fields = ($select_field) ? $select_field : "student_id";
+                    $condition = array("student_guid" => $entity_guid);
+                    break;
                 case 'pricing_plan':
                     $table_name = 'pricing_plans';
                     $select_fields = ($select_field) ? $select_field : "pricing_plan_id";

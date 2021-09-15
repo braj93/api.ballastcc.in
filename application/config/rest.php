@@ -183,6 +183,22 @@ $config['auth_library_function'] = '';
 // $config['auth_override_class_method']['accounts']['user'] = 'basic';
 // $config['auth_override_class_method']['dashboard']['*'] = 'basic'
 
+$config['auth_override_class_method']['auth']['test'] = 'none';
+
+$config['auth_override_class_method']['auth']['get_email_by_id'] = 'none';
+$config['auth_override_class_method']['auth']['register'] = 'none';
+$config['auth_override_class_method']['auth']['get_countries'] = 'none';
+$config['auth_override_class_method']['auth']['register_members'] = 'none';
+$config['auth_override_class_method']['auth']['register_team_member'] = 'none';
+$config['auth_override_class_method']['auth']['email_and_phone_validate'] = 'none';
+$config['auth_override_class_method']['auth']['login'] = 'none';
+$config['auth_override_class_method']['auth']['verify'] = 'none';
+$config['auth_override_class_method']['auth']['forgot_password'] = 'none';
+$config['auth_override_class_method']['auth']['reset_password'] = 'none';
+$config['auth_override_class_method']['auth']['check_reset_password_code'] = 'none';
+$config['auth_override_class_method']['auth']['resend_account_verification'] = 'none';
+
+
 
 $config['auth_override_class_method']['users']['test'] = 'none';
 
