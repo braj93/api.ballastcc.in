@@ -73,31 +73,18 @@ class Auth extends REST_Controller {
 				$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
 				$this->auth_model->add_logs($this->_data);
 			} else {
-				$user = $this->app->get_row('admins', 'status', ['admin_id' => $admin_id]);
-				if ($user['status'] == 'ACTIVE') {
+				$admin = $this->app->get_row('admins', 'status', ['admin_id' => $admin_id]);
+				if ($admin['status'] == 'ACTIVE') {
 					$device_type = safe_array_key($this->_data, "device_type", "web_browser");
 					$device_type_id = array_search($device_type, $this->app->device_types);
 					$device_token = safe_array_key($this->_data, "device_token", "");
 					$ip_address = $this->input->ip_address();
 					$session_id = $this->auth_model->create_session_key($admin_id, $device_type_id, $device_token, $ip_address);
-					$this->_response["data"] = $this->app->user_data($session_id);
+					$this->_response["data"] = $this->app->admin_data($session_id);
 					$this->_response["success"] = true;
 					
 					$this->set_response($this->_response);
-				} elseif ($user['status'] == 'PENDING') {
-					$device_type = safe_array_key($this->_data, "device_type", "web_browser");
-					$device_type_id = array_search($device_type, $this->app->device_types);
-					$this->auth_model->send_user_verification($admin_id, $device_type);
-					if (in_array($device_type_id, array("1"))) {
-						$this->_response["message"] = "To get started, please click on the verification link sent to your registered email ID $email";
-					} else {
-						$this->_response["message"] = "To get started, please enter verification code sent to your registered email ID $email";
-					}
-					$row = $this->app->get_row('admins', 'user_guid', ['admin_id' => $admin_id]);
-					$this->_response["data"] = $row;
-
-					$this->set_response($this->_response, REST_Controller::HTTP_EXPECTATION_FAILED);
-				} elseif ($user['status'] == 'BLOCKED' || $user['status'] == 'DELETED') {
+				} elseif ($admin['status'] == 'BLOCKED' || $admin['status'] == 'DELETED') {
 					$this->_response["message"] = "This account is deactivated. Please contact to our admin";
 					$this->set_response($this->_response, REST_Controller::HTTP_GONE);
 					$this->auth_model->add_logs($this->_data);

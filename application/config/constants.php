@@ -133,40 +133,6 @@ case 'production':
 	define('CALL_RAIL_TOKEN',  '57b29b5700be014e6a0975fb539a085f');
 	define('CALL_RAIL_ACCOUNT_ID',  'ACCfec31210be444298ba7d66ecae991317');
 	break;
-case 'staging':
-	define('SITE_ROOT', 'https://staging.bcci.com/');
-	define('DB_HOST', 'localhost');
-	define('DB_NAME', 'uywvdewrjq');
-	define('DB_USERNAME', 'uywvdewrjq');
-	define('DB_PASSWORD', 'd8FAcy22Xs');
-	define('SITE_ADDR', 'https://staging.platform.marketingtiki.com/');
-	// Stripe API configuration
-	define('STRIPE_PUBLISHABLE_KEY', 'pk_test_DSSTxP5NaHXwInGOlRX2rYM300aoJSRuBB');
-	define('STRIPE_SKEY', 'sk_test_yzdkYc6t9GzoDMEfTeNBcDuG00rVcpv242');
-	define('STRIPE_PRODUCT_ID', 'prod_GlIO0CeaHt7uPx');
-	define('SMTP_HOST',  '');
-    define('SMTP_USER',  '');
-    define('SMTP_PASSWORD',  '');
-	define('CALL_RAIL_TOKEN',  '57b29b5700be014e6a0975fb539a085f');
-	define('CALL_RAIL_ACCOUNT_ID',  'ACCfec31210be444298ba7d66ecae991317');
-	break;
-case 'development':
-	define('SITE_ROOT', 'https://dev.bcci.com/');
-	define('DB_HOST', 'localhost');
-	define('DB_NAME', 'bcci');
-	define('DB_USERNAME', 'root');
-	define('DB_PASSWORD', '');
-	define('SITE_ADDR', 'https://dev.bcci.com/');
-	// Stripe API configuration
-	define('STRIPE_PUBLISHABLE_KEY', '');
-	define('STRIPE_SKEY', '');
-	define('STRIPE_PRODUCT_ID', 'prod_GlIO0CeaHt7uPx');
-	define('SMTP_HOST',  '');
-    define('SMTP_USER',  '');
-    define('SMTP_PASSWORD',  '');
-	define('CALL_RAIL_TOKEN',  '57b29b5700be014e6a0975fb539a085f');
-	define('CALL_RAIL_ACCOUNT_ID',  'ACCfec31210be444298ba7d66ecae991317');
-	break;
 default:
 	//development
 	define('SITE_ROOT', 'http://localhost/bcci');

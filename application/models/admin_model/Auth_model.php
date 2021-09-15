@@ -25,7 +25,6 @@ public function check_login($email, $password) {
         "email" => strtolower($email),
         "password" => md5($password),
     ]);
-
     return safe_array_key($admin, 'admin_id', "0");
 }
 /**
@@ -53,12 +52,12 @@ public function add_logs($input) {
  * @param type $ip_address
  * @return type
  */
-public function create_session_key($user_id, $device_type_id, $device_token, $ip_address) {
+public function create_session_key($admin_id, $device_type_id, $device_token, $ip_address) {
 
     $session_id = get_guid();
     $this->db->insert('user_login_sessions', [
         'session_key' => $session_id,
-        'user_id' => $user_id,
+        'user_id' => $admin_id,
         'device_type_id' => $device_type_id,
         'device_token' => !empty($device_token) ? $device_token : NULL,
         'ip_address' => $ip_address,
