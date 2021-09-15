@@ -1,5 +1,5 @@
 {
-	"description": "Tiki Sites",
+	"description": "The CodeIgniter framework",
 	"name": "codeigniter/framework",
 	"type": "project",
 	"homepage": "https://codeigniter.com",
@@ -11,13 +11,13 @@
 		"source": "https://github.com/bcit-ci/CodeIgniter"
 	},
 	"require": {
-		"php": ">=5.3.7",
-		"stripe/stripe-php": "^7.25"
+		"php": ">=5.3.7"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"
 	},
-	"config": {
-        "vendor-dir": "application/vendor"
-    }
+	"require-dev": {
+		"mikey179/vfsStream": "1.1.*",
+		"phpunit/phpunit": "4.* || 5.*"
+	}
 }
