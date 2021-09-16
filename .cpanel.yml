@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH= /home/hindnewc/public_html/ballastapi/
+    - export DEPLOYPATH= /home2/hindnewc/public_html/ballastapi/
     - /bin/cp * $DEPLOYPATH
