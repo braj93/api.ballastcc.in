@@ -69,7 +69,7 @@ public function create_session_key($admin_id, $device_type_id, $device_token, $i
     //update user last_login_at
     $this->db->set('last_login_at', 'login_at', FALSE);
     $this->db->set('login_at', DATETIME);
-    $this->db->where('admin_id', $user_id);
+    $this->db->where('admin_id', $admin_id);
     $this->db->update('admins');
     return $session_id;
 }
