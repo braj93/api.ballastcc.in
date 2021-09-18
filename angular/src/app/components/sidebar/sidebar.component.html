@@ -1,0 +1,50 @@
+<div class="logo">
+    <a [routerLink] ="['/']" class="simple-text">
+        <div class="logo-img">
+            <!-- <h1 class="font-weight-bold">BALLAST</h1> -->
+            <img class="logo py-0" src="/assets/img/logo.jpg"/>
+            <img class="side-mini-logo" src="/assets/img/logocrop.jpg"/>
+        </div>
+    </a>
+</div>
+<div class="sidebar-wrapper">
+    <ul class="nav">
+        <li routerLinkActive="active" class="nav-item">
+            <a routerLink="/admin/dashboard" class="nav-link">
+                <i class="icons-dashboard"></i>
+                <p>Dashboard</p>
+            </a>
+        </li>
+
+        <li  routerLinkActive="active" class="nav-item">
+            <a routerLink="/admin/student" class="nav-link" >
+                <i class="icons-team"></i>
+                <p>Student Management</p>
+            </a>
+        </li>
+        <li  routerLinkActive="active" class="nav-item">
+            <a class="nav-link" >
+                <i class="icons-gear"></i>
+                <p>Master</p>
+            </a>
+        </li>
+        <li  routerLinkActive="active" class="nav-item">
+            <a class="nav-link" >
+                <i class="icons-team"></i>
+                <p>Teachers Management</p>
+            </a>
+        </li>
+        <li  routerLinkActive="active" class="nav-item">
+            <a class="nav-link" >
+                <i class="icons-assignment"></i>
+                <p>Fee Management</p>
+            </a>
+        </li>
+        <li routerLinkActive="active" class="nav-item">
+            <a class="nav-link" (click)="logout()">
+                <i class="icons-power_settings_new"></i>
+                <p>Logout</p>
+            </a>
+        </li>
+    </ul>
+</div>

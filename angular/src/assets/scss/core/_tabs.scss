@@ -1,0 +1,142 @@
+
+.nav-tabs {
+    border: 0;
+    border-radius: $border-radius-base;
+    padding: 0 15px;
+
+    .nav-item {
+        .nav-link {
+            color: $white-color;
+            border: 0;
+            margin: 0;
+            border-radius: $border-radius-base;
+            line-height: $mdb-btn-font-size-base * 2;
+            text-transform: uppercase;
+            font-size: $mdb-btn-font-size-base;
+            padding: 10px 15px;
+            background-color: transparent;
+            transition: 0.3s background-color 0s;
+
+            &:hover {
+                border: 0;
+            }
+        }
+        .nav-link,
+        .nav-link:hover,
+        .nav-link:focus {
+            border: 0 !important;
+            color: $white-color !important;
+            font-weight: $font-weight-bold;
+        }
+        &.disabled .nav-link,
+        &.disabled .nav-link:hover {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .material-icons{
+            margin: -1px 5px 0 0;
+        }
+
+        .nav-link.active{
+            background-color: rgba(255,255,255, .2);
+            transition: 0.3s background-color 0.2s;
+        }
+    }
+}
+
+
+.nav-tabs {
+  .nav-link {
+    border-bottom: $bmd-nav-tabs-border-size solid transparent;
+  }
+
+  // colors
+  @include bmd-tabs-color($bmd-nav-tabs-color, $bmd-nav-tabs-active-color, $bmd-nav-tabs-active-border-color, $bmd-nav-tabs-disabled-link-color, $bmd-nav-tabs-disabled-link-color-hover);
+
+  &.header-primary {
+    @include bmd-tabs-color($bmd-nav-tabs-primary-color, $bmd-nav-tabs-primary-active-color, $bmd-nav-tabs-primary-active-border-color, $bmd-nav-tabs-primary-disabled-link-color, $bmd-nav-tabs-primary-disabled-link-color-hover);
+  }
+
+  &.bg-inverse {
+    @include bmd-tabs-color($bmd-nav-tabs-inverse-color, $bmd-nav-tabs-inverse-active-color, $bmd-nav-tabs-inverse-active-border-color, $bmd-nav-tabs-inverse-disabled-link-color, $bmd-nav-tabs-inverse-disabled-link-color-hover);
+  }
+}
+
+
+
+.card-nav-tabs{
+    margin-top: 45px;
+
+    .card-header{
+        margin-top: -30px !important;
+    }
+}
+
+.tab-content .tab-pane .td-actions{
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.card .tab-content .form-check{
+  margin-top: 6px;
+}
+
+
+
+
+
+.tab-container .nav-tabs {
+  text-align: center;
+  align-items: center;
+  justify-content: flex-start;
+  margin: 30px 0 40px;
+  padding: 0;
+  border-bottom: 1px solid #eaeaea;
+
+  .nav-item {
+    opacity: 0.5;
+    margin: 0;
+    background: transparent;
+    // border-radius: 100px;
+    padding: 0 20px;
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+    margin-bottom: -1px;
+    border: 1px solid transparent;
+    border-bottom: none;
+    display: inline-block;
+    transition: all 0.2s ease-in-out;
+
+    span {
+      color: #2f2f2f;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &.active {
+      border: 1px solid #ebebeb;
+      border-bottom: none;
+      opacity: 1;
+      background: #fff;
+
+      a {
+        color: $theme-color;
+        background: transparent;
+
+        span {
+          color: $theme-color;
+        }
+      }
+    }
+  }
+  @media (max-width: 767px) {
+    .nav-item {
+        padding: 0 10px;
+    }
+  }
+}

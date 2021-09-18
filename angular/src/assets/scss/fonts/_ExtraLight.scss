@@ -1,0 +1,8 @@
+/* BEGIN Light */
+@font-face {
+	font-family: Poppins;
+	@include fontdef-woff($FontPath, $FontName, $FontVersion, "ExtraLight");
+	font-weight: 200;
+	font-style: normal;  
+}
+/* END Light */
