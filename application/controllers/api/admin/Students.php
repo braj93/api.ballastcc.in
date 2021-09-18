@@ -127,8 +127,8 @@ public function get_student_list_post() {
 	$filters = safe_array_key($this->_data, "filters", []);
 	$status = safe_array_key($filters, "status", '');
 	// $this->load->model("users_model");
-	$this->_response["data"] = $this->students_model->get_student_list( $limit, $offset, $column_name, $order_by, $status);
-	$this->_response["counts"] = $this->students_model->get_student_list( 0, 0, $column_name, $order_by, $status);
+	$this->_response["data"] = $this->students_model->get_student_list( $keyword, $limit, $offset, $column_name, $order_by, $status);
+	$this->_response["counts"] = $this->students_model->get_student_list($keyword, 0, 0, $column_name, $order_by, $status);
 	$this->_response["message"] = "Student List";
 	$this->set_response($this->_response);
 }

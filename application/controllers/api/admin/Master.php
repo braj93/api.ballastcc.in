@@ -169,7 +169,7 @@ class Master extends REST_Controller
     public function get_classes_get()
     {
         $this->_response["service_name"] = "admin/get_classes";
-        $classes_data = $this->app->get_rows('classes', 'class_id,class_guid,name,status', []);
+        $classes_data = $this->app->get_rows('classes', 'class_guid,name,status', []);
         if (empty($classes_data)) {
             $classes_data = [];
         }
@@ -291,4 +291,20 @@ class Master extends REST_Controller
             $this->set_response($this->_response);
         }
     }
+    public function get_admin_dashboard_get() {
+        
+        $this->_response["service_name"] = "admin/admin_dashboard";
+        $result = [];
+        $result['total_students']= $this->app->get_row('students', 'COUNT(student_id) as count', ['status' => 'ACTIVE']);
+        $result['total_classes']= $this->app->get_row('classes', 'COUNT(class_id) as count', ['status' => 'ACTIVE']);
+        $result['total_batches']= $this->app->get_row('batches', 'COUNT(batch_id) as count', ['status' => 'ACTIVE']);
+        $result['total_boards']= $this->app->get_row('boards', 'COUNT(board_id) as count', ['status' => 'ACTIVE']);
+        $result['total_revenues']= $this->app->get_row('payments', 'SUM(amount) as count', []);
+        if (empty($result)) {
+            $result = [];
+        }
+        $this->_response["data"] = $result;
+        $this->_response["message"] = "Dashboard details";
+        $this->set_response($this->_response);
+	}
 }

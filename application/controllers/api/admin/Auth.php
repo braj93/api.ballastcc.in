@@ -82,6 +82,7 @@ class Auth extends REST_Controller {
 					$session_id = $this->auth_model->create_session_key($admin_id, $device_type_id, $device_token, $ip_address);
 					$this->_response["data"] = $this->app->admin_data($session_id);
 					$this->_response["success"] = true;
+					$this->_response["message"] = "you are loged in successfull.";
 					
 					$this->set_response($this->_response);
 				} elseif ($admin['status'] == 'BLOCKED' || $admin['status'] == 'DELETED') {

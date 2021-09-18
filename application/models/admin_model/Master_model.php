@@ -197,4 +197,42 @@ class Master_model extends CI_Model
         ]);
         // return TRUE;
     }
+
+    // public function get_dashboard($added_by = NULL){
+      
+		
+    //     $result = [];
+    //     $this->db->select('COUNT(s.student_id) as count', FALSE);
+    //     $this->db->from('students AS s');
+    //     $this->db->where('s.status!=', 'DELETED');
+    //     $query = $this->db->get();
+    //     $result['total_student']= $query->row()->count;
+		
+	// 	// $result['campaign_count'] = $query->num_rows();
+	// 	$result['batch_count'] = $this->get_counts('batches', $added_by);
+	// 	// $result['landing_page_count'] = $this->get_counts('LANDING', $added_by);
+	// 	// $result['call_tracking_number_count'] = $this->get_counts('CALL', $added_by);
+	// 	return $result;
+	// }
+    // public function get_counts($table, $added_by = NULL) {
+
+	// 	$this->db->select('IFNULL(c.campaign_id,"") AS campaign_id', FALSE);
+	// 	$this->db->from('campaigns AS c');
+	// 	$this->db->where('c.status', 'ACTIVE');
+	// 	if($type == 'QR') {
+	// 		$this->db->where('c.is_qr_code', 'YES');
+	// 	}
+	// 	if($type == 'LANDING') {
+	// 		$this->db->where('c.is_landing_page', 'YES');
+	// 	}
+	// 	if($type == 'CALL') {
+	// 		$this->db->where('c.is_call_tracking_number', 'YES');
+	// 	}
+	// 	if ($added_by) {
+	// 		$this->db->where('c.added_by', $added_by);
+	// 	}
+	// 	$query = $this->db->get();
+	// 	$count = $query->num_rows();
+	// 	return $count;
+	// }
 }

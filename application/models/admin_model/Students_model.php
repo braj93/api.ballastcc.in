@@ -74,7 +74,7 @@ class Students_model extends CI_Model {
 	
 	// GET STUDENTS LIST
 
-	public function get_student_list($limit = 0, $offset = 0) {
+	public function get_student_list($keyword, $limit = 0, $offset = 0) {
 		if ($limit > 0 && $offset >= 0) {
 			$this->db->limit($limit, $offset);
 			$this->db->select('s.father_name, s.father_name');
@@ -101,8 +101,15 @@ class Students_model extends CI_Model {
 		$this->db->join('classes AS cl', 'cl.class_id = s.class', 'LEFT');
 		$this->db->join('boards AS bo', 'bo.board_id = s.board', 'LEFT');
 		$this->db->join('batches AS ba', 'ba.batch_id = s.batch', 'LEFT');
+		if (!empty($keyword)) {
+			$this->db->group_start();
+			$this->db->like('s.first_name', $keyword, 'both');
+			$this->db->or_like('s.father_name', $keyword, 'both');
+			$this->db->group_end();
+		}
 		$this->db->where('s.status!=', 'DELETED');
 		$this->db->order_by('s.created_at', 'desc');
+
 		$query = $this->db->get();
 		$results = $query->result_array();
 		if (($limit > 0) && ($offset >= 0)) {
