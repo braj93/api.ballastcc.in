@@ -23,19 +23,22 @@ export class AppComponent {
         if (isAuthenticated) {
           this.adminService.currentUser.subscribe(
             (userData) => {
+              console.log(userData);
               this.currentUser = userData;
-              if (this.currentUser.user_type === 'OWNER' || this.currentUser.user_type === 'ADMIN') {
-                this.router.navigateByUrl('/console/dashboard');
-              } else {
-                // this.router.navigateByUrl('/admin/dashboard');
-              }
+              this.router.navigateByUrl('/admin/dashboard');
+              // if (this.currentUser.user_type === 'OWNER' || this.currentUser.user_type === 'ADMIN') {
+              //   this.router.navigateByUrl('/console/dashboard');
+              // } else {
+              //   this.router.navigateByUrl('/admin/dashboard');
+              // }
             }
           );
 
         } else {
-          if (this.location.path().indexOf('users/payment') > -1) {
-            this.router.navigateByUrl('/users/login');
-          }
+          // this.router.navigateByUrl('/login');
+          // if (this.location.path().indexOf('users/payment') > -1) {
+          //   this.router.navigateByUrl('/users/login');
+          // }
         }
       });
   }

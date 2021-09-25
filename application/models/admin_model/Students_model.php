@@ -40,31 +40,31 @@ class Students_model extends CI_Model {
 	 * @param type $email
 	 * @return type
 	 */
-	public function create_student($first_name, $last_name, $father_name,  $mother_name, $dob, $class, $board, $medium, $total_fee, $batch, $registration_date, $profile_id, $school, $address, $mobile, $email, $status) {
-
-		// $email = strtolower("$email");
+	public function create_student($reg_number, $reg_date, $first_name, $last_name, $father_name,  $mother_name, $dob, $subjects, $class_id, $board_id, $medium,  $total_fee, $remain_fee, $batch_id, $profile_id, $school, $address, $mobile,$alt_mobile, $email, $status) {
+		$allSubjects = base64_encode(serialize($subjects));
 		$this->db->insert('students', [
+			"reg_number" => $reg_number,
+			"reg_date" => $reg_date,
 			"student_guid" => get_guid(),
 			"first_name" => $first_name,
 			"last_name" => $last_name,
 			"father_name" => $father_name,
 			"mother_name" => $mother_name,
 			"dob" => $dob,
-			"class" => $class,
-			"board" => $board,
+			"class" => $class_id,
+			"subjects" => $allSubjects,
+			"board" => $board_id,
 			"medium" => $medium,
 			"total_fee" => $total_fee,
 			"remain_fee" => $total_fee,
-			"batch" => $batch,
-			"registration_date" => $registration_date,
+			"batch" => $batch_id,
 			"profile_id" => $profile_id,
 			"school" => $school,
 			"address" => $address,
 			"mobile" => $mobile,
 			"email" => $email,
 			"status" => $status,
-
-			"mobile" => $mobile,
+			"alt_mobile" => $alt_mobile,
 			"created_at" => DATETIME,
 			"updated_at" => DATETIME,
 		]);
@@ -77,21 +77,24 @@ class Students_model extends CI_Model {
 	public function get_student_list($keyword, $limit = 0, $offset = 0) {
 		if ($limit > 0 && $offset >= 0) {
 			$this->db->limit($limit, $offset);
+			$this->db->select('s.reg_number, s.reg_number');
 			$this->db->select('s.father_name, s.father_name');
 			$this->db->select('s.mother_name, s.mother_name');
-			
+			$this->db->select('s.dob, s.dob');		
 			$this->db->select('IFNULL(cl.name,"") AS class');
 			$this->db->select('IFNULL(bo.name,"") AS board');
 			$this->db->select('s.medium, s.medium');
 			$this->db->select('s.total_fee, s.total_fee');
 			$this->db->select('s.remain_fee, s.remain_fee');
 			$this->db->select('IFNULL(ba.name,"") AS batch');
-			$this->db->select('s.registration_date, s.registration_date');
+			$this->db->select('s.reg_date, s.reg_date');
 			$this->db->select('s.address, s.address');
 			$this->db->select('s.mobile, s.mobile');
+			$this->db->select('s.alt_mobile, s.alt_mobile');
 			$this->db->select('IFNULL(s.student_guid,"") AS student_guid', FALSE);
 			$this->db->select('CONCAT(s.first_name, " ",s.last_name) AS name');
 			$this->db->select('IFNULL(s.email,"") AS email', FALSE);
+			$this->db->select('IFNULL(s.school,"") AS school', FALSE);
 			$this->db->select('IFNULL(s.created_at,"") AS created_at', FALSE);
 			$this->db->select('IFNULL(s.status,"") AS status', FALSE);
 		} else {
@@ -105,6 +108,7 @@ class Students_model extends CI_Model {
 			$this->db->group_start();
 			$this->db->like('s.first_name', $keyword, 'both');
 			$this->db->or_like('s.father_name', $keyword, 'both');
+			$this->db->or_like('s.reg_number', $keyword, 'both');
 			$this->db->group_end();
 		}
 		$this->db->where('s.status!=', 'DELETED');
@@ -117,19 +121,23 @@ class Students_model extends CI_Model {
 				$list = [];
 				foreach ($results as $key => $value) {
 					$list[$key]['student_id'] = $value['student_guid'];
+					$list[$key]['reg_number'] = $value['reg_number'];
 					$list[$key]['name'] = $value['name'];
 					$list[$key]['father_name'] = $value['father_name'];
 					$list[$key]['mother_name'] = $value['mother_name'];
+					$list[$key]['dob'] = $value['dob'];
 					$list[$key]['class'] = $value['class'];
 					$list[$key]['board'] = $value['board'];
 					$list[$key]['medium'] = $value['medium'];
 					$list[$key]['total_fee'] = $value['total_fee'];
 					$list[$key]['remain_fee'] = $value['remain_fee'];
 					$list[$key]['batch'] = $value['batch'];
-					$list[$key]['registration_date'] = $value['registration_date'];
+					$list[$key]['reg_date'] = $value['reg_date'];
 					$list[$key]['address'] = $value['address'];
 					$list[$key]['mobile'] = $value['mobile'];
+					$list[$key]['alt_mobile'] = $value['alt_mobile'];
 					$list[$key]['email'] = $value['email'];
+					$list[$key]['school'] = $value['school'];
 					$list[$key]['status'] = $value['status'];
 					$list[$key]['created_at'] = $value['created_at'];
 					$list[$key]['created_at_time_ago'] = time_ago($value['created_at']);
@@ -193,7 +201,8 @@ class Students_model extends CI_Model {
         $this->db->update('students', $batch, array(
             'student_id' => $student_id,
         ));
-        return TRUE;
+		$affected_rows_count = $this->db->affected_rows();
+		return $affected_rows_count;
     }
 
     

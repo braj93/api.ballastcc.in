@@ -1,0 +1,173 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div *ngFor="let alert of adminService.alerts">
+            <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Batches List <h5 class="badge badge-success float-right heading-badge">{{batches_list.length}}</h5></h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary bg-lighten">
+                                    <th>S. no</th>
+                                    <th>Batch Name</th>
+                                    <th>Status</th>
+                                    <th>Created At</th>
+                                    <!-- <th>Modify At</th> -->
+                                    <th>Actions</th>
+                                </thead>
+                                <tbody *ngIf="batches_list.length > '0'">
+                                    <tr *ngFor="let row of batches_list; let i = index">
+                                        <td>{{ i +1 }}</td>
+                                        <td>{{ row.name}}</td>
+                                        <td> <span *ngIf="row.status=='ACTIVE'"
+                                                class="text-success">{{row.status}}</span>
+                                            <span *ngIf="row.status!='ACTIVE'">{{row.status}}</span></td>
+                                            <td>{{ row.created_at | date: 'mediumDate'}}</td>
+                                            <!-- <td>{{ row.updated_at | date: 'mediumDate'}}</td> -->
+                                        <td>Action</td>
+                                                                                
+                                    </tr>
+                                <tbody *ngIf="batches_list.length == 0">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">
+                                            <p class="no-table-data">No data to display</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Subject List <h5 class="badge badge-success float-right heading-badge">{{subjects_list.length}}</h5></h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary bg-lighten">
+                                    <th>S. No</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Created At</th>
+                                    <!-- <th>Modify At</th>                                   -->
+                                    <th>Actions</th>
+                                </thead>
+                                <tbody *ngIf="subjects_list.length > '0'">
+                                    <tr *ngFor="let row of subjects_list; let i = index">
+                                        <td>{{ i +1 }}</td>
+                                        <td>{{ row.name}}</td>
+                                        <td> <span *ngIf="row.status=='ACTIVE'"
+                                                class="text-success">{{row.status}}</span>
+                                            <span *ngIf="row.status!='ACTIVE'">{{row.status}}</span></td>
+                                        <td>{{ row.created_at | date: 'mediumDate'}}</td>
+                                            <!-- <td>{{ row.updated_at | date: 'mediumDate'}}</td> -->
+                                        <td>Action</td>
+                                    </tr>
+                                <tbody *ngIf="subjects_list.length == 0">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">
+                                            <p class="no-table-data">No data to display</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Classes List <h5 class="badge badge-success float-right heading-badge">{{classes_list.length}}</h5></h3> 
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary bg-lighten">
+                                    <th>S. No</th>
+                                    <th>Name</th>
+                                    <th>Status</th> 
+                                    <th>Created At</th>
+                                    <!-- <th>Modify At</th>                                  -->
+                                    <th>Actions</th>
+                                </thead>
+                                <tbody *ngIf="classes_list.length > '0'">
+                                    <tr *ngFor="let row of classes_list; let i = index">
+                                        <td>{{ i +1 }}</td>
+                                        <td>{{ row.name}}</td>
+                                        <td> <span *ngIf="row.status=='ACTIVE'"
+                                                class="text-success">{{row.status}}</span>
+                                            <span *ngIf="row.status!='ACTIVE'">{{row.status}}</span></td>
+                                        <td>{{ row.created_at | date: 'mediumDate'}}</td>
+                                            <!-- <td>{{ row.updated_at | date: 'mediumDate'}}</td> -->
+                                        <td>Action</td>                                        
+                                    </tr>
+                                <tbody *ngIf="classes_list.length == 0">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">
+                                            <p class="no-table-data">No data to display</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Boards List <h5 class="badge badge-success float-right heading-badge">{{boards_list.length}}</h5></h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary bg-lighten">
+                                    <th>S. No</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Created At</th>
+                                    <!-- <th>Modify At</th>                                   -->
+                                    <th>Actions</th>
+                                </thead>
+                                <tbody *ngIf="boards_list.length > '0'">
+                                    <tr *ngFor="let row of boards_list; let i = index">
+                                        <td>{{ i +1 }}</td>
+                                        <td>{{ row.name}}</td>
+                                        <td> <span *ngIf="row.status=='ACTIVE'"
+                                                class="text-success">{{row.status}}</span>
+                                            <span *ngIf="row.status!='ACTIVE'">{{row.status}}</span></td>
+                                        <td>{{ row.created_at | date: 'mediumDate'}}</td>
+                                            <!-- <td>{{ row.updated_at | date: 'mediumDate'}}</td> -->
+                                        <td>Action</td>   
+                                        
+                                    </tr>
+                                <tbody *ngIf="boards_list.length == 0">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center;">
+                                            <p class="no-table-data">No data to display</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

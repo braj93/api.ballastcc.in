@@ -56,16 +56,26 @@ class Students extends REST_Controller {
 		// die();
 		$this->_response["service_name"] = "admin/addStudent";
 		$session_key = $this->rest->key;
+		$this->form_validation->set_rules('reg_number', 'Registration Number', 'trim|required|callback__check_reg_number');
+		$this->form_validation->set_rules('reg_date', 'Registration Date', 'trim|required');
 		$this->form_validation->set_rules('first_name', 'First Name', 'trim|required|min_length[2]|max_length[50]|callback__check_alpha_space');
 		$this->form_validation->set_rules('last_name', 'Last Name', 'trim|required|min_length[2]|max_length[50]|callback__check_alpha_space');
 		$this->form_validation->set_rules('father_name', 'Father Name', 'trim|required|min_length[2]|max_length[50]|callback__check_alpha_space');
 		$this->form_validation->set_rules('mother_name', 'Mother Name', 'trim|required|min_length[2]|max_length[50]|callback__check_alpha_space');
-		$this->form_validation->set_rules('class', 'Class', 'trim|required');
-		$this->form_validation->set_rules('board', 'Board', 'trim|required');
+		$this->form_validation->set_rules('class', 'Class ID', 'trim|required');
+		$this->form_validation->set_rules('board', 'Board ID', 'trim|required');
 		$this->form_validation->set_rules('medium', 'Medium', 'trim|required');
+
+		$subjects = safe_array_key($this->_data, "subjects", "");
+		if (empty($subjects)) {
+			$this->form_validation->set_rules('subjects', 'subjects', 'trim|required');
+		} else {
+			$this->form_validation->set_rules('subjects', 'subjects', 'trim|callback__check_subjects');
+		}
+		
 		$this->form_validation->set_rules('total_fee', 'Total Fee', 'trim|required');
 		$this->form_validation->set_rules('batch', 'Batch', 'trim|required');
-		$this->form_validation->set_rules('registration_date', 'Registration Date', 'trim|required');
+		$this->form_validation->set_rules('school', 'School', 'trim|required');
 		$this->form_validation->set_rules('address', 'Address', 'trim|required');
 		$this->form_validation->set_rules('mobile', 'Mobile no.', 'trim|required');
 		$this->form_validation->set_rules('status', 'Status', 'trim|required');
@@ -75,24 +85,32 @@ class Students extends REST_Controller {
 			$this->_response["errors"] = $errors;
 			$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
 		} else {
+			$reg_number = safe_array_key($this->_data, "reg_number", "");
+			$reg_date = safe_array_key($this->_data, "reg_date", "");
 			$first_name = safe_array_key($this->_data, "first_name", "");
 			$last_name = safe_array_key($this->_data, "last_name", "");
 			$father_name = safe_array_key($this->_data, "father_name", "");
 			$mother_name = safe_array_key($this->_data, "mother_name", "");
 			$dob = safe_array_key($this->_data, "dob", "");
-			$class = safe_array_key($this->_data, "class", "");
-			$board = safe_array_key($this->_data, "board", "");
 			$medium = safe_array_key($this->_data, "medium", "");
+			$subjects = safe_array_key($this->_data, "subjects", array());
+			$class_guid = safe_array_key($this->_data, "class", "");
+			$board_guid = safe_array_key($this->_data, "board", "");
+			$batch_guid = safe_array_key($this->_data, "batch", "");
+			$class_id = get_detail_by_guid($class_guid, 'class');
+			$board_id = get_detail_by_guid($board_guid, 'board');
+			$batch_id = get_detail_by_guid($batch_guid, 'batch');
 			$total_fee = safe_array_key($this->_data, "total_fee", "");
-			$batch = safe_array_key($this->_data, "batch", "");
-			$registration_date = safe_array_key($this->_data, "registration_date", "");
+			$remain_fee = safe_array_key($this->_data, "remain_fee", "");
 			$profile_id = safe_array_key($this->_data, "profile_id", "");
 			$school = safe_array_key($this->_data, "school", "");
 			$address = safe_array_key($this->_data, "address", "");
 			$mobile = safe_array_key($this->_data, "mobile", "");
+			$alt_mobile = safe_array_key($this->_data, "alt_mobile", "");
 			$email = safe_array_key($this->_data, "email", "");
 			$status = safe_array_key($this->_data, "status", "");
-			$student_id = $this->students_model->create_student($first_name, $last_name, $father_name,  $mother_name, $dob, $class, $board, $medium, $total_fee, $batch, $registration_date, $profile_id, $school, $address, $mobile, $email, $status);
+
+			$student_id = $this->students_model->create_student($reg_number, $reg_date, $first_name, $last_name, $father_name,  $mother_name, $dob, $subjects, $class_id, $board_id, $medium,  $total_fee, $remain_fee, $batch_id, $profile_id, $school, $address, $mobile,$alt_mobile, $email, $status);
 			$this->_response["message"] = 'Student registered successfully';
 			$this->set_response($this->_response);
 	
@@ -211,6 +229,32 @@ public function __student($str, $user_id) {
 		return TRUE;
 	}
 }
+
+public function _check_subjects($subjects) {
+	$subjects = safe_array_key($this->_data, "subjects", []);
+	foreach ($subjects as $v) {
+		$this->db->select("*");
+		$this->db->where("subject_guid", $v["subject_guid"]);
+		if ($this->db->get('subjects')->num_rows() == 0) {
+			$this->form_validation->set_message('_check_subject', $v["subject_guid"] . ' subject has invalid entry');
+			return FALSE;
+		}
+	}
+	return TRUE;
+}
+public function _check_reg_number($reg_number) {
+	
+	$student_data = $this->app->get_row('students', 'COUNT(student_id) as count', ['reg_number' => $reg_number]);
+	
+	if ($student_data['count'] >= 1) {
+	$this->form_validation->set_message('_check_reg_number', 'This registration number already exist in students list');
+	return FALSE;
+	}else{
+		return TRUE;
+	}
+	
+}
+
 
 
 }

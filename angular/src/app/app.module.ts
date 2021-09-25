@@ -18,6 +18,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { OnboardingLayoutComponent } from './layouts/onboarding-layout/onboarding-layout.component';
+import { MasterComponent } from './master/master.component';
 // import {OnboardingLayoutModule} from './layouts/onboarding-layout/onboarding-layout.module';
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { OnboardingLayoutComponent } from './layouts/onboarding-layout/onboardin
     StudentLayoutComponent,
     TeacherLayoutComponent,
     OnboardingLayoutComponent,
+    MasterComponent,
   ],
   imports: [
     CoreModule,

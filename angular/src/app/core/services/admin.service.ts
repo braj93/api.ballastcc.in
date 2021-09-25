@@ -72,7 +72,26 @@ export class AdminService {
         }
       ));
   }
-  getClassList():Observable<User>{
+
+  
+  registerStudent(input: any): Observable<User> {
+    return this.apiService.post('/admin/students/add_student', input)
+      .pipe(map(
+        data => {
+          this.setAuth(data.data);
+          return data;
+        }
+      ));
+  }
+  getmasterList(): Observable<User> {
+    return this.apiService.get('/admin/master/get_admin_masterList')
+      .pipe(map(
+        data => {
+          return data;
+        }
+      ));
+  }
+  getClassesList():Observable<User>{
     return this.apiService.get('/admin/master/get_classes')
       .pipe(map(
         data => {
@@ -80,6 +99,31 @@ export class AdminService {
         }
       ));
   }
+  getBoardsList():Observable<User>{
+    return this.apiService.get('/admin/master/get_boards')
+      .pipe(map(
+        data => {
+          return data;
+        }
+      ));
+  }
+  getSubjectsList():Observable<User>{
+    return this.apiService.get('/admin/master/get_subjects')
+      .pipe(map(
+        data => {
+          return data;
+        }
+      ));
+  }
+  getBatchesList():Observable<User>{
+    return this.apiService.get('/admin/master/get_batches')
+      .pipe(map(
+        data => {
+          return data;
+        }
+      ));
+  }
+
   getPaymentsList(input: any): Observable<User> {
     return this.apiService.post('/admin/payments/get_fee_list',input)
       .pipe(map(

@@ -53,11 +53,11 @@ export class OnboardingLayoutComponent implements OnInit {
       .subscribe(
         (data: any) => {
           this.isSubmitting = false;
-          this.adminService.alerts.push({
-            type: 'success',
-            msg: data.message,
-            timeout: 4000
-          });
+          // this.adminService.alerts.push({
+          //   type: 'success',
+          //   msg: data.message,
+          //   timeout: 3000
+          // });
           if (data.data.user_type === 'USER') {
             this.router.navigate(['/user/user-dashboard']);
           } else {

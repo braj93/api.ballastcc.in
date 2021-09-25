@@ -467,6 +467,11 @@ if (!function_exists('get_detail_by_guid')) {
                     $select_fields = ($select_field) ? $select_field : "board_id";
                     $condition = array("board_guid" => $entity_guid);
                     break;
+                case 'subject':
+                    $table_name = 'subjects';
+                    $select_fields = ($select_field) ? $select_field : "subject_id";
+                    $condition = array("subject_guid" => $entity_guid);
+                    break;
                 case 'class':
                     $table_name = 'classes';
                     $select_fields = ($select_field) ? $select_field : "class_id";
@@ -476,16 +481,6 @@ if (!function_exists('get_detail_by_guid')) {
                     $table_name = 'students';
                     $select_fields = ($select_field) ? $select_field : "student_id";
                     $condition = array("student_guid" => $entity_guid);
-                    break;
-                case 'pricing_plan':
-                    $table_name = 'pricing_plans';
-                    $select_fields = ($select_field) ? $select_field : "pricing_plan_id";
-                    $condition = array("pricing_plan_guid" => $entity_guid);
-                    break;
-                case 'knowledgebase':
-                    $table_name = 'knowledgebase';
-                    $select_fields = ($select_field) ? $select_field : "knowledgebase_id";
-                    $condition = array("knowledgebase_guid" => $entity_guid);
                     break;
                 case 'user':
                     $table_name = 'users';
@@ -497,55 +492,10 @@ if (!function_exists('get_detail_by_guid')) {
                     $select_fields = ($select_field) ? $select_field : "master_id";
                     $condition = array("master_guid" => $entity_guid);
                     break;
-                case 'plan':
-                    $table_name = 'pricing_plans';
-                    $select_fields = ($select_field) ? $select_field : "pricing_plan_id";
-                    $condition = array("pricing_plan_guid" => $entity_guid);
-                    break;
-                case 'organisation':
-                    $table_name = 'organisations';
-                    $select_fields = ($select_field) ? $select_field : "organisation_id";
-                    $condition = array("organisation_guid" => $entity_guid);
-                    break;
                 case 'media':
                     $table_name = 'media';
                     $select_fields = ($select_field) ? $select_field : "media_id";
                     $condition = array("media_guid" => $entity_guid);
-                    break;
-                case 'organisation_member':
-                    $table_name = 'organisation_members';
-                    $select_fields = ($select_field) ? $select_field : "organisation_member_id";
-                    $condition = array("organisation_member_guid" => $entity_guid);
-                    break;
-                case 'job_spot':
-                    $table_name = 'job_spot_types';
-                    $select_fields = ($select_field) ? $select_field : "job_spot_id";
-                    $condition = array("job_spot_guid" => $entity_guid);
-                    break;
-                case 'order':
-                    $table_name = 'orders';
-                    $select_fields = ($select_field) ? $select_field : "order_id";
-                    $condition = array("order_guid" => $entity_guid);
-                    break;
-                case 'program':
-                    $table_name = 'organisation_programs';
-                    $select_fields = ($select_field) ? $select_field : "program_id";
-                    $condition = array("program_guid" => $entity_guid);
-                    break;
-                case 'contact':
-                    $table_name = 'crm_contact';
-                    $select_fields = ($select_field) ? $select_field : "crm_contact_id";
-                    $condition = array("crm_contact_guid" => $entity_guid);
-                    break;
-                case 'notification':
-                    $table_name = 'notifications';
-                    $select_fields = ($select_field) ? $select_field : "notification_id";
-                    $condition = array("notification_guid" => $entity_guid);
-                    break;
-                case 'category_master':
-                    $table_name = 'category_master';
-                    $select_fields = ($select_field) ? $select_field : "category_id";
-                    $condition = array("category_guid" => $entity_guid);
                     break;
                 default:
                     break;

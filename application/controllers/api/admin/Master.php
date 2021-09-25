@@ -59,7 +59,7 @@ class Master extends REST_Controller
         $this->_response["service_name"] = "admin/addbatch";
         $session_key = $this->rest->key;
         $this->form_validation->set_rules('name', 'Batch Name', 'trim|required|min_length[2]|max_length[50]');
-        $this->form_validation->set_rules('medium', 'Batch medium', 'trim|required');
+        // $this->form_validation->set_rules('medium', 'Batch medium', 'trim|required');
         $this->form_validation->set_rules('start_date', 'Start Date', 'trim|required');
         $this->form_validation->set_rules('end_date', 'End Date', 'trim|required');
         $this->form_validation->set_rules('start', 'Start Time', 'trim|required');
@@ -78,7 +78,8 @@ class Master extends REST_Controller
             $start = safe_array_key($this->_data, "start", "");
             $end = safe_array_key($this->_data, "end", "");
             $status = safe_array_key($this->_data, "status", "");
-            $user_id = $this->master_model->create_batch($name, $medium, $start_date, $end_date,  $start, $end, $status);
+            // $user_id = $this->master_model->create_batch($name, $medium, $start_date, $end_date,  $start, $end, $status);
+            $user_id = $this->master_model->create_batch($name, $start_date, $end_date,  $start, $end, $status);
             $this->_response["message"] = 'You have created new batch successfully';
             $this->set_response($this->_response);
         }
@@ -86,7 +87,7 @@ class Master extends REST_Controller
     public function get_batches_get()
     {
         $this->_response["service_name"] = "admin/get_batches";
-        $batches_data = $this->app->get_rows('batches', 'batch_id,batch_guid,name,start_date,end_date,start,end,medium,status', []);
+        $batches_data = $this->app->get_rows('batches', 'batch_id,batch_guid,name,start_date,end_date,start,end,medium,status', ['status' => 'ACTIVE']);
         if (empty($batches_data)) {
             $batches_data = [];
         }
@@ -169,7 +170,7 @@ class Master extends REST_Controller
     public function get_classes_get()
     {
         $this->_response["service_name"] = "admin/get_classes";
-        $classes_data = $this->app->get_rows('classes', 'class_guid,name,status', []);
+        $classes_data = $this->app->get_rows('classes', 'class_guid,name,status', ['status' => 'ACTIVE']);
         if (empty($classes_data)) {
             $classes_data = [];
         }
@@ -243,7 +244,7 @@ class Master extends REST_Controller
     public function get_boards_get()
     {
         $this->_response["service_name"] = "admin/get_boards";
-        $classes_data = $this->app->get_rows('boards', 'board_id, board_guid,name,status', []);
+        $classes_data = $this->app->get_rows('boards', 'board_id, board_guid,name,status', ['status' => 'ACTIVE']);
         if (empty($classes_data)) {
             $classes_data = [];
         }
@@ -291,6 +292,82 @@ class Master extends REST_Controller
             $this->set_response($this->_response);
         }
     }
+
+             /**
+     * SUUBJECTS REGISTRATION
+     */
+    public function add_subject_post()
+    {
+        $this->_response["service_name"] = "admin/addboard";
+        $session_key = $this->rest->key;
+        $this->form_validation->set_rules('name', 'Board Name', 'trim|required|min_length[2]|max_length[50]');
+        $this->form_validation->set_rules('status', 'Status', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $errors = $this->form_validation->error_array();
+            $this->_response["message"] = current($errors);
+            $this->_response["errors"] = $errors;
+            $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+        } else {
+            $name = safe_array_key($this->_data, "name", "");
+            $status = safe_array_key($this->_data, "status", "");
+            $user_id = $this->master_model->create_subject($name, $status);
+            $this->_response["message"] = 'You have created new subject successfully';
+            $this->set_response($this->_response);
+        }
+    }
+    public function get_subjects_get()
+    {
+        $this->_response["service_name"] = "admin/get_subjects";
+        $classes_data = $this->app->get_rows('subjects', 'subject_guid,name,status', ['status' => 'ACTIVE']);
+        if (empty($classes_data)) {
+            $classes_data = [];
+        }
+        $this->_response["data"] = $classes_data;
+        $this->set_response($this->_response);
+    }
+
+    public function edit_subject_post()
+    {
+        $this->_response["service_name"] = "admin/edit_subject";
+        $this->form_validation->set_rules('subject_id', 'Subject id', 'trim|required');
+        $this->form_validation->set_rules('name', 'Batch Name', 'trim|required|min_length[2]|max_length[50]');
+        $this->form_validation->set_rules('status', 'Status', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $errors = $this->form_validation->error_array();
+            $this->_response["message"] = current($errors);
+            $this->_response["errors"] = $errors;
+            $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+        } else {
+            $subject_guid = safe_array_key($this->_data, "subject_id", "");
+            $name = safe_array_key($this->_data, "name", "");
+            $status = safe_array_key($this->_data, "status", "");
+
+            $subject_id = get_detail_by_guid($subject_guid, 'subject');
+            $this->_response["data"] = $this->master_model->update_subject($subject_id, $name, $status);
+            $this->_response["message"] = "Success.";
+            $this->set_response($this->_response);
+        }
+    }
+
+    public function delete_subject_post()
+    {
+        $this->_response["service_name"] = "admin/delete_subjects";
+        $this->form_validation->set_rules('subject_id', 'subject id', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $errors = $this->form_validation->error_array();
+            $this->_response["message"] = current($errors);
+            $this->_response["errors"] = $errors;
+            $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+        } else {
+            $subject_guid = safe_array_key($this->_data, "subject_id", "");
+            $subject_id = get_detail_by_guid($subject_guid, 'subject');
+            $this->_response["data"] = $this->master_model->delete_subject($subject_id);
+            $this->_response["message"] = "subject deleted Successfully.";
+            $this->set_response($this->_response);
+        }
+    }
+
+
     public function get_admin_dashboard_get() {
         
         $this->_response["service_name"] = "admin/admin_dashboard";
@@ -305,6 +382,38 @@ class Master extends REST_Controller
         }
         $this->_response["data"] = $result;
         $this->_response["message"] = "Dashboard details";
+        $this->set_response($this->_response);
+	}
+    public function get_admin_masterList_get() {
+        
+        $this->_response["service_name"] = "admin/admin_dashboard";
+        $result = [];
+        $subjects_data = $this->app->get_rows('subjects', 'subject_guid,name,status,created_at, updated_at', []);
+        $classes_data = $this->app->get_rows('classes', 'class_guid,name,status,created_at,updated_at', []);
+        $batches_data = $this->app->get_rows('batches', 'batch_guid,name,status,created_at,updated_at', []);
+        $boards_data = $this->app->get_rows('boards', 'board_guid,name,status,created_at,updated_at', []);
+
+        if (empty($subjects_data)) {
+            $subjects_data = [];
+        }
+        if (empty($classes_data)) {
+            $classes_data = [];
+        }
+        if (empty($batches_data)) {
+            $batches_data = [];
+        }
+        if (empty($boards_data)) {
+            $boards_data = [];
+        }
+        $result['subject_data']= $subjects_data;
+        $result['classes_data']= $classes_data;
+        $result['batches_data']= $batches_data;
+        $result['boards_data']= $boards_data;
+        if (empty($result)) {
+            $result = [];
+        }
+        $this->_response["data"] = $result;
+        $this->_response["message"] = "Master List details";
         $this->set_response($this->_response);
 	}
 }

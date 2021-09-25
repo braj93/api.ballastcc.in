@@ -25,12 +25,13 @@ class Master_model extends CI_Model
      * @param type $end
      * @return type
      */
-    public function create_batch($name, $medium, $start_date, $end_date,  $start, $end, $status)
+    // public function create_batch($name, $medium, $start_date, $end_date,  $start, $end, $status)
+    public function create_batch($name, $start_date, $end_date,  $start, $end, $status)
     {
         $this->db->insert('batches', [
             "batch_guid" => get_guid(),
             "name" => $name,
-            "medium" => $medium,
+            // "medium" => $medium,
             "start_date" => $start_date,
             "end_date" => $end_date,
             "start" => $start,
@@ -160,7 +161,7 @@ class Master_model extends CI_Model
         return $class_id;
     }
 
-    //  UPDATE CLASS
+    //  UPDATE BOARDS
     /**
      *
      * @param type $board_id
@@ -194,6 +195,59 @@ class Master_model extends CI_Model
             'status' => 'DELETED'
         ], [
             'board_id' => $board_id,
+        ]);
+        // return TRUE;
+    }
+
+     /** CREATE subjects
+     * @param type $name
+     */
+    public function create_subject($name, $status)
+    {
+        $this->db->insert('subjects', [
+            "subject_guid" => get_guid(),
+            "name" => $name,
+            "status" => $status,
+            "created_at" => DATETIME,
+            "updated_at" => DATETIME,
+        ]);
+        $subject_id = $this->db->insert_id();
+        return $subject_id;
+    }
+
+    //  UPDATE subjects
+    /**
+     *
+     * @param type $board_id
+     * @param type $name
+     * @param type $status
+     * @return boolean
+     */
+    public function update_subject($subject_id, $name, $status)
+    {
+        $batch = [
+            "name" => $name,
+            "status" => $status,
+            "updated_at" => DATETIME,
+        ];
+        $this->db->update('subjects', $batch, array(
+            'subject_id' => $subject_id,
+        ));
+        return TRUE;
+    }
+
+    //  DELETE SUBJECT
+    /**
+     *
+     * @param type $subject_id
+     * 
+     */
+    public function delete_subject($subject_id)
+    {
+        $this->db->update('subjects', [
+            'status' => 'DELETED'
+        ], [
+            'subject_id' => $subject_id,
         ]);
         // return TRUE;
     }

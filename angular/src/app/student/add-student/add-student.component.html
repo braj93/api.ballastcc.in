@@ -99,7 +99,7 @@
                                     <div class="form-group text-right">
                                         <label class="text-left">Total Fee <span class="required">*</span></label>
                                         <input type="text" placeholder="Total Fee" class="form-control"
-                                            formControlName="total_fee">
+                                        formControlName="total_fee">
                                         <div *ngIf="getControl.total_fee.touched && getControl.total_fee.invalid "
                                             class="text-danger mt-1">
                                             <div *ngIf="getControl.total_fee.errors?.required">Total Fee is required.
@@ -123,7 +123,7 @@
                                     <div class="form-group text-right">
                                         <label class="text-left">Mobile <span class="required">*</span></label>
                                         <input type="email" placeholder="Mobile" class="form-control"
-                                            formControlName="class">
+                                            formControlName="mobile">
                                         <div *ngIf="getControl.mobile.touched && getControl.mobile.invalid "
                                             class="text-danger mt-1">
                                             <div *ngIf="getControl.mobile.errors?.required">Mobile is required.
@@ -220,7 +220,7 @@
                                         <label class="text-left">Subjects List <span class="required">*</span></label>
                                         <!-- <input type="email" placeholder="Subjects Name" class="form-control"
                                             formControlName="subjects"> -->
-                                        <ng-select formControlName="subjects" [items]="board_list" bindLabel="name"
+                                        <ng-select formControlName="subjects" [items]="subjects_list" bindLabel="name"
                                             [multiple]="true" class="tag-cloud-box"
                                             placeholder="Please Select Subjects">
                                         </ng-select>
@@ -235,7 +235,7 @@
                                 </div>
                                 <div class="form-field">
                                     <div class="form-group text-right">
-                                        <label class="text-left">Remaining Fee <span class="required">*</span></label>
+                                        <label class="text-left">Remaining Fee</label>
                                         <input type="email" placeholder="Remaining Fee" class="form-control"
                                             formControlName="remain_fee">
                                         <div *ngIf="getControl.remain_fee.touched && getControl.remain_fee.invalid "
