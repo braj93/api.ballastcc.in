@@ -1,0 +1,301 @@
+<div class="main-content">
+    <div *ngFor="let alert of adminService.alerts">
+        <alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{ alert.msg }}</alert>
+    </div>
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn-text-icon back-page-btn" (click)="goToBack()"><i
+                                class="icons-arrow-up"></i>Back</button>
+                    </div>
+                </div>
+                <div class="form-container">
+                    <form [formGroup]="submitFrom" (ngSubmit)="submitForm()">
+                        <div class="form-content row">
+
+                            <div class="col-md-6">
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Registartion Number <span
+                                                class="required">*</span></label>
+                                        <input type="text" placeholder="Registartion Number" class="form-control"
+                                            formControlName="reg_number">
+                                        <div *ngIf="getControl.reg_number.touched && getControl.reg_number.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.reg_number.errors?.required">Registration Number is
+                                                required.</div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">First Name <span class="required">*</span></label>
+                                        <input type="text" placeholder="First Name" class="form-control"
+                                            formControlName="first_name">
+                                        <div *ngIf="getControl.first_name.touched && getControl.first_name.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.first_name.errors?.required">First Name is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Father Name <span class="required">*</span></label>
+                                        <input type="text" placeholder="Father Name" class="form-control"
+                                            formControlName="father_name">
+                                        <div *ngIf="getControl.father_name.touched && getControl.father_name.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.father_name.errors?.required">Father Name is
+                                                required.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Class Name <span class="required">*</span></label>
+                                        <select formControlName="class">
+                                            <option value="">Select Class</option>
+                                            <option *ngFor="let class of class_list" [ngValue]="class.class_guid">
+                                                {{ class.name }}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="getControl.class.touched && getControl.class.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.class.errors?.required">Class Name is required.</div>
+                                        </div>
+                                        <!-- <input type="text" placeholder="Class Name" class="form-control"
+                                            formControlName="class">
+                                        <div *ngIf="getControl.class.touched && getControl.class.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.class.errors?.required">Class Name is required.</div>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Date of Birth <span class="required">*</span></label>
+                                        <input type="date" class="form-control" formControlName="dob">
+                                        <div *ngIf="getControl.dob.touched && getControl.dob.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.dob.errors?.required">Date of Birth is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Medium</label>
+                                        <select formControlName="medium">
+                                            <option [selected]="true" value="HINDI">HINDI</option>
+                                            <option value="ENGLISH">English</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Total Fee <span class="required">*</span></label>
+                                        <input type="text" placeholder="Total Fee" class="form-control"
+                                        formControlName="total_fee">
+                                        <div *ngIf="getControl.total_fee.touched && getControl.total_fee.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.total_fee.errors?.required">Total Fee is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Email</label>
+                                        <input type="email" placeholder="Email" class="form-control"
+                                            formControlName="email">
+                                        <div *ngIf="getControl.email.touched && getControl.email.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.email.errors?.email">Email must be a valid email
+                                                address.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Mobile <span class="required">*</span></label>
+                                        <input type="email" placeholder="Mobile" class="form-control"
+                                            formControlName="mobile">
+                                        <div *ngIf="getControl.mobile.touched && getControl.mobile.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.mobile.errors?.required">Mobile is required.
+                                            </div>
+                                            <div *ngIf="getControl.mobile.errors?.minlength">Mobile must be a valid
+                                                Number.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Registartion Date <span
+                                                class="required">*</span></label>
+                                        <input type="date" placeholder="Registartion Date" class="form-control"
+                                            formControlName="reg_date">
+                                        <div *ngIf="getControl.reg_date.touched && getControl.reg_date.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.reg_date.errors?.required">Registration Date is
+                                                required.</div>
+                                            <!-- <div *ngIf="getControl.email.errors?.email">Email must be a valid email
+                                                address.</div> -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Last Name <span class="required">*</span></label>
+                                        <input type="email" placeholder="Last Name" class="form-control"
+                                            formControlName="last_name">
+                                        <div *ngIf="getControl.last_name.touched && getControl.last_name.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.last_name.errors?.required">Last Name is required.
+                                            </div>
+                                            <!-- <div *ngIf="getControl.email.errors?.email">Email must be a valid email
+                                                address.</div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Mother Name <span class="required">*</span></label>
+                                        <input type="email" placeholder="Mother Name" class="form-control"
+                                            formControlName="mother_name">
+                                        <div *ngIf="getControl.mother_name.touched && getControl.mother_name.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.mother_name.errors?.required">Mother Name is
+                                                required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Batch <span class="required">*</span></label>
+                                        <!-- <input type="email" placeholder="Batch" class="form-control"
+                                            formControlName="batch"> -->
+                                        <select formControlName="batch">
+                                            <option value="">Select Batch</option>
+                                            <option *ngFor="let batch of batch_list" [ngValue]="batch.batch_guid">
+                                                {{ batch.name }}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="getControl.batch.touched && getControl.batch.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.batch.errors?.required">Batch is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Board Name <span class="required">*</span></label>
+                                        <select formControlName="board">
+                                            <option value="">Select Board</option>
+                                            <option *ngFor="let board of board_list" [ngValue]="board.board_guid">
+                                                {{ board.name }}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="getControl.board.touched && getControl.board.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.board.errors?.required">Board Name is required.</div>
+                                        </div>
+                                        <!-- <input type="email" placeholder="Board Name" class="form-control"
+                                            formControlName="board"> -->
+
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Subjects List <span class="required">*</span></label>
+                                        <!-- <input type="email" placeholder="Subjects Name" class="form-control"
+                                            formControlName="subjects"> -->
+                                        <ng-select formControlName="subjects" [items]="subjects_list" bindLabel="name"
+                                            [multiple]="true" class="tag-cloud-box"
+                                            placeholder="Please Select Subjects">
+                                        </ng-select>
+                                        <!-- <errors class="pull-right required" [control]="getControl.controls.subjects"></errors> -->
+                                        <!-- <errors class="pull-right required" [control]="kbForm.controls.categories"></errors> -->
+                                        <div *ngIf="getControl.subjects.touched && getControl.subjects.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.subjects.errors?.required">Subjects Name is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Remaining Fee</label>
+                                        <input type="email" placeholder="Remaining Fee" class="form-control"
+                                            formControlName="remain_fee">
+                                        <div *ngIf="getControl.remain_fee.touched && getControl.remain_fee.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.remain_fee.errors?.required">Remaining Fee is
+                                                required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">School Name <span class="required">*</span></label>
+                                        <input type="text" placeholder="School Name" class="form-control"
+                                            formControlName="school">
+                                        <div *ngIf="getControl.school.touched && getControl.school.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.school.errors?.required">School Name is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Alternate Number</label>
+                                        <input type="tel" placeholder="Alternate Number" class="form-control"
+                                            formControlName="alt_mobile">
+                                        <div *ngIf="getControl.alt_mobile.touched && getControl.alt_mobile.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.alt_mobile.errors?.minlength">Mobile must be a valid
+                                                Number.</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-field">
+                                    <div class="form-group text-right">
+                                        <label class="text-left">Full Address <span class="required">*</span></label>
+                                        <input type="email" placeholder="Full Address" class="form-control"
+                                            formControlName="address">
+                                        <div *ngIf="getControl.address.touched && getControl.address.invalid "
+                                            class="text-danger mt-1">
+                                            <div *ngIf="getControl.address.errors?.required">Full Address is required.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <button class="btn btn-primary mr-3" [ngClass]="{'btn-loading': isSubmitting}">
+                                    <div class="loader"></div>Next
+                                </button>
+                                <a class="btn btn-primary btn-default" [routerLink]="['/user/campaigns']">Cancel</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { EmailValidation, PasswordValidation } from './match-password';
+// import { EmailValidation, PasswordValidation } from './match-password';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { AdminService } from '../../core';
 // import 'rxjs/add/operator/filter';
@@ -78,6 +78,9 @@ export class OnboardingLayoutComponent implements OnInit {
     } else {
       this.is_show = 'LOGIN';
     }
+  }
+  ngOnDestroy(): void{
+    this.adminService.alerts = [];
   }
 
 }

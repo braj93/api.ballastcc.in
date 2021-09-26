@@ -1,0 +1,241 @@
+<div class="main-content">
+	<div *ngFor="let alert of adminService.alerts">
+		<alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{
+			alert.msg
+		}}</alert>
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="search-header-block row mb-4">
+							<div class="col-sm-4">
+								<div class="form-group">
+									<!-- <label for="search">Search</label> -->
+									<input
+										type="text"
+										class="regular-form"
+										id="search"
+										placeholder="Search by name or reg. no"
+										[(ngModel)]="parameters.keyword"
+										(keyup)="search($event)"
+									/>
+								</div>
+							</div>
+							<div class="col-sm-8 text-right">
+								<a [routerLink]="['/admin/student/add']"
+									><button class="btn btn-primary text-white">
+										<i class="icons-plus"></i>Add Student
+									</button></a
+								>
+							</div>
+						</div>
+						<div class="col-sm-12">
+							<div class="table-responsive border">
+								<ngx-datatable
+									#table
+									class="material"
+									[rows]="rows"
+									[columnMode]="'force'"
+									[headerHeight]="50"
+									[footerHeight]="50"
+									[rowHeight]="50"
+									[scrollbarV]="false"
+									[externalPaging]="true"
+									[count]="counts"
+									[offset]="page_no"
+									[limit]="parameters?.pagination?.limit"
+									(page)="setPage($event)"
+									(sort)="onSort($event)"
+								>
+									<ngx-datatable-column name="S. No.">
+										<ng-template
+											let-rowIndex="rowIndex"
+											let-row="row"
+											let-value="value"
+											ngx-datatable-cell-template
+										>
+											{{ rowIndex + 1 }}
+										</ng-template>
+									</ngx-datatable-column>
+									<ngx-datatable-column name="S. Name">
+										<ng-template
+											let-rowIndex="rowIndex"
+											let-row="row"
+											let-value="value"
+											ngx-datatable-cell-template
+										>
+											{{ row.name }}
+										</ng-template>
+									</ngx-datatable-column>
+									<ngx-datatable-column name="Class" [sortable]="false">
+										<ng-template
+											let-rowIndex="rowIndex"
+											let-row="row"
+											let-value="value"
+											ngx-datatable-cell-template
+										>
+											{{ row.class }}
+										</ng-template>
+									</ngx-datatable-column>
+									<ngx-datatable-column name="Amount">
+										<ng-template
+											let-rowIndex="rowIndex"
+											let-row="row"
+											let-value="value"
+											ngx-datatable-cell-template
+										>
+											{{ row.fee_paid }}
+										</ng-template>
+									</ngx-datatable-column>
+									<ngx-datatable-column name="Mode" [sortable]="false">
+										<ng-template let-row="row" ngx-datatable-cell-template>
+											{{ row.pay_mode }}
+										</ng-template>
+									</ngx-datatable-column>
+									<ngx-datatable-column name="Rem. Fee" [sortable]="false">
+										<ng-template let-row="row" ngx-datatable-cell-template>
+											{{ row.remain_fee }}
+										</ng-template>
+									</ngx-datatable-column>
+									<ngx-datatable-column name="Total. Fee" [sortable]="false">
+										<ng-template let-row="row" ngx-datatable-cell-template>
+											{{ row.total_fee }}
+										</ng-template>
+									</ngx-datatable-column>
+									<ngx-datatable-column name="Pay. Date" [sortable]="false">
+										<ng-template let-row="row" ngx-datatable-cell-template>
+											{{ row.paid_date | date: "mediumDate" }}
+										</ng-template>
+									</ngx-datatable-column>
+									<!-- <ngx-datatable-column name="Reg. Date" [sortable]="false">
+                                        <ng-template let-row="row" ngx-datatable-cell-template>
+                                            {{row.reg_date | date: 'mediumDate'}}
+                                        </ng-template>
+                                    </ngx-datatable-column> -->
+									<ngx-datatable-column name="Actions" [sortable]="false">
+										<ng-template let-row="row" ngx-datatable-cell-template>
+											<div class="td-action">
+												<!-- <a matTooltip="Info" (click)="openDetailsModal(contactDetails, row)" ><i class="icons-user"></i></a> -->
+												<a
+													matTooltip="Edit"
+													[routerLink]="['/admin/payment/', row.pay_id, 'edit']"
+													><i class="icons-create ml-2"></i
+												></a>
+												<a
+													[routerLink]="['/admin/payment/', row.pay_id, 'view']"
+													matTooltip="Student Info"
+													><i class="icons-remove_red_eye"></i
+												></a>
+											</div>
+										</ng-template>
+									</ngx-datatable-column>
+								</ngx-datatable>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- <ng-template #contactDetails>
+	<div class="modal-header">
+		<h4 class="modal-title pull-left">Students Detail</h4>
+		<button
+			type="button"
+			class="close pull-right"
+			aria-label="Close"
+			(click)="close()"
+		>
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<div class="download-popup-bg">
+			<table class="table-list text-left w-100">
+				<tr>
+					<td>
+						<h3 class="font-weight-bold">Reg. Number</h3>
+						<h3 class="font-weight-bold">{{ student_detail.reg_number }}</h3>
+					</td>
+					<td colspan="3" class="text-right">
+						<h3 class="font-weight-bold">Reg. Date</h3>
+						<h3 class="font-weight-bold">
+							{{ student_detail.reg_date | date: "mediumDate" }}
+						</h3>
+					</td>
+				</tr>
+				<tr class="bg-dark">
+					<th colspan="4" class="text-center text-white">Personal Details</th>
+				</tr>
+				<tr>
+					<td><b>Student Name</b></td>
+					<td>{{ student_detail.name }}</td>
+					<td><b>Father Name</b></td>
+					<td>Mr.{{ student_detail.father_name }}</td>
+				</tr>
+				<tr>
+					<td><b>Mother Name</b></td>
+					<td>{{ student_detail.mother_name }}</td>
+					<td><b>Date of birth</b></td>
+					<td>{{ student_detail.dob | date: "mediumDate" }}</td>
+				</tr>
+				<tr class="bg-dark">
+					<th colspan="4" class="text-center text-white">Education Details</th>
+				</tr>
+				<tr>
+					<td><b>Class</b></td>
+					<td>{{ student_detail.class }}</td>
+					<td><b>Medium</b></td>
+					<td>{{ student_detail.medium }}</td>
+				</tr>
+				<tr>
+					<td><b>Batch</b></td>
+					<td>{{ student_detail.batch }}</td>
+					<td><b>School Name</b></td>
+					<td>{{ student_detail.school }}</td>
+				</tr>
+
+				<tr class="bg-dark">
+					<th colspan="4" class="text-center text-white">Subjects Details</th>
+				</tr>
+				<tr *ngIf="student_detail.subjects!=false">
+					<td *ngFor="let subject of student_detail.subjects">
+						<b>{{subject.name}}</b>
+					</td>
+				</tr>
+                <tr *ngIf="student_detail.subjects==false">
+					<td colspan="4" class="text-center">
+						You are not selected any subject.
+					</td>
+				</tr>
+				<tr class="bg-dark">
+					<th colspan="4" class="text-center text-white">Account Details</th>
+				</tr>
+				<tr>
+					<td><b>Total Fee</b></td>
+					<td>{{ student_detail.total_fee }}</td>
+					<td><b>Remaining Fee</b></td>
+					<td>{{ student_detail.remain_fee }}</td>
+				</tr>
+				<tr class="bg-dark">
+					<th colspan="4" class="text-center text-white">Conatact Details</th>
+				</tr>
+				<tr>
+					<td><b>Mobile Number</b></td>
+					<td>{{ student_detail.mobile }}</td>
+					<td><b>Email Id</b></td>
+					<td>{{ student_detail.email || "--" }}</td>
+				</tr>
+				<tr>
+					<td><b>Alternet number</b></td>
+					<td>{{ student_detail.alt_mobile || "--" }}</td>
+					<td><b>Address</b></td>
+					<td colspan="3">{{ student_detail.address }}</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</ng-template> -->

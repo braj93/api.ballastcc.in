@@ -152,6 +152,28 @@ public function get_student_list_post() {
 }
 
 /**
+	 * GET CRM CONTACT DETAILS BY ID API
+	 */
+	public function get_details_by_id_post() {
+		$this->_response["service_name"] = "students/get_details_by_id";
+		$this->form_validation->set_rules('student_id', 'Student Id', 'trim|required|callback__check_student_exist');
+		if ($this->form_validation->run() == FALSE) {
+			$errors = $this->form_validation->error_array();
+			$this->_response["message"] = current($errors);
+			$this->_response["errors"] = $errors;
+			$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+		} else {
+			$student_guid = safe_array_key($this->_data, "student_id", "");
+			$students = $this->app->get_row('students', 'student_id', ['student_guid' => $student_guid]);
+			$student_id = safe_array_key($students, "student_id", "");
+			$data = $this->students_model->get_details_by_id($student_id);
+			$this->_response["data"] = $data;
+			$this->_response["message"] = "student details";
+			$this->set_response($this->_response);
+		}
+	}
+
+/**
  * STUDENT UPDATE
  */
 public function edit_student_post() {
@@ -253,6 +275,17 @@ public function _check_reg_number($reg_number) {
 		return TRUE;
 	}
 	
+}
+public function _check_student_exist($student_guid) {
+	if (!empty($student_guid)) {
+		$student_data = $this->app->get_row('students', 'student_id', ['student_guid' => $student_guid]);
+		
+		if (empty($student_data)) {
+			$this->form_validation->set_message('_check_student_exist', 'Not Student valid ID.');
+			return FALSE;
+		}
+	}
+	return TRUE;
 }
 
 

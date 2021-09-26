@@ -2,11 +2,11 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AdminLayoutRoutingModule } from './admin-layout-routing.module';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import {DashboardComponent} from '../../dashboard/dashboard.component';
+import {DashboardComponent} from '../../admin-components/dashboard';
 import { SharedModule } from '../../shared';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
-import {StudentComponent,AddStudentComponent,ViewStudentComponent,EditStudentComponent} from '../../student';
+import {StudentComponent,AddStudentComponent,ViewStudentComponent,EditStudentComponent} from '../../admin-components/student';
 import { BsModalService,ModalModule, BsModalRef } from 'ngx-bootstrap/modal';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
@@ -44,6 +44,6 @@ import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
     ModalModule.forRoot(),
     AlertModule.forRoot(),
   ],
-  providers: [BsModalService],
+  providers: [BsModalService,BsModalRef],
 })
 export class AdminLayoutModule { }

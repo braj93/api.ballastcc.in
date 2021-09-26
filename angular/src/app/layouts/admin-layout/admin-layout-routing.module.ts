@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent,DashboardResolver } from '../../dashboard';
-import { StudentComponent } from '../../student';
-import { MasterComponent,MasterResolver } from '../../master';
-
-import { AddStudentComponent,ViewStudentComponent,EditStudentComponent } from '../../student';
+import { DashboardComponent,DashboardResolver } from '../../admin-components/dashboard';
+import { StudentComponent } from '../../admin-components/student';
+import { MasterComponent,MasterResolver } from '../../admin-components/master';
+import {FeeManagementComponent, AddPaymentComponent,ViewPaymentComponent,EditPaymentComponent} from '../../admin-components/fee-management';
+import { AddStudentComponent,ViewStudentComponent,EditStudentComponent } from '../../admin-components/student';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { AuthGuardGuard } from '../../core';
 const routes: Routes = [
@@ -33,6 +33,11 @@ const routes: Routes = [
     component: AddStudentComponent,
   },
   {
+    path: 'student/:id/edit',
+    // canActivate: [AuthGuardGuard],
+    component: EditStudentComponent,
+  },
+  {
     path: 'student/view',
     // canActivate: [AuthGuardGuard],
     component: ViewStudentComponent,
@@ -44,6 +49,21 @@ const routes: Routes = [
     resolve: {
       master_details: MasterResolver
    },
+  },
+  {
+    path: 'fee-management',
+    component: FeeManagementComponent,
+    canActivate: [AuthGuardGuard],
+  },
+  {
+    path: 'payment/:id/edit',
+    // canActivate: [AuthGuardGuard],
+    component: EditPaymentComponent,
+  },
+  {
+    path: 'payment/:id/view',
+    // canActivate: [AuthGuardGuard],
+    component: ViewPaymentComponent,
   },
 ];
 

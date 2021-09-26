@@ -127,7 +127,7 @@ sidebarToggle() {
             $toggle.classList.add('toggled');
         }, 430);
         
-        // var $layer = document.createElement('div');
+        var $layer :any = document.createElement('div');
         $layer.setAttribute('class', 'close-layer');
 
 

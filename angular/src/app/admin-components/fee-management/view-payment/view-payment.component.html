@@ -1,0 +1,222 @@
+<div class="main-content">
+	<div *ngFor="let alert of adminService.alerts">
+		<alert [type]="alert.type" [dismissOnTimeout]="alert.timeout">{{
+			alert.msg
+		}}</alert>
+	</div>
+	<div class="container-fluid">
+        <button (click)="printPage()">print</button>
+		<div id="free-receipt-print" class="print-card mb-4">
+			<h1 class="text-center brand-heading">Ballast Coaching Classes</h1>
+			<h3 class="brand-subtitle">Make Foundation...</h3>
+			<div class="row">
+				<div class="col-6">
+					<h3 class="mb-0"><b>Conatct:</b> 8962218750</h3>
+					<h3><b>Email:</b> ballastcc@gmail.com</h3>
+				</div>
+				<div class="col-6 text-right">
+					<h3 class="mb-0"><b>Bill No:</b> 19AB</h3>
+					<h3><b>Date:</b> 21 sep 2021</h3>
+				</div>
+			</div>
+			<hr class="mb-0" />
+			<hr class="mt-1" />
+
+			<table width="100%">
+				<tr>
+					<td>
+						<h3 class="font-weight-bold">Registration no. :</h3>
+					</td>
+					<td>
+						<h3>21H003</h3>
+					</td>
+					<td>
+						<h3 class="font-weight-bold">Payment Date. :</h3>
+					</td>
+					<td>
+						<h3>21 sep 2021</h3>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h3 class="font-weight-bold">Student Name. :</h3>
+					</td>
+					<td>
+						<h3>Tester student</h3>
+					</td>
+					<td>
+						<h3 class="font-weight-bold">Father Name. :</h3>
+					</td>
+					<td>
+						<h3>Mr.jhon doe</h3>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h3 class="font-weight-bold">Class :</h3>
+					</td>
+					<td>
+						<h3>12th</h3>
+					</td>
+					<td>
+						<h3 class="font-weight-bold">Batch :</h3>
+					</td>
+					<td>
+						<h3>2021-2022</h3>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h3 class="font-weight-bold">Medium :</h3>
+					</td>
+					<td>
+						<h3>Hindi</h3>
+					</td>
+					<td>
+						<h3 class="font-weight-bold">Pay Mode :</h3>
+					</td>
+					<td>
+						<h3>Cash</h3>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<h3 class="font-weight-bold">Amount Pay :</h3>
+					</td>
+					<td>
+						<h3>2000</h3>
+					</td>
+					<td>
+						<h3 class="font-weight-bold">Remaining Fee :</h3>
+					</td>
+					<td>
+						<h3>4000</h3>
+					</td>
+				</tr>
+                <tr>
+                    <td colspan="3"></td>
+                    <td>
+                        <h3 class="text-center my-5 font-weight-bold">Signature <br/>
+                            (Jagmohan Yadav)
+                            </h3>
+                    </td>
+                </tr>
+			</table>
+           
+			<hr class="mb-0" />
+			<hr class="mt-1" />
+			<h3 class="text-center font-weight-bold text-capitalize">
+				Address: jairaj nagar near shiv shakti acadmy, <br />
+				nandbag main road indore (M.P.)
+			</h3>
+            <div class="receipt-devider"></div>
+
+            <div class="print-receipt-card">
+                <h1 class="text-center brand-heading">Ballast Coaching Classes</h1>
+                <h3 class="brand-subtitle">Make Foundation...</h3>
+                <div class="row">
+                    <div class="col-6">
+                        <h3 class="mb-0"><b>Conatct:</b> 8962218750</h3>
+                        <h3><b>Email:</b> ballastcc@gmail.com</h3>
+                    </div>
+                    <div class="col-6 text-right">
+                        <h3 class="mb-0"><b>Bill No:</b> 19AB</h3>
+                        <h3><b>Date:</b> 21 sep 2021</h3>
+                    </div>
+                </div>
+                <hr class="mb-0" />
+                <hr class="mt-1" />
+    
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <h3 class="font-weight-bold">Registration no. :</h3>
+                        </td>
+                        <td>
+                            <h3>21H003</h3>
+                        </td>
+                        <td>
+                            <h3 class="font-weight-bold">Payment Date. :</h3>
+                        </td>
+                        <td>
+                            <h3>21 sep 2021</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class="font-weight-bold">Student Name. :</h3>
+                        </td>
+                        <td>
+                            <h3>Tester student</h3>
+                        </td>
+                        <td>
+                            <h3 class="font-weight-bold">Father Name. :</h3>
+                        </td>
+                        <td>
+                            <h3>Mr.jhon doe</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class="font-weight-bold">Class :</h3>
+                        </td>
+                        <td>
+                            <h3>12th</h3>
+                        </td>
+                        <td>
+                            <h3 class="font-weight-bold">Batch :</h3>
+                        </td>
+                        <td>
+                            <h3>2021-2022</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class="font-weight-bold">Medium :</h3>
+                        </td>
+                        <td>
+                            <h3>Hindi</h3>
+                        </td>
+                        <td>
+                            <h3 class="font-weight-bold">Pay Mode :</h3>
+                        </td>
+                        <td>
+                            <h3>Cash</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 class="font-weight-bold">Amount Pay :</h3>
+                        </td>
+                        <td>
+                            <h3>2000</h3>
+                        </td>
+                        <td>
+                            <h3 class="font-weight-bold">Remaining Fee :</h3>
+                        </td>
+                        <td>
+                            <h3>4000</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td>
+                            <h3 class="text-center my-5 font-weight-bold">Signature <br/>
+                                (Jagmohan Yadav)
+                                </h3>
+                        </td>
+                    </tr>
+                </table>
+               
+                <hr class="mb-0" />
+                <hr class="mt-1" />
+                <h3 class="text-center font-weight-bold text-capitalize">
+                    Address: jairaj nagar near shiv shakti acadmy, <br />
+                    nandbag main road indore (M.P.)
+                </h3>
+            </div>
+		</div>
+
+       
+	</div>
+</div>

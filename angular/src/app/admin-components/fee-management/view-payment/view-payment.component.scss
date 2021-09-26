@@ -1,0 +1,32 @@
+.print-card {
+    background-color: #fff;
+    margin: 0px;
+    padding: 20px;
+    // height: 100vh;
+	.brand-heading {
+		font-size: 50px;
+        font-weight: 900;
+       
+	}
+    .brand-subtitle{
+        font-size: 24px;
+        margin-left: 68%;
+        margin-bottom: 30px;
+        width: fit-content;
+        background-color: #000000;
+        color: #fff;
+        border-radius: 25px;
+        padding: 5px 25px 5px 20px;
+        font-weight: 500;
+    }
+    .receipt-devider{
+        border-top: 2px dashed;
+        width: 100%;
+        margin:30px 0px;
+    }
+}
+@media print {
+    button {
+      display: none;
+    }
+  }

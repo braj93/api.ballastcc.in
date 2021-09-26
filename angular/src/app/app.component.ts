@@ -25,7 +25,7 @@ export class AppComponent {
             (userData) => {
               console.log(userData);
               this.currentUser = userData;
-              this.router.navigateByUrl('/admin/dashboard');
+              // this.router.navigateByUrl('/admin/dashboard');
               // if (this.currentUser.user_type === 'OWNER' || this.currentUser.user_type === 'ADMIN') {
               //   this.router.navigateByUrl('/console/dashboard');
               // } else {

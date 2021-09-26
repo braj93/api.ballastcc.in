@@ -1,5 +1,5 @@
 import { Component, OnInit,TemplateRef } from '@angular/core';
-import { AdminService } from '../core';
+import { AdminService } from '../../core';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { Router } from '@angular/router';
 @Component({
@@ -11,7 +11,8 @@ export class StudentComponent implements OnInit {
   public isSubmitting: boolean = false;
   public canAddCampaignDisable: boolean = false;
   public alerts: any = [];
-  public modalRef: BsModalRef;
+  // public modalRef: BsModalRef;
+  public popupRef: any = [];
   public rows: any = [];
   public is_admin: boolean = false;
   public loading: boolean = false;
@@ -45,6 +46,7 @@ export class StudentComponent implements OnInit {
     public router: Router,
     public adminService: AdminService,
     public modalService: BsModalService,
+    public modalRef: BsModalRef
   ) { 
     this.adminService.currentUser.subscribe(
       (userData) => {
@@ -130,5 +132,14 @@ export class StudentComponent implements OnInit {
     this.student_detail = detail;
     this.modalRef = this.modalService.show(template, this.config);
   }
+  hideModal(){
+    // this.adminService.popupRef.hide();
+  }
+  ngOnDestroy(): void{
+    this.adminService.alerts = [];
+  }
+  close() {
+    this.modalRef.hide();
+}
 
 }

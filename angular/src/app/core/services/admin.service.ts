@@ -13,6 +13,7 @@ import { Title, Meta } from '@angular/platform-browser';
 export class AdminService {
   public userData: any = {};
   public alerts: any = [];
+  public popupRef: any = [];
   private currentUserSubject = new BehaviorSubject<User>({} as User);
   public currentUser = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
   private isAuthenticatedSubject = new ReplaySubject<boolean>(1);
@@ -139,7 +140,14 @@ export class AdminService {
           return data;
         }
       ));
+  } 
+  getStudentDetailById(input: any): Observable<User> {
+    return this.apiService.post('/admin/students/get_details_by_id',input)
+      .pipe(map(
+        data => {
+          return data;
+        }
+      ));
   }
-  
   
 }

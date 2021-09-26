@@ -90,5 +90,8 @@ export class OnboardingLayoutComponent implements OnInit {
       this.is_show = 'LOGIN';
     }
   }
+  ngOnDestroy(): void{
+    this.adminService.alerts = [];
+  }
 
 }
