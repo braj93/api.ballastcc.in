@@ -5,215 +5,125 @@
 		}}</alert>
 	</div>
 	<div class="container-fluid">
-        <button (click)="printPage()">print</button>
-		<div id="free-receipt-print" class="print-card mb-4">
-			<h1 class="text-center brand-heading">Ballast Coaching Classes</h1>
-			<h3 class="brand-subtitle">Make Foundation...</h3>
-			<div class="row">
-				<div class="col-6">
-					<h3 class="mb-0"><b>Conatct:</b> 8962218750</h3>
-					<h3><b>Email:</b> ballastcc@gmail.com</h3>
-				</div>
-				<div class="col-6 text-right">
-					<h3 class="mb-0"><b>Bill No:</b> 19AB</h3>
-					<h3><b>Date:</b> 21 sep 2021</h3>
-				</div>
-			</div>
-			<hr class="mb-0" />
-			<hr class="mt-1" />
-
-			<table width="100%">
-				<tr>
-					<td>
-						<h3 class="font-weight-bold">Registration no. :</h3>
-					</td>
-					<td>
-						<h3>21H003</h3>
-					</td>
-					<td>
-						<h3 class="font-weight-bold">Payment Date. :</h3>
-					</td>
-					<td>
-						<h3>21 sep 2021</h3>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<h3 class="font-weight-bold">Student Name. :</h3>
-					</td>
-					<td>
-						<h3>Tester student</h3>
-					</td>
-					<td>
-						<h3 class="font-weight-bold">Father Name. :</h3>
-					</td>
-					<td>
-						<h3>Mr.jhon doe</h3>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<h3 class="font-weight-bold">Class :</h3>
-					</td>
-					<td>
-						<h3>12th</h3>
-					</td>
-					<td>
-						<h3 class="font-weight-bold">Batch :</h3>
-					</td>
-					<td>
-						<h3>2021-2022</h3>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<h3 class="font-weight-bold">Medium :</h3>
-					</td>
-					<td>
-						<h3>Hindi</h3>
-					</td>
-					<td>
-						<h3 class="font-weight-bold">Pay Mode :</h3>
-					</td>
-					<td>
-						<h3>Cash</h3>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<h3 class="font-weight-bold">Amount Pay :</h3>
-					</td>
-					<td>
-						<h3>2000</h3>
-					</td>
-					<td>
-						<h3 class="font-weight-bold">Remaining Fee :</h3>
-					</td>
-					<td>
-						<h3>4000</h3>
-					</td>
-				</tr>
-                <tr>
-                    <td colspan="3"></td>
-                    <td>
-                        <h3 class="text-center my-5 font-weight-bold">Signature <br/>
-                            (Jagmohan Yadav)
-                            </h3>
-                    </td>
-                </tr>
-			</table>
-           
-			<hr class="mb-0" />
-			<hr class="mt-1" />
-			<h3 class="text-center font-weight-bold text-capitalize">
-				Address: jairaj nagar near shiv shakti acadmy, <br />
-				nandbag main road indore (M.P.)
-			</h3>
-            <div class="receipt-devider"></div>
-
-            <div class="print-receipt-card">
-                <h1 class="text-center brand-heading">Ballast Coaching Classes</h1>
-                <h3 class="brand-subtitle">Make Foundation...</h3>
-                <div class="row">
-                    <div class="col-6">
-                        <h3 class="mb-0"><b>Conatct:</b> 8962218750</h3>
-                        <h3><b>Email:</b> ballastcc@gmail.com</h3>
-                    </div>
-                    <div class="col-6 text-right">
-                        <h3 class="mb-0"><b>Bill No:</b> 19AB</h3>
-                        <h3><b>Date:</b> 21 sep 2021</h3>
-                    </div>
-                </div>
-                <hr class="mb-0" />
-                <hr class="mt-1" />
+        
+		<div  class="print-card mb-4">
+            <button class="float-end btn text-white " (click)="printPage('printableArea')">print</button>
+            <div id="printableArea" class="print-receipt-card">
+                <h1 class="text-center brand-heading" style="text-align: center; margin-bottom: 5px;">Ballast Coaching Classes</h1>
+                <h4 style="font-size: 24px;
+                margin-left: 50%;
+                margin-bottom: 30px;
+                margin-top: 10px;               
+                width: fit-content;
+                font-weight: 500;">Make Foundation...</h4>
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <h3 style="margin: 0px;"><b>Conatct:</b> 8962218750</h3>
+                        </td>
+                        <td style="text-align: end;">
+                            <h3 style="margin-bottom: 0px;"><b>Email:</b> ballastcc@gmail.com</h3>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h3 style="margin: 0px;"><b>Bill No:</b> 19AB</h3>
+                        </td>
+                        <td style="text-align: end;">
+                            <h3 style="margin-bottom: 0px;"><b>Date:</b> 21 sep 2021</h3>
+                        </td>
+                    </tr>
+                </table>
+                <hr style="margin-bottom:2px"/>
+                <hr style="margin-top:2px"/>
     
                 <table width="100%">
                     <tr>
                         <td>
-                            <h3 class="font-weight-bold">Registration no. :</h3>
+                            <h4 class="font-weight-bold" style="margin: 0px;">Registration no. :</h4>
                         </td>
                         <td>
-                            <h3>21H003</h3>
+                            <h5 style="margin: 0px;">21H003</h5>
                         </td>
                         <td>
-                            <h3 class="font-weight-bold">Payment Date. :</h3>
+                            <h4 class="font-weight-bold" style="margin: 0px;">Payment Date. :</h4>
                         </td>
                         <td>
-                            <h3>21 sep 2021</h3>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h3 class="font-weight-bold">Student Name. :</h3>
-                        </td>
-                        <td>
-                            <h3>Tester student</h3>
-                        </td>
-                        <td>
-                            <h3 class="font-weight-bold">Father Name. :</h3>
-                        </td>
-                        <td>
-                            <h3>Mr.jhon doe</h3>
+                            <h5 style="margin: 0px;">21 sep 2021</h5>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <h3 class="font-weight-bold">Class :</h3>
+                            <h4 class="font-weight-bold" style="margin: 0px;">Student Name. :</h4>
                         </td>
                         <td>
-                            <h3>12th</h3>
+                            <h5 style="margin: 0px;">{{name}}</h5>
                         </td>
                         <td>
-                            <h3 class="font-weight-bold">Batch :</h3>
+                            <h4 class="font-weight-bold" style="margin: 0px;">Father Name. :</h4>
                         </td>
                         <td>
-                            <h3>2021-2022</h3>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h3 class="font-weight-bold">Medium :</h3>
-                        </td>
-                        <td>
-                            <h3>Hindi</h3>
-                        </td>
-                        <td>
-                            <h3 class="font-weight-bold">Pay Mode :</h3>
-                        </td>
-                        <td>
-                            <h3>Cash</h3>
+                            <h5 style="margin: 0px;">Mr.jhon doe</h5>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <h3 class="font-weight-bold">Amount Pay :</h3>
+                            <h4 class="font-weight-bold" style="margin: 0px;">Class :</h4>
                         </td>
                         <td>
-                            <h3>2000</h3>
+                            <h5 style="margin: 0px;">12th</h5>
                         </td>
                         <td>
-                            <h3 class="font-weight-bold">Remaining Fee :</h3>
+                            <h4 class="font-weight-bold" style="margin: 0px;">Batch :</h4>
                         </td>
                         <td>
-                            <h3>4000</h3>
+                            <h5 style="margin: 0px;">2021-2022</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4 class="font-weight-bold" style="margin: 0px;">Medium :</h4>
+                        </td>
+                        <td>
+                            <h5 style="margin: 0px;">Hindi</h5>
+                        </td>
+                        <td>
+                            <h4 class="font-weight-bold" style="margin: 0px;">Pay Mode :</h4>
+                        </td>
+                        <td>
+                            <h5 style="margin: 0px;">Cash</h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4 class="font-weight-bold" style="margin: 0px;">Amount Pay :</h4>
+                        </td>
+                        <td>
+                            <h5 style="margin: 0px;">2000</h5>
+                        </td>
+                        <td>
+                            <h4 class="font-weight-bold" style="margin: 0px;">Remaining Fee :</h4>
+                        </td>
+                        <td>
+                            <h5 style="margin: 0px;">4000</h5>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3"></td>
                         <td>
-                            <h3 class="text-center my-5 font-weight-bold">Signature <br/>
+                            <h5 class="text-center my-5 font-weight-bold" style="text-align: center;">Signature <br/>
                                 (Jagmohan Yadav)
-                                </h3>
+                                </h5>
                         </td>
                     </tr>
                 </table>
-               
-                <hr class="mb-0" />
-                <hr class="mt-1" />
-                <h3 class="text-center font-weight-bold text-capitalize">
+               <hr style="margin-bottom:2px"/>
+               <hr style="margin-top:2px"/>
+                <h4 style="text-align: center;" class="text-center font-weight-bold text-capitalize">
                     Address: jairaj nagar near shiv shakti acadmy, <br />
                     nandbag main road indore (M.P.)
-                </h3>
+                </h4>
+                
             </div>
 		</div>
 
