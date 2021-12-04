@@ -120,6 +120,49 @@ class Payments_model extends CI_Model {
 		}
 	}
 
+		// GET STUDENT DETAILS BY ID
+		public function get_details_by_id($pay_id) {
+			$this->db->select('p.amount, p.amount');
+			$this->db->select('p.type, p.type');
+			$this->db->select('p.paid_date, p.paid_date');
+
+			$this->db->select('s.father_name, s.father_name');
+			$this->db->select('s.mother_name, s.mother_name');
+			$this->db->select('s.dob, s.dob');		
+			$this->db->select('IFNULL(cl.name,"") AS class');
+			$this->db->select('IFNULL(cl.class_guid,"") AS class_guid');
+			$this->db->select('IFNULL(bo.name,"") AS board');
+			$this->db->select('IFNULL(bo.board_guid,"") AS board_guid');
+			$this->db->select('s.medium, s.medium');
+			$this->db->select('s.total_fee, s.total_fee');
+			$this->db->select('s.remain_fee, s.remain_fee');
+			$this->db->select('IFNULL(ba.name,"") AS batch');
+			$this->db->select('IFNULL(ba.batch_guid,"") AS batch_guid');
+			$this->db->select('s.reg_date, s.reg_date');
+			$this->db->select('s.address, s.address');
+			$this->db->select('s.mobile, s.mobile');
+			$this->db->select('s.alt_mobile, s.alt_mobile');
+			$this->db->select('IFNULL(s.student_guid,"") AS student_guid', FALSE);
+			$this->db->select('s.first_name, s.first_name');
+			$this->db->select('s.last_name, s.last_name');
+			$this->db->select('s.subjects, s.subjects');
+			$this->db->select('IFNULL(s.email,"") AS email', FALSE);
+			$this->db->select('IFNULL(s.school,"") AS school', FALSE);
+			$this->db->select('IFNULL(s.created_at,"") AS created_at', FALSE);
+			$this->db->select('IFNULL(s.status,"") AS status', FALSE);
+			$this->db->from('payments AS p');
+
+			$this->db->join('students AS s', 's.student_id = p.pay_by', 'LEFT');
+			$this->db->join('classes AS cl', 'cl.class_id = s.class', 'LEFT');
+			$this->db->join('boards AS bo', 'bo.board_id = s.board', 'LEFT');
+			$this->db->join('batches AS ba', 'ba.batch_id = s.batch', 'LEFT');
+			$this->db->where('s.student_id', $pay_id);
+			$query = $this->db->get();
+			$result = $query->row_array();
+			// $result['subjects'] = unserialize(base64_decode($result['subjects']));;
+			return $result;
+		}
+
 
     
 }

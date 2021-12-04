@@ -119,6 +119,36 @@ public function get_fee_list_post() {
 		}
 		return TRUE;
 	}
+	public function _check_Payment_exist($pay_guid) {
+		if (!empty($pay_guid)) {
+			$payment_data = $this->app->get_row('payments', 'pay_id', ['pay_guid' => $pay_guid]);
+			
+			if (empty($payment_data)) {
+				$this->form_validation->set_message('_check_Payment_exist', 'Not Payment valid ID.');
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
+
+	public function get_details_by_id_post() {
+		$this->_response["service_name"] = "payment/get_fee_details_by_id";
+		$this->form_validation->set_rules('pay_id', 'Payment Id', 'trim|required|callback__check_Payment_exist');
+		if ($this->form_validation->run() == FALSE) {
+			$errors = $this->form_validation->error_array();
+			$this->_response["message"] = current($errors);
+			$this->_response["errors"] = $errors;
+			$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+		} else {
+			$pay_guid = safe_array_key($this->_data, "pay_id", "");
+			$payments = $this->app->get_row('payments', 'pay_id', ['pay_guid' => $pay_guid]);
+			$pay_id = safe_array_key($payments, "pay_id", "");
+			$data = $this->payments_model->get_details_by_id($pay_id);
+			$this->_response["data"] = $data;
+			$this->_response["message"] = "Payment details";
+			$this->set_response($this->_response);
+		}
+	}
 
 
 

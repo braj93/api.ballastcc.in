@@ -472,6 +472,11 @@ if (!function_exists('get_detail_by_guid')) {
                     $select_fields = ($select_field) ? $select_field : "subject_id";
                     $condition = array("subject_guid" => $entity_guid);
                     break;
+                case 'payments':
+                    $table_name = 'payments';
+                    $select_fields = ($select_field) ? $select_field : "pay_id";
+                    $condition = array("pay_guid" => $entity_guid);
+                    break;
                 case 'class':
                     $table_name = 'classes';
                     $select_fields = ($select_field) ? $select_field : "class_id";
