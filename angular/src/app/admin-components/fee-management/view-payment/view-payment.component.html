@@ -27,10 +27,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <h3 style="margin: 0px;"><b>Bill No:</b> 19AB</h3>
+                            <h3 style="margin: 0px;"><b>Bill No:</b> {{FeeDetail?.bill_no || ""}}</h3>
                         </td>
                         <td style="text-align: end;">
-                            <h3 style="margin-bottom: 0px;"><b>Date:</b> 21 sep 2021</h3>
+                            <h3 style="margin-bottom: 0px;"><b>Date:</b> {{FeeDetail?.created_at  | date: "mediumDate"}}</h3>
                         </td>
                     </tr>
                 </table>
@@ -43,13 +43,13 @@
                             <h4 class="font-weight-bold" style="margin: 0px;">Registration no. :</h4>
                         </td>
                         <td>
-                            <h5 style="margin: 0px;">21H003</h5>
+                            <h5 style="margin: 0px;">{{FeeDetail?.reg_number}}</h5>
                         </td>
                         <td>
                             <h4 class="font-weight-bold" style="margin: 0px;">Payment Date. :</h4>
                         </td>
                         <td>
-                            <h5 style="margin: 0px;">21 sep 2021</h5>
+                            <h5 style="margin: 0px;">{{FeeDetail?.paid_date  | date: "mediumDate"}}</h5>
                         </td>
                     </tr>
                     <tr>
@@ -57,13 +57,13 @@
                             <h4 class="font-weight-bold" style="margin: 0px;">Student Name. :</h4>
                         </td>
                         <td>
-                            <h5 style="margin: 0px;">{{name}}</h5>
+                            <h5 style="margin: 0px;">{{FeeDetail?.first_name}} {{FeeDetail?.last_name || ""}}</h5>
                         </td>
                         <td>
                             <h4 class="font-weight-bold" style="margin: 0px;">Father Name. :</h4>
                         </td>
                         <td>
-                            <h5 style="margin: 0px;">Mr.jhon doe</h5>
+                            <h5 style="margin: 0px;">{{FeeDetail?.father_name}}</h5>
                         </td>
                     </tr>
                     <tr>
@@ -71,13 +71,13 @@
                             <h4 class="font-weight-bold" style="margin: 0px;">Class :</h4>
                         </td>
                         <td>
-                            <h5 style="margin: 0px;">12th</h5>
+                            <h5 style="margin: 0px;">{{FeeDetail?.class}}</h5>
                         </td>
                         <td>
                             <h4 class="font-weight-bold" style="margin: 0px;">Batch :</h4>
                         </td>
                         <td>
-                            <h5 style="margin: 0px;">2021-2022</h5>
+                            <h5 style="margin: 0px;">{{FeeDetail?.batch}}</h5>
                         </td>
                     </tr>
                     <tr>
@@ -85,13 +85,13 @@
                             <h4 class="font-weight-bold" style="margin: 0px;">Medium :</h4>
                         </td>
                         <td>
-                            <h5 style="margin: 0px;">Hindi</h5>
+                            <h5 style="margin: 0px;">{{FeeDetail?.medium}}</h5>
                         </td>
                         <td>
                             <h4 class="font-weight-bold" style="margin: 0px;">Pay Mode :</h4>
                         </td>
                         <td>
-                            <h5 style="margin: 0px;">Cash</h5>
+                            <h5 style="margin: 0px;">{{FeeDetail?.type}}</h5>
                         </td>
                     </tr>
                     <tr>
@@ -99,13 +99,13 @@
                             <h4 class="font-weight-bold" style="margin: 0px;">Amount Pay :</h4>
                         </td>
                         <td>
-                            <h5 style="margin: 0px;">2000</h5>
+                            <h5 style="margin: 0px;">{{FeeDetail?.amount}}</h5>
                         </td>
                         <td>
                             <h4 class="font-weight-bold" style="margin: 0px;">Remaining Fee :</h4>
                         </td>
                         <td>
-                            <h5 style="margin: 0px;">4000</h5>
+                            <h5 style="margin: 0px;">{{FeeDetail?.remain_fee}}</h5>
                         </td>
                     </tr>
                     <tr>

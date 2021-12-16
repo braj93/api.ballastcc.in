@@ -125,7 +125,7 @@ class Payments_model extends CI_Model {
 			$this->db->select('p.amount, p.amount');
 			$this->db->select('p.type, p.type');
 			$this->db->select('p.paid_date, p.paid_date');
-
+			$this->db->select('IFNULL(s.reg_number, p.pay_id) AS bill_no');
 			$this->db->select('s.father_name, s.father_name');
 			$this->db->select('s.mother_name, s.mother_name');
 			$this->db->select('s.dob, s.dob');		
@@ -133,6 +133,7 @@ class Payments_model extends CI_Model {
 			$this->db->select('IFNULL(cl.class_guid,"") AS class_guid');
 			$this->db->select('IFNULL(bo.name,"") AS board');
 			$this->db->select('IFNULL(bo.board_guid,"") AS board_guid');
+			$this->db->select('s.reg_number, s.reg_number');
 			$this->db->select('s.medium, s.medium');
 			$this->db->select('s.total_fee, s.total_fee');
 			$this->db->select('s.remain_fee, s.remain_fee');

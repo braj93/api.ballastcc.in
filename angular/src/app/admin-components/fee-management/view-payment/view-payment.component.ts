@@ -10,13 +10,29 @@ import { AdminService } from 'src/app/core';
 export class ViewPaymentComponent implements OnInit {
   public print_data:any="";
   public name ="braj yadav";
+  public id:any;
+  public FeeDetail:any;
   constructor(
     public route: ActivatedRoute,
     public adminService: AdminService,
   ) { }
 
   ngOnInit(): void {
+    this.id = this.route.snapshot.paramMap.get('id')
     this.print_data =document.getElementById("free-receipt-print");
+    let inputData= {
+      pay_id:this.id
+    }
+    this.adminService.getPaymentstDetailById(inputData).subscribe((response: any) => {
+      this.FeeDetail=response.data;
+      // console.log(this.FeeDetail);
+    }, err => {
+      this.adminService.alerts.push({
+        type: 'danger',
+        msg: err.message,
+        timeout: 4000
+      });
+    });
   }
   
   // printPage(divName:any) {

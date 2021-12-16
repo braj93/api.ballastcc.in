@@ -35,6 +35,7 @@ export class AdminService {
       ));
   }
   setAuth(user: User) {
+    if(user){
     // Save JWT sent from server in localstorage
     this.jwtService.saveToken(user.session_key);
     // Set current user data into observable
@@ -42,6 +43,7 @@ export class AdminService {
     // Set isAuthenticated to true
     this.isAuthenticatedSubject.next(true);
     localStorage.setItem('user', JSON.stringify(user));
+    }
   }
   purgeAuth() {
     // Remove JWT from localstorage
@@ -127,6 +129,14 @@ export class AdminService {
 
   getPaymentsList(input: any): Observable<User> {
     return this.apiService.post('/admin/payments/get_fee_list',input)
+      .pipe(map(
+        data => {
+          return data;
+        }
+      ));
+  }
+  getPaymentstDetailById(input: any): Observable<User> {
+    return this.apiService.post('/admin/payments/get_details_by_id',input)
       .pipe(map(
         data => {
           return data;
