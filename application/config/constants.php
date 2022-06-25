@@ -117,12 +117,12 @@ define('IMAGE_SERVER', 'REMOTE');
 //localhost_bcci
 switch (ENVIRONMENT) {
 case 'production':
-	define('SITE_ROOT', 'https://www.bcci.com/');
-	define('DB_HOST', 'localhost');
-	define('DB_NAME', 'uagpqsbecf');
-	define('DB_USERNAME', 'uagpqsbecf');
-	define('DB_PASSWORD', 'w4D34Uxhmn');
-	define('SITE_ADDR', 'https://platform.marketingtiki.com/');
+	define('SITE_ROOT', 'https://api.ballastcc.in/');
+	define('DB_HOST', 'https://ballastcc.in/');
+	define('DB_NAME', 'balla699_api');
+	define('DB_USERNAME', 'balla699_bcci');
+	define('DB_PASSWORD', '#1;(B2m[!95S');
+	define('SITE_ADDR', 'https://ballastcc.com/');
 	// Stripe API configuration
 	define('STRIPE_PUBLISHABLE_KEY', 'pk_test_DSSTxP5NaHXwInGOlRX2rYM300aoJSRuBB');
 	define('STRIPE_SKEY', 'sk_test_yzdkYc6t9GzoDMEfTeNBcDuG00rVcpv242');
