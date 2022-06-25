@@ -26,7 +26,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 switch (ENVIRONMENT) {
 case 'production':
-    $config['base_url'] = 'https://www.bcci.com/';
+    $config['base_url'] = 'https://api.ballastcc.in/';
     break;
 case 'staging':
     $config['base_url'] = 'https://staging.bcci.com/';
