@@ -1,5 +1,5 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH= /home/balla699/bcci/
+    - export DEPLOYPATH= /home/balla699/api.ballastcc.in/
     - /bin/cp * $DEPLOYPATH
