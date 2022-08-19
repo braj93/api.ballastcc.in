@@ -32,9 +32,6 @@ case 'staging':
     $config['base_url'] = 'https://staging.bcci.com/';
     break;
 case 'development':
-    $config['base_url'] = 'https://dev.bcci.com/';
-    break;
-case 'local':
     $config['base_url'] = 'http://localhost/bcci';
     break;
 default:
