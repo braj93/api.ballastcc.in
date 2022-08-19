@@ -358,7 +358,7 @@ $config['rest_keys_table'] = 'user_login_sessions';
 |   ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 |
  */
-$config['rest_enable_keys'] = TRUE;
+$config['rest_enable_keys'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
