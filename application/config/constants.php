@@ -149,21 +149,5 @@ case 'development':
     define('SMTP_PASSWORD',  'ugskzxgoftwncdfh');
 	define('CALL_RAIL_TOKEN',  '57b29b5700be014e6a0975fb539a085f');
 	define('CALL_RAIL_ACCOUNT_ID',  'ACCfec31210be444298ba7d66ecae991317');
-default:
-	//development
-	define('SITE_ROOT', 'http://localhost/bcci');
-	define('DB_HOST', 'api.ballastcc.in');
-	define('DB_NAME', 'balla699_api');
-	define('DB_USERNAME', 'balla699_bcci');
-	define('DB_PASSWORD', '#1;(B2m[!95S');
-	define('SITE_ADDR', 'https://ballastcc.com/');
-	// Stripe API configuration
-	define('STRIPE_PUBLISHABLE_KEY', 'pk_test_DSSTxP5NaHXwInGOlRX2rYM300aoJSRuBB');
-	define('STRIPE_SKEY', 'sk_test_yzdkYc6t9GzoDMEfTeNBcDuG00rVcpv242');
-	define('STRIPE_PRODUCT_ID', 'prod_I2T0PUIwVRuHto');
-	define('SMTP_HOST',  'smtp.gmail.com');
-	define('SMTP_USER',  'exactrishi@gmail.com');
-	define('SMTP_PASSWORD',  'ugskzxgoftwncdfh');
-	define('CALL_RAIL_TOKEN',  '57b29b5700be014e6a0975fb539a085f');
-	define('CALL_RAIL_ACCOUNT_ID',  'ACCfec31210be444298ba7d66ecae991317');
+default:	
 }

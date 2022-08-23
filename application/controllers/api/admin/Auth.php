@@ -73,7 +73,7 @@ class Auth extends REST_Controller {
 				$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
 				$this->auth_model->add_logs($this->_data);
 			} else {
-				$admin = $this->app->get_row('admins', 'status', ['admin_id' => $admin_id]);
+				$admin = $this->app->get_row('admin_users', 'status', ['user_id' => $admin_id]);
 				if ($admin['status'] == 'ACTIVE') {
 					$device_type = safe_array_key($this->_data, "device_type", "web_browser");
 					$device_type_id = array_search($device_type, $this->app->device_types);

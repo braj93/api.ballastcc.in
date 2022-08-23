@@ -21,11 +21,11 @@ class Auth_model extends CI_Model {
  */
 public function check_login($email, $password) {
 
-    $admin = $this->app->get_row('admins', 'admin_id', [
+    $admin = $this->app->get_row('admin_users', 'user_id', [
         "email" => strtolower($email),
         "password" => md5($password),
     ]);
-    return safe_array_key($admin, 'admin_id', "0");
+    return safe_array_key($admin, 'user_id', "0");
 }
 /**
  * Insert in site log table
@@ -52,12 +52,12 @@ public function add_logs($input) {
  * @param type $ip_address
  * @return type
  */
-public function create_session_key($admin_id, $device_type_id, $device_token, $ip_address) {
+public function create_session_key($user_id, $device_type_id, $device_token, $ip_address) {
 
     $session_id = get_guid();
     $this->db->insert('user_login_sessions', [
         'session_key' => $session_id,
-        'user_id' => $admin_id,
+        'user_id' => $user_id,
         'device_type_id' => $device_type_id,
         'device_token' => !empty($device_token) ? $device_token : NULL,
         'ip_address' => $ip_address,
@@ -69,8 +69,8 @@ public function create_session_key($admin_id, $device_type_id, $device_token, $i
     //update user last_login_at
     $this->db->set('last_login_at', 'login_at', FALSE);
     $this->db->set('login_at', DATETIME);
-    $this->db->where('admin_id', $admin_id);
-    $this->db->update('admins');
+    $this->db->where('user_id', $user_id);
+    $this->db->update('admin_users');
     return $session_id;
 }
 

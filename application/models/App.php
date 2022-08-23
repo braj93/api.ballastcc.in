@@ -47,24 +47,6 @@ class App extends CI_Model {
 		$current->sub(new DateInterval('PT' . ANALYTICS_INTERVAL . 'S'));
 		$this->target_date = $current->format('Y-m-d H:i:s');
 	}
-		/**
-	 *
-	 * @param type $session_key
-	 * @return type
-	 */
-	public function admin_data($session_key) {
-		$this->db->select('uls.session_key');
-		$this->db->select('a.admin_id, a.admin_guid, a.email,a.mobile, a.first_name, a.last_name');
-		$this->db->select('CONCAT(a.first_name, " ", IFNULL (a.last_name, "")) AS name');
-		$this->db->select('IFNULL(a.last_login_at,"") AS last_login_at', FALSE);
-		$this->db->from('user_login_sessions AS uls');
-		$this->db->join('admins AS a', 'uls.user_id = a.admin_id');
-		$this->db->where('uls.session_key', $session_key);
-		$query = $this->db->get();
-		$admin = $query->row_array();
-		unset($admin['admin_id']);
-		return $admin;
-	}
 
 	/**
 	 *
@@ -292,18 +274,18 @@ class App extends CI_Model {
 	 * @param type $session_key
 	 * @return type
 	 */
-	// public function admin_data($session_key) {
-	// 	$this->db->select('uls.session_key');
-	// 	$this->db->select('u.user_id, u.user_guid, u.email, u.first_name, u.last_name, u.user_type');
-	// 	$this->db->select('IFNULL(u.last_login_at,"") AS last_login_at', FALSE);
-	// 	$this->db->from('user_login_sessions AS uls');
-	// 	$this->db->join('admin_users AS u', 'uls.user_id = u.user_id');
-	// 	$this->db->where('uls.session_key', $session_key);
-	// 	$query = $this->db->get();
-	// 	$user = $query->row_array();
-	// 	unset($user['user_id']);
-	// 	return $user;
-	// }
+	public function admin_data($session_key) {
+		$this->db->select('uls.session_key');
+		$this->db->select('u.user_id, u.user_guid, u.email, u.first_name, u.last_name, u.user_type');
+		$this->db->select('IFNULL(u.last_login_at,"") AS last_login_at', FALSE);
+		$this->db->from('user_login_sessions AS uls');
+		$this->db->join('admin_users AS u', 'uls.user_id = u.user_id');
+		$this->db->where('uls.session_key', $session_key);
+		$query = $this->db->get();
+		$user = $query->row_array();
+		unset($user['user_id']);
+		return $user;
+	}
 
 	public function get_user_id_by_session($session_key) {
 		$session_user_data = $this->get_row('user_login_sessions', 'user_id', ['session_key' => $session_key]);
