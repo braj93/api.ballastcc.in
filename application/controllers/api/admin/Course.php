@@ -147,7 +147,7 @@ class Course extends REST_Controller {
 			$course_id = safe_array_key($course, "course_id", "");
 			$data = $this->course_model->get_details_by_id($course_id);
 			$this->_response["data"] = $data;
-			$this->_response["message"] = "campaign details";
+			$this->_response["message"] = "course details";
 			$this->set_response($this->_response);
 		}
 	}
