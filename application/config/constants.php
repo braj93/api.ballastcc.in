@@ -95,8 +95,8 @@ define('DATE_FORMAT', "Y-m-d");
 define('NOREPLY_EMAIL', "noreply@marketingtiki.com");
 define('SUPPORT_EMAIL', "support@marketingtiki.com");
 define('CC_EMAIL', "ryan@bciinteractive.com");
-define('FROM_NAME', "Marketing Tiki Platform");
-define('CONTACT_US_EMAIL_SUBMISSION', "info@bcci.com");
+define('FROM_NAME', "Ballast Coaching Classes");
+define('CONTACT_US_EMAIL_SUBMISSION', "ballastcc@gmail.com");
 
 define('ANALYTICS_INTERVAL', '15552000');
 define('PENDING_INVITE_AUTO_DELETE', '172800');
