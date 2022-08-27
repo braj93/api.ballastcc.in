@@ -89,7 +89,7 @@ GET SUBJECTS list
             $this->db->select('IFNULL(s.created_at,"") AS created_at', FALSE);
             $this->db->select('IFNULL(s.updated_at,"") AS updated_at', FALSE);
         } else {
-            $this->db->select('COUNT(c.course_id) as count', FALSE);
+            $this->db->select('COUNT(s.subject_id) as count', FALSE);
         }
         $this->db->from('subjects AS s');
         $this->db->join('users AS u', 'u.user_id = s.added_by', 'LEFT');

@@ -81,19 +81,19 @@ GET SUBJECTS list
             $this->db->limit($limit, $offset);
             
            
-            $this->db->select('IFNULL(s.subject_guid,"") AS subject_guid', FALSE);
+            $this->db->select('IFNULL(ch.chapter_guid,"") AS chapter_guid', FALSE);
+            $this->db->select('IFNULL(ch.chapter_name,"") AS chapter_name', FALSE);
             $this->db->select('IFNULL(s.subject_name,"") AS subject_name', FALSE);
-            $this->db->select('IFNULL(c.course_name,"") AS course_name', FALSE);
             $this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS added_by', FALSE);
-            $this->db->select('IFNULL(s.status,"") AS status', FALSE);
-            $this->db->select('IFNULL(s.created_at,"") AS created_at', FALSE);
-            $this->db->select('IFNULL(s.updated_at,"") AS updated_at', FALSE);
+            $this->db->select('IFNULL(ch.status,"") AS status', FALSE);
+            $this->db->select('IFNULL(ch.created_at,"") AS created_at', FALSE);
+            $this->db->select('IFNULL(ch.updated_at,"") AS updated_at', FALSE);
         } else {
-            $this->db->select('COUNT(c.course_id) as count', FALSE);
+            $this->db->select('COUNT(ch.chapter_id) as count', FALSE);
         }
-        $this->db->from('subjects AS s');
-        $this->db->join('users AS u', 'u.user_id = s.added_by', 'LEFT');
-        $this->db->join('courses AS c', 'c.course_id = s.course_id', 'LEFT');
+        $this->db->from('chapters AS ch');        
+        $this->db->join('subjects AS s', 's.subject_id = ch.subject_id', 'LEFT');
+        $this->db->join('users AS u', 'u.user_id = ch.added_by', 'LEFT');
         $this->db->order_by('s.created_at', 'desc');
 
         // if (!empty($filterBy)) {
@@ -102,12 +102,12 @@ GET SUBJECTS list
 
         if (!empty($keyword)) {
             $this->db->group_start();
-            $this->db->like('s.subject_name', $keyword, 'both');
+            $this->db->like('ch.chapter_name', $keyword, 'both');
             $this->db->group_end();
         }
 
         if (($column_name !== '') && ($order_by !== '')) {
-            $this->db->order_by('s.' . $column_name, $order_by);
+            $this->db->order_by('ch.' . $column_name, $order_by);
         }
         // if ($user_type != 'ADMIN') {
         // 	$this->db->where('c.added_by', $user_id);
@@ -119,9 +119,9 @@ GET SUBJECTS list
             if ($query->num_rows() > 0) {
                 $list = [];
                 foreach ($results as $key => $value) {
-                    $list[$key]['subject_guid'] = $value['subject_guid'];
+                    $list[$key]['chapter_guid'] = $value['chapter_guid'];
+                    $list[$key]['chapter_name'] = $value['chapter_name'];
                     $list[$key]['subject_name'] = $value['subject_name'];
-                    $list[$key]['course_name'] = $value['course_name'];
                     $list[$key]['added_by'] = $value['added_by'];
                     $list[$key]['status'] = $value['status'];
                     $list[$key]['created_at'] = $value['created_at'];
@@ -136,19 +136,23 @@ GET SUBJECTS list
         }
     }
 
-    public function get_details_by_id($subject_id)
+    public function get_details_by_id($chapter_id)
     {
-        $this->db->select('IFNULL(s.subject_guid,"") AS subject_guid', FALSE);
+        $this->db->select('IFNULL(ch.chapter_guid,"") AS chapter_guid', FALSE);
+        $this->db->select('IFNULL(ch.chapter_name,"") AS chapter_name', FALSE);
         $this->db->select('IFNULL(s.subject_name,"") AS subject_name', FALSE);
-        $this->db->select('IFNULL(c.course_name,"") AS course_name', FALSE);
+        $this->db->select('IFNULL(s.subject_guid,"") AS subject_guid', FALSE);
         $this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS added_by', FALSE);
-        $this->db->select('IFNULL(s.status,"") AS status', FALSE);
-        $this->db->select('IFNULL(s.created_at,"") AS created_at', FALSE);
-        $this->db->select('IFNULL(s.updated_at,"") AS updated_at', FALSE);        
-        $this->db->from('subjects AS s');
-        $this->db->join('users AS u', 'u.user_id = s.added_by', 'LEFT');
-        $this->db->join('courses AS c', 'c.course_id = s.course_id', 'LEFT');        
-        $this->db->where('s.subject_id', $subject_id);
+        $this->db->select('IFNULL(ch.status,"") AS status', FALSE);
+        $this->db->select('IFNULL(ch.created_at,"") AS created_at', FALSE);
+        $this->db->select('IFNULL(ch.updated_at,"") AS updated_at', FALSE); 
+        
+        $this->db->from('chapters AS ch');
+        $this->db->join('subjects AS s', 's.subject_id = ch.subject_id', 'LEFT');
+        $this->db->join('users AS u', 'u.user_id = ch.added_by', 'LEFT');
+        
+        $this->db->where('ch.chapter_id', $chapter_id);
+
         $query = $this->db->get();
         $reuslt = $query->row_array();
         // $reuslt['string'] = unique_random_string('campaign_templates', 'unique_string', [], 'alnum', 12);

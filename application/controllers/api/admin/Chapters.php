@@ -116,7 +116,7 @@ class Chapters extends REST_Controller
     /**
      * LIST COURSE
      */
-    public function subject_list_post()
+    public function chapter_list_post()
     {
         $this->_response["service_name"] = "admin/subject_list";
         $this->form_validation->set_rules('keyword', 'keyword', 'trim');
@@ -135,10 +135,10 @@ class Chapters extends REST_Controller
             $limit = safe_array_key($pagination, "limit", 10);
             $offset = safe_array_key($pagination, "offset", 0);
             $sort_by = safe_array_key($this->_data, "sort_by", []);
-            $column_name = safe_array_key($sort_by, "column_name", 'subject_name');
+            $column_name = safe_array_key($sort_by, "column_name", 'chapter_name');
             $order_by = safe_array_key($sort_by, "order_by", 'acs');
-            $this->_response["data"] = $this->subject_model->list($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type);
-            $this->_response["counts"] = $this->subject_model->list($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type);
+            $this->_response["data"] = $this->chapter_model->list($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type);
+            $this->_response["counts"] = $this->chapter_model->list($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type);
             $this->set_response($this->_response);
         }
     }
@@ -149,19 +149,19 @@ class Chapters extends REST_Controller
     public function get_details_by_id_post()
     {
         $this->_response["service_name"] = "subject/get_details_by_id";
-        $this->form_validation->set_rules('subject_id', 'Subject Id', 'trim|required|callback__check_subject_exist');
+        $this->form_validation->set_rules('chapter_id', 'Chapter Id', 'trim|required|callback__check_chapter_exist');
         if ($this->form_validation->run() == FALSE) {
             $errors = $this->form_validation->error_array();
             $this->_response["message"] = current($errors);
             $this->_response["errors"] = $errors;
             $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
         } else {
-            $subject_guid = safe_array_key($this->_data, "subject_id", "");
-            $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
-            $subject_id = safe_array_key($subject, "subject_id", "");
-            $data = $this->subject_model->get_details_by_id($subject_id);
+            $chapter_guid = safe_array_key($this->_data, "chapter_id", "");
+            $chapter = $this->app->get_row('chapters', 'chapter_id', ['chapter_guid' => $chapter_guid]);
+            $chapter_id = safe_array_key($chapter, "chapter_id", "");
+            $data = $this->chapter_model->get_details_by_id($chapter_id);
             $this->_response["data"] = $data;
-            $this->_response["message"] = "subjects details";
+            $this->_response["message"] = "chapter details";
             $this->set_response($this->_response);
         }
     }
@@ -169,23 +169,12 @@ class Chapters extends REST_Controller
 
 
     public function _check_unique_chapter($str)
-    {        
-        // $chapter_guid = safe_array_key($this->_data, "chapter_id", "");
-        // if (!empty($chapter_guid)) {
-        //     $rows = $this->app->get_rows('chapters', 'chapter_guid', [
-        //         'chapter_name' => strtolower($str),
-        //         "chapter_guid !=" => $chapter_guid
-        //     ]);
-        // } else {
-        //     $rows = $this->app->get_rows('chapters', 'chapter_guid', [
-        //         'chapter_name' => strtolower($str),
-        //     ]);
-        // }
+    {
         $subject_guid = safe_array_key($this->_data, "subject_id", "");
         $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
         $subject_id = safe_array_key($subject, "subject_id", "");
 
-        $chapter_guid = safe_array_key($this->_data, "subject_id", "");
+        $chapter_guid = safe_array_key($this->_data, "chapter_id", "");
 
         if (!empty($chapter_guid)) {
             $rows = $this->app->get_rows('chapters', 'chapter_guid', [
@@ -204,9 +193,6 @@ class Chapters extends REST_Controller
                 "subject_id " => $subject_id,
             ]);
         }
-
-
-
         if (count($rows) > 0) {
             $this->form_validation->set_message('_check_unique_chapter', 'chapter Name already in use.');
             return FALSE;
