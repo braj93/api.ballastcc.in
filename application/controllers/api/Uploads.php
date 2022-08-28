@@ -47,6 +47,7 @@ class Uploads extends REST_Controller {
 		$user_id = $this->rest->user_id;
 
 		$this->form_validation->set_rules('type', 'type', 'trim|required|in_list[excel,pdf,image,file,audio,audio_mp3,audio_wav,other_audio_mp3,other_audio_wav]');
+		
 		//$this->form_validation->set_rules('upfile', 'select file ', 'trim|required');
 		if ($this->form_validation->run() == FALSE) {
 			$errors = $this->form_validation->error_array();
@@ -54,14 +55,17 @@ class Uploads extends REST_Controller {
 			$this->_response["errors"] = $errors;
 			$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
 		} else {
+			
 			$this->load->model("users_model");
 			$this->load->model("uploads_model");
 			$type = safe_array_key($this->_data, "type", "");
 			$is_profile_picture = safe_array_key($this->_data, 'is_profile_picture', 0);
-
+			
 			if ($type == "image") {
 				$upload_data = $this->uploads_model->upload_image($this->_data, $user_id);
+				print_r($upload_data);die();
 			} elseif ($type == "file") {
+				// print_r($user_id);die();
 				$upload_data = $this->uploads_model->upload_file($this->_data, $user_id, $type);
 			} elseif ($type == "excel") {
 				$upload_data = $this->uploads_model->upload_file($this->_data, $user_id, $type);

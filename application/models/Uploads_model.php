@@ -17,6 +17,7 @@ class Uploads_model extends CI_Model {
 		parent::__construct();
 		$this->image_server = "local";
 		$this->upload_path = "./uploads";
+		
 	}
 
 	public function upload_base64($user_id, $original_name, $name, $ext, $file_size) {
@@ -92,7 +93,12 @@ class Uploads_model extends CI_Model {
 		$config['allowed_types'] = 'gif|jpg|png|JPG|GIF|PNG|jpeg|JPEG|mp3|wav';
 		$config['max_size'] = 10024;
 		$config['encrypt_name'] = TRUE;
-		$this->load->library('upload', $config);
+		// $this->load->library('upload', $config);
+		
+		$this->load->library('upload');		
+		// print_r($this->upload->do_upload('my_file_input_name'));
+		// die();
+		// print_r($this->upload);die();
 		if (!$this->upload->do_upload('qqfile')) {
 			$return['upload_status'] = FALSE;
 			$errors = $this->upload->error_msg;
@@ -106,7 +112,7 @@ class Uploads_model extends CI_Model {
 			//Shows all error messages as a string
 		} else {
 			$upload_data = $this->upload->data();
-
+			print_r($upload_data);die();
 			$file_name_ext = explode('.', $upload_data['file_name']);
 			$ext = strtolower(end($file_name_ext));
 
