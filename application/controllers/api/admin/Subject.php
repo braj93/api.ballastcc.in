@@ -213,4 +213,15 @@ class Subject extends REST_Controller
         }
         return TRUE;
     }
+    public function _check_course_exist($course_guid) {
+		if (!empty($course_guid)) {
+			$course_data = $this->app->get_row('courses', 'course_id', ['course_guid' => $course_guid]);
+			
+			if (empty($course_data)) {
+				$this->form_validation->set_message('_check_course_exist', 'Not valid course ID.');
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
 }

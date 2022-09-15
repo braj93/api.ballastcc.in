@@ -597,6 +597,7 @@ $config['allowed_cors_headers'] = [
 	'Accept',
 	'Access-Control-Request-Method',
 	'session-key',
+	'session_key',
 	'content-type',
 	'authorization',
 ];
