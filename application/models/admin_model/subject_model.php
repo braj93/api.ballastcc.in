@@ -102,7 +102,8 @@ GET SUBJECTS list
 
         if (!empty($keyword)) {
             $this->db->group_start();
-            $this->db->like('s.subject_name', $keyword, 'both');
+            $this->db->like('s.subject_name', $keyword, 'both');            
+			$this->db->or_like('c.course_name', $keyword, 'both');
             $this->db->group_end();
         }
 
