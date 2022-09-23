@@ -66,6 +66,22 @@ class Course_model extends CI_Model
 		$affected_rows_count = $this->db->affected_rows();
 		return $affected_rows_count;
 	}
+	public function get_subjects($course_id) {
+
+		$this->db->select('s.subject_name as subject_name');
+		$this->db->select('s.subject_guid as subject_id');
+		$this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS added_by', FALSE);
+		$this->db->select('s.status as status');
+		$this->db->select('s.created_at as created_at');
+
+		$this->db->from('subjects AS s');
+		$this->db->join('users AS u', 'u.user_id = s.added_by', 'LEFT');
+		$this->db->where('s.course_id', $course_id);
+		$query = $this->db->get();
+		// echo $this->db->last_query();die();
+		$results = $query->result_array();
+		return $results;
+	}
 
 	public function list($user_id, $keyword = '', $limit = 0, $offset = 0, $column_name, $order_by, $user_type)
 	{
@@ -110,6 +126,7 @@ class Course_model extends CI_Model
 				foreach ($results as $key => $value) {
 					$list[$key]['course_guid'] = $value['course_guid'];
 					$list[$key]['course_name'] = $value['course_name'];
+					$list[$key]['subjects'] = $this->get_subjects($value['course_id']);
 					$list[$key]['added_by'] = $value['added_by'];
 					$list[$key]['status'] = $value['status'];
 					$list[$key]['created_at'] = $value['created_at'];
@@ -137,7 +154,7 @@ class Course_model extends CI_Model
 		$this->db->join('users AS u', 'u.user_id = c.added_by', 'LEFT');
 		$this->db->where('c.course_id', $course_id);
 		$query = $this->db->get();
-		$reuslt = $query->row_array();		
+		$reuslt = $query->row_array();
 		// $reuslt['string'] = unique_random_string('campaign_templates', 'unique_string', [], 'alnum', 12);
 		return $reuslt;
 	}
