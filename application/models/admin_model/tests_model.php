@@ -227,8 +227,249 @@ GET TEST list BY CHAPTER ID
         // $reuslt['string'] = unique_random_string('campaign_templates', 'unique_string', [], 'alnum', 12);
         return $reuslt;
     }
+// ==============================test model end ======================================================================
+/*
+****
+***
+*
+*/
+// =========================================== question model start ============================================
+
+    /** create_user
+     * @param type $test_id, 
+     * @param type $question_type, 
+     * @param type $grading_type
+     * @param type $question_marks, 
+     * @param type $question
+     * @param type $user_id, 
+     * @param type $status
+     * @return type
+     */
+    public function create_question($test_id,$question_type,$grading_type,$question_marks,$question,$user_id,$status)
+    {
+        $this->db->insert('questions', [
+            "question_guid" => get_guid(),
+            "test_id" => $test_id,
+            "question_type" => $question_type,
+            "grading_type" => $grading_type,
+            "marks" => $question_marks,
+            "question" => $question,
+            "added_by" => $user_id,
+            "status" => $status,
+            "created_at" => DATETIME,
+            "updated_at" => DATETIME,
+        ]);
+        $question_id = $this->db->insert_id();
+        return $test_id;
+    }
+
+    /** create_user
+     * @param type $test_id, 
+     * @param type $test_name, 
+     * @param type $user_id, 
+     * @param type $status
+     * @return type
+     */
+    public function edit_question($question_id, $question_type, $grading_type, $question_marks, $question, $user_id, $status)
+    {
+        $data = [
+            "question_type" => $question_type,
+            "grading_type" => $grading_type,
+            "marks" => $question_marks,
+            "question" => $question,
+            "added_by" => $user_id,
+            "status" => $status,
+            "updated_at" => DATETIME,
+        ];
+
+        $this->db->update('questions', $data, array(
+            'question_id' => $question_id,
+        ));
+        $affected_rows_count = $this->db->affected_rows();
+        return $affected_rows_count;
+    }
+
+    /*
+***  
+GET SUBJECTS list
+***
+    */
+
+    public function Questionlist($user_id, $keyword = '', $limit = 0, $offset = 0, $column_name, $order_by, $user_type)
+    {
+        if ($limit > 0 && $offset >= 0) {
+            $this->db->limit($limit, $offset);
+            
+           
+            $this->db->select('IFNULL(q.question_guid,"") AS question_guid', FALSE);
+            $this->db->select('IFNULL(q.question,"") AS question', FALSE);
+            $this->db->select('IFNULL(q.question_type,"") AS question_type', FALSE);
+            $this->db->select('IFNULL(q.grading_type,"") AS grading_type', FALSE);
+            $this->db->select('IFNULL(q.marks,"") AS marks', FALSE);
+            $this->db->select('IFNULL(t.test_name,"") AS test_name', FALSE);
+            $this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS added_by', FALSE);
+            $this->db->select('IFNULL(q.status,"") AS status', FALSE);
+            $this->db->select('IFNULL(q.created_at,"") AS created_at', FALSE);
+            $this->db->select('IFNULL(q.updated_at,"") AS updated_at', FALSE);
+        } else {
+            $this->db->select('COUNT(t.test_id) as count', FALSE);
+        }
+        $this->db->from('questions AS q');        
+        $this->db->join('tests AS t', 't.test_id = q.test_id', 'LEFT');
+        $this->db->join('users AS u', 'u.user_id = q.added_by', 'LEFT');
+        $this->db->order_by('q.created_at', 'desc');
+
+        // if (!empty($filterBy)) {
+        // 	$this->db->like('u.status', $filterBy);
+        // }
+
+        if (!empty($keyword)) {
+            $this->db->group_start();
+            $this->db->like('q.question', $keyword, 'both');
+            $this->db->group_end();
+        }
+
+        if (($column_name !== '') && ($order_by !== '')) {
+            $this->db->order_by('q.' . $column_name, $order_by);
+        }
+        // if ($user_type != 'ADMIN') {
+        // 	$this->db->where('c.added_by', $user_id);
+        // }
+
+        $query = $this->db->get();
+        $results = $query->result_array();
+        if (($limit > 0) && ($offset >= 0)) {
+            if ($query->num_rows() > 0) {
+                $list = [];
+                foreach ($results as $key => $value) {
+                    $list[$key]['question_guid'] = $value['question_guid'];
+                    $list[$key]['question'] = $value['question'];                    
+                    $list[$key]['question_type'] = $value['question_type'];
+                    $list[$key]['grading_type'] = $value['grading_type'];
+                    $list[$key]['marks'] = $value['marks'];
+                    $list[$key]['test_name'] = $value['test_name'];
+                    $list[$key]['added_by'] = $value['added_by'];
+                    $list[$key]['status'] = $value['status'];
+                    $list[$key]['created_at'] = $value['created_at'];
+                    $list[$key]['updated_at'] = $value['updated_at'];
+                }
+                return $list;
+            } else {
+                return [];
+            }
+        } else {
+            return $query->row()->count;
+        }
+    }
+    /*
+***  
+GET TEST list BY CHAPTER ID
+***
+    */
+
+    public function Question_list_by_test_id($user_id, $keyword = '', $limit = 0, $offset = 0, $column_name, $order_by, $user_type, $test_id)
+    {
+        if ($limit > 0 && $offset >= 0) {
+            $this->db->limit($limit, $offset);
+            
+           
+            $this->db->select('IFNULL(q.question_guid,"") AS question_guid', FALSE);
+            $this->db->select('IFNULL(q.question,"") AS question', FALSE);
+            $this->db->select('IFNULL(q.question_type,"") AS question_type', FALSE);
+            $this->db->select('IFNULL(q.grading_type,"") AS grading_type', FALSE);
+            $this->db->select('IFNULL(q.marks,"") AS marks', FALSE);
+            $this->db->select('IFNULL(t.test_name,"") AS test_name', FALSE);
+            $this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS added_by', FALSE);
+            $this->db->select('IFNULL(q.status,"") AS status', FALSE);
+            $this->db->select('IFNULL(q.created_at,"") AS created_at', FALSE);
+            $this->db->select('IFNULL(q.updated_at,"") AS updated_at', FALSE);
+        } else {
+            $this->db->select('COUNT(t.test_id) as count', FALSE);
+        }
+        
+        $this->db->from('questions AS q');        
+        $this->db->join('tests AS t', 't.test_id = q.test_id', 'LEFT');
+        $this->db->join('users AS u', 'u.user_id = t.added_by', 'LEFT');
+        $this->db->where('q.test_id', $test_id);
+        $this->db->order_by('t.created_at', 'desc');
+
+        // if (!empty($filterBy)) {
+        // 	$this->db->like('u.status', $filterBy);
+        // }
+
+        if (!empty($keyword)) {
+            $this->db->group_start();
+            $this->db->like('q.question', $keyword, 'both');
+            $this->db->group_end();
+        }
+
+        if (($column_name !== '') && ($order_by !== '')) {
+            $this->db->order_by('t.' . $column_name, $order_by);
+        }
+        // if ($user_type != 'ADMIN') {
+        // 	$this->db->where('c.added_by', $user_id);
+        // }
+
+        $query = $this->db->get();
+        $results = $query->result_array();
+        if (($limit > 0) && ($offset >= 0)) {
+            if ($query->num_rows() > 0) {
+                $list = [];
+                foreach ($results as $key => $value) {
+                    // $list[$key]['test_guid'] = $value['test_guid'];
+                    // $list[$key]['test_name'] = $value['test_name'];
+                    // $list[$key]['chapter_name'] = $value['chapter_name'];
+                    // $list[$key]['added_by'] = $value['added_by'];
+                    // $list[$key]['status'] = $value['status'];
+                    // $list[$key]['created_at'] = $value['created_at'];
+                    // $list[$key]['updated_at'] = $value['updated_at'];
+                    $list[$key]['question_guid'] = $value['question_guid'];
+                    $list[$key]['question'] = $value['question'];                    
+                    $list[$key]['question_type'] = $value['question_type'];
+                    $list[$key]['grading_type'] = $value['grading_type'];
+                    $list[$key]['marks'] = $value['marks'];
+                    $list[$key]['test_name'] = $value['test_name'];
+                    $list[$key]['added_by'] = $value['added_by'];
+                    $list[$key]['status'] = $value['status'];
+                    $list[$key]['created_at'] = $value['created_at'];
+                    $list[$key]['updated_at'] = $value['updated_at'];
+                }
+                return $list;
+            } else {
+                return [];
+            }
+        } else {
+            return $query->row()->count;
+        }
+    }
 
     
+
+    public function get_question_details_by_id($question_id)
+    {
+        $this->db->select('IFNULL(q.question_guid,"") AS question_guid', FALSE);
+        $this->db->select('IFNULL(q.question,"") AS question', FALSE);
+        $this->db->select('IFNULL(q.question_type,"") AS question_type', FALSE);
+        $this->db->select('IFNULL(q.grading_type,"") AS grading_type', FALSE);
+        $this->db->select('IFNULL(q.marks,"") AS marks', FALSE);
+        $this->db->select('IFNULL(t.test_name,"") AS test_name', FALSE);
+        $this->db->select('IFNULL(t.test_guid,"") AS test_guid', FALSE);
+        $this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS added_by', FALSE);
+        $this->db->select('IFNULL(q.status,"") AS status', FALSE);
+        $this->db->select('IFNULL(q.created_at,"") AS created_at', FALSE);
+        $this->db->select('IFNULL(q.updated_at,"") AS updated_at', FALSE);
+        
+        $this->db->from('questions AS q');        
+        $this->db->join('tests AS t', 't.test_id = q.test_id', 'LEFT');
+        $this->db->join('users AS u', 'u.user_id = t.added_by', 'LEFT');
+        $this->db->where('q.question_id', $question_id);
+        $query = $this->db->get();
+        $reuslt = $query->row_array();
+        // $reuslt['string'] = unique_random_string('campaign_templates', 'unique_string', [], 'alnum', 12);
+        return $reuslt;
+    }
+
+
 
 
 
