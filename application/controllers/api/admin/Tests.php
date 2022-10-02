@@ -17,7 +17,7 @@ require APPPATH . '/libraries/REST_Controller.php';
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class Chapters extends REST_Controller
+class Tests extends REST_Controller
 {
 
     var $_data = array();
@@ -37,8 +37,7 @@ class Chapters extends REST_Controller
         ];
         $this->load->library('form_validation');
         $this->form_validation->set_data($this->_data);
-        $this->load->model("admin_model/chapter_model");
-        $this->load->model("admin_model/master_model");
+        $this->load->model("admin_model/tests_model");
         $this->load->library('MY_Form_validation');
     }
 
@@ -49,19 +48,19 @@ class Chapters extends REST_Controller
 
     public function test_get()
     {
-        echo 'Get Rest Controller of Subject';
+        echo 'Get Rest Controller of tests';
     }
 
     /**
      * CREATE COURSE
      */
-    public function add_chapter_post()
+    public function add_test_post()
     {
-        $this->_response["service_name"] = "admin/add_Subject";
+        $this->_response["service_name"] = "admin/add_test";
         $user_id = $this->rest->user_id;
 
-        $this->form_validation->set_rules('chapter_name', 'Chapter Name', 'trim|required|callback__check_unique_chapter');
-        $this->form_validation->set_rules('subject_id', 'Subject Id', 'trim|callback__check_subject_exist');
+        $this->form_validation->set_rules('test_name', 'Test Name', 'trim|required');
+        $this->form_validation->set_rules('chapter_id', 'Chapter Id', 'trim|callback__check_chapter_exist');
         $this->form_validation->set_rules('status', 'Status', 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
@@ -70,27 +69,27 @@ class Chapters extends REST_Controller
             $this->_response["errors"] = $errors;
             $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
         } else {
-            $name = safe_array_key($this->_data, "chapter_name", "");
-            $subject_guid = safe_array_key($this->_data, "subject_id", "");
-            $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
-            $chapter_name = strtolower($name);
-            $subject_id = safe_array_key($subject, "subject_id", "");
+            $name = safe_array_key($this->_data, "test_name", "");
+            $chapter_guid = safe_array_key($this->_data, "chapter_id", "");
+            $chapter = $this->app->get_row('chapters', 'chapter_id', ['chapter_guid' => $chapter_guid]);
+            $test_name = strtolower($name);
+            $chapter_id = safe_array_key($chapter, "chapter_id", "");
             $status = safe_array_key($this->_data, "status", "");
-            $chapter_id = $this->chapter_model->create_chapter($chapter_name, $subject_id, $user_id, $status);
-            $this->_response["message"] = 'chapter created successfully';
+            $test_id = $this->tests_model->create_test($test_name, $chapter_id, $user_id, $status);
+            $this->_response["message"] = 'test created successfully';
             $this->set_response($this->_response);
         }
     }
     /**
      * EDIT COURSE
      */
-    public function edit_chapter_post()
+    public function edit_test_post()
     {
-        $this->_response["service_name"] = "admin/edit_subject";
+        $this->_response["service_name"] = "admin/edit_test";
         $user_id = $this->rest->user_id;
+        $this->form_validation->set_rules('test_id', 'Test Id', 'trim|required|callback__check_test_exist');
         $this->form_validation->set_rules('chapter_id', 'Chapter Id', 'trim|required|callback__check_chapter_exist');
-        $this->form_validation->set_rules('subject_id', 'Subject Id', 'trim|callback__check_subject_exist');
-        $this->form_validation->set_rules('chapter_name', 'Chapter Name', 'trim|required|callback__check_unique_chapter');
+        $this->form_validation->set_rules('test_name', 'Test Name', 'trim|required');
         $this->form_validation->set_rules('status', 'Status', 'trim|required');
         if ($this->form_validation->run() == FALSE) {
             $errors = $this->form_validation->error_array();
@@ -98,27 +97,26 @@ class Chapters extends REST_Controller
             $this->_response["errors"] = $errors;
             $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
         } else {
+            $test_guid = safe_array_key($this->_data, "test_id", "");
+            $test = $this->app->get_row('tests', 'test_id', ['test_guid' => $test_guid]);
+            $test_id = safe_array_key($test, "test_id", "");
+            $name = safe_array_key($this->_data, "test_name", "");
             $chapter_guid = safe_array_key($this->_data, "chapter_id", "");
             $chapter = $this->app->get_row('chapters', 'chapter_id', ['chapter_guid' => $chapter_guid]);
+            $test_name = strtolower($name);
             $chapter_id = safe_array_key($chapter, "chapter_id", "");
-
-            $name = safe_array_key($this->_data, "chapter_name", "");
-            $subject_guid = safe_array_key($this->_data, "subject_id", "");
-            $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
-            $chapter_name = strtolower($name);
-            $subject_id = safe_array_key($subject, "subject_id", "");
             $status = safe_array_key($this->_data, "status", "");
-            $this->chapter_model->edit_chapter($chapter_id, $subject_id, $chapter_name, $user_id, $status);
-            $this->_response['message'] = "Chapter Updated successfully.";
+            $this->tests_model->edit_test($test_id, $chapter_id, $test_name, $user_id, $status);
+            $this->_response['message'] = "test Updated successfully.";
             $this->set_response($this->_response);
         }
     }
     /**
-     * LIST COURSE
+     * LIST Tests
      */
-    public function chapter_list_post()
+    public function test_list_post()
     {
-        $this->_response["service_name"] = "admin/subject_list";
+        $this->_response["service_name"] = "admin/test_list";
         $this->form_validation->set_rules('keyword', 'keyword', 'trim');
         if ($this->form_validation->run() == FALSE) {
             $errors = $this->form_validation->error_array();
@@ -135,10 +133,10 @@ class Chapters extends REST_Controller
             $limit = safe_array_key($pagination, "limit", 10);
             $offset = safe_array_key($pagination, "offset", 0);
             $sort_by = safe_array_key($this->_data, "sort_by", []);
-            $column_name = safe_array_key($sort_by, "column_name", 'chapter_name');
+            $column_name = safe_array_key($sort_by, "column_name", 'test_name');
             $order_by = safe_array_key($sort_by, "order_by", 'acs');
-            $this->_response["data"] = $this->chapter_model->list($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type);
-            $this->_response["counts"] = $this->chapter_model->list($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type);
+            $this->_response["data"] = $this->tests_model->Testlist($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type);
+            $this->_response["counts"] = $this->tests_model->Testlist($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type);
             $this->set_response($this->_response);
         }
     }
@@ -146,11 +144,11 @@ class Chapters extends REST_Controller
      /**
      * LIST OF SUBJECTS IN COURSE
      */
-    public function chapter_list_by_subject_id_post()
+    public function test_list_by_chapter_id_post()
     {
-        $this->_response["service_name"] = "admin/chapter_list_by_subject_id";
+        $this->_response["service_name"] = "admin/test_list_by_chapter_id";
         $this->form_validation->set_rules('keyword', 'keyword', 'trim');
-        $this->form_validation->set_rules('subject_id', 'Subject Id', 'trim|required|callback__check_subject_exist');
+        $this->form_validation->set_rules('chapter_id', 'Subject Id', 'trim|required|callback__check_chapter_exist');
         if ($this->form_validation->run() == FALSE) {
             $errors = $this->form_validation->error_array();
             $this->_response["message"] = current($errors);
@@ -166,14 +164,14 @@ class Chapters extends REST_Controller
             $limit = safe_array_key($pagination, "limit", 10);
             $offset = safe_array_key($pagination, "offset", 0);
             $sort_by = safe_array_key($this->_data, "sort_by", []);
-            $column_name = safe_array_key($sort_by, "column_name", 'chapter_name');
+            $column_name = safe_array_key($sort_by, "column_name", 'test_name');
             $order_by = safe_array_key($sort_by, "order_by", 'acs');
 
-            $subject_guid = safe_array_key($this->_data, "subject_id", "");
-            $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
-            $subject_id = safe_array_key($subject, "subject_id", "");
-            $this->_response["data"] = $this->chapter_model->list_by_subject_id($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type,$subject_id);
-            $this->_response["counts"] = $this->chapter_model->list_by_subject_id($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type,$subject_id);
+            $chapter_guid = safe_array_key($this->_data, "chapter_id", "");
+            $chapter = $this->app->get_row('chapters', 'chapter_id', ['chapter_guid' => $chapter_guid]);
+            $chapter_id = safe_array_key($chapter, "chapter_id", "");
+            $this->_response["data"] = $this->tests_model->list_by_chapter_id($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type,$chapter_id);
+            $this->_response["counts"] = $this->tests_model->list_by_chapter_id($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type,$chapter_id);
             $this->set_response($this->_response);
         }
     }
@@ -181,25 +179,31 @@ class Chapters extends REST_Controller
     /**
      * GET Course DETAILS BY ID API
      */
-    public function get_details_by_id_post()
+    public function get_test_details_by_id_post()
     {
-        $this->_response["service_name"] = "subject/get_details_by_id";
-        $this->form_validation->set_rules('chapter_id', 'Chapter Id', 'trim|required|callback__check_chapter_exist');
+        $this->_response["service_name"] = "subject/get_test_details_by_id";
+        $this->form_validation->set_rules('test_id', 'Test Id', 'trim|required|callback__check_test_exist');
         if ($this->form_validation->run() == FALSE) {
             $errors = $this->form_validation->error_array();
             $this->_response["message"] = current($errors);
             $this->_response["errors"] = $errors;
             $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
         } else {
-            $chapter_guid = safe_array_key($this->_data, "chapter_id", "");
-            $chapter = $this->app->get_row('chapters', 'chapter_id', ['chapter_guid' => $chapter_guid]);
-            $chapter_id = safe_array_key($chapter, "chapter_id", "");
-            $data = $this->chapter_model->get_details_by_id($chapter_id);
+            $test_guid = safe_array_key($this->_data, "test_id", "");
+            $test = $this->app->get_row('tests', 'test_id', ['test_guid' => $test_guid]);
+            $test_id = safe_array_key($test, "test_id", "");
+            $data = $this->tests_model->get_test_details_by_id($test_id);
             $this->_response["data"] = $data;
-            $this->_response["message"] = "chapter details";
+            $this->_response["message"] = "test details";
             $this->set_response($this->_response);
         }
     }
+
+
+
+    // ========================================= end test controller =============================================
+
+
 
 
 
@@ -254,6 +258,18 @@ class Chapters extends REST_Controller
 
             if (empty($chapter)) {
                 $this->form_validation->set_message('_check_chapter_exist', 'Not valid Chapter ID.');
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+    public function _check_test_exist($test_guid)
+    {
+        if (!empty($test_guid)) {
+            $test = $this->app->get_row('tests', 'test_id', ['test_guid' => $test_guid]);
+
+            if (empty($test)) {
+                $this->form_validation->set_message('_check_test_exist', 'Not valid Test ID.');
                 return FALSE;
             }
         }
