@@ -124,8 +124,8 @@ class App extends CI_Model {
 	 */
 	public function user_data($session_key) {
 		$this->db->select('uls.session_key');
-		$this->db->select('u.user_id, u.user_guid, u.email,u.mobile, u.first_name, u.last_name');
-		$this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS name');
+		$this->db->select('u.user_id, u.user_guid, u.email,u.mobile, u.first_name, u.last_name, u.user_type');
+		$this->db->select('CONCAT(u.first_name, " ",u.last_name) AS name');
 		$this->db->select('IFNULL(u.last_login_at,"") AS last_login_at', FALSE);
 		$this->db->from('user_login_sessions AS uls');
 		$this->db->join('users AS u', 'uls.user_id = u.user_id');

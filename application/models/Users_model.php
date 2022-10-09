@@ -80,8 +80,8 @@ class Users_model extends CI_Model {
 
 	/** create_user
 	 * @param type $name
-	 * @param type $email
-	 * @param type $password
+	 * @param String $email
+	 * @param String $password
 	 * @return type
 	 */
 	public function create_user($first_name, $last_name, $mobile,  $email, $password) {

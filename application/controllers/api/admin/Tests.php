@@ -357,6 +357,119 @@ class Tests extends REST_Controller
         }
     }
 
+    // ========================================= end questions controller =============================================
+
+
+
+    /**
+     * CREATE ANSWER
+     */
+    public function add_answer_post()
+    {
+        $this->_response["service_name"] = "admin/add_answer";
+        $user_id = $this->rest->user_id;
+        $this->form_validation->set_rules('question_id', 'Question Id', 'trim|required|callback__check_question_exist');
+        $this->form_validation->set_rules('answer', 'Answer', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $errors = $this->form_validation->error_array();
+            $this->_response["message"] = current($errors);
+            $this->_response["errors"] = $errors;
+            $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+        } else {
+            $question_guid = safe_array_key($this->_data, "question_id", "");
+            $question = $this->app->get_row('questions', 'question_id', ['question_guid' => $question_guid]);
+            $question_id = safe_array_key($question, "question_id", "");            
+            $answer = safe_array_key($this->_data, "answer", "");
+            $answer_id = $this->tests_model->create_answer($question_id, $answer, $user_id );
+            $this->_response["message"] = 'Answer created successfully';
+            $this->set_response($this->_response);
+        }
+    }
+    /**
+     * EDIT ANSWER
+     */
+    public function edit_answer_post()
+    {
+        $this->_response["service_name"] = "admin/edit_answer";
+        $user_id = $this->rest->user_id;
+        $this->form_validation->set_rules('answer_id', 'Answer Id', 'trim|required|callback__check_answer_exist');        
+        $this->form_validation->set_rules('answer', 'Answer', 'trim|required');
+        if ($this->form_validation->run() == FALSE) {
+            $errors = $this->form_validation->error_array();
+            $this->_response["message"] = current($errors);
+            $this->_response["errors"] = $errors;
+            $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+        } else {
+            $answer_guid = safe_array_key($this->_data, "answer_id", "");
+            $answer = $this->app->get_row('answers', 'answer_id', ['answer_guid' => $answer_guid]);
+            $answer_id = safe_array_key($answer, "answer_id", "");
+            $answer = safe_array_key($this->_data, "answer", "");
+
+            $this->tests_model->edit_answer($answer_id, $answer);
+            $this->_response['message'] = "answer Updated successfully.";
+            $this->set_response($this->_response);
+        }
+    }
+  
+    /**
+     * LIST OF ANSWERS IN QUESTION
+     */
+    public function answers_list_by_question_id_post()
+    {
+        $this->_response["service_name"] = "admin/answers_list_by_question_id";
+        $this->form_validation->set_rules('keyword', 'keyword', 'trim');
+        $this->form_validation->set_rules('question_id', 'Question Id', 'trim|required|callback__check_question_exist');
+        if ($this->form_validation->run() == FALSE) {
+            $errors = $this->form_validation->error_array();
+            $this->_response["message"] = current($errors);
+            $this->_response["errors"] = $errors;
+            $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+        } else {
+            // $this->load->model("users_model");
+            $user_id = $this->rest->user_id;
+            $user = $this->app->get_row('users', 'user_type', ['user_id' => $user_id]);
+            $user_type = safe_array_key($user, "user_type", "");
+            $keyword = safe_array_key($this->_data, "keyword", "");
+            $pagination = safe_array_key($this->_data, "pagination", []);
+            $limit = safe_array_key($pagination, "limit", 10);
+            $offset = safe_array_key($pagination, "offset", 0);
+            $sort_by = safe_array_key($this->_data, "sort_by", []);
+            $column_name = safe_array_key($sort_by, "column_name", 'title');
+            $order_by = safe_array_key($sort_by, "order_by", 'acs');
+
+            $question_guid = safe_array_key($this->_data, "question_id", "");
+            $question = $this->app->get_row('questions', 'question_id', ['question_guid' => $question_guid]);
+            $question_id = safe_array_key($question, "question_id", "");
+
+            $this->_response["data"] = $this->tests_model->Answers_list_by_question_id($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type, $question_id);
+            $this->_response["counts"] = $this->tests_model->Answers_list_by_question_id($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type, $question_id);
+            $this->set_response($this->_response);
+        }
+    }
+
+    /**
+     * GET ANSWER DETAILS BY ID API
+     */
+    public function get_answer_details_by_id_post()
+    {
+        $this->_response["service_name"] = "tests/get_answer_details_by_id";
+        $this->form_validation->set_rules('answer_id', 'Answer Id', 'trim|required|callback__check_answer_exist');
+        if ($this->form_validation->run() == FALSE) {
+            $errors = $this->form_validation->error_array();
+            $this->_response["message"] = current($errors);
+            $this->_response["errors"] = $errors;
+            $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+        } else {
+            $answer_guid = safe_array_key($this->_data, "answer_id", "");
+            $answer = $this->app->get_row('answers', 'answer_id', ['answer_guid' => $answer_guid]);
+            $answer_id = safe_array_key($answer, "answer_id", "");
+            $data = $this->tests_model->get_answer_details_by_id($answer_id);
+            $this->_response["data"] = $data;
+            $this->_response["message"] = "answer details";
+            $this->set_response($this->_response);
+        }
+    }
+
 
 
 
@@ -436,6 +549,18 @@ class Tests extends REST_Controller
 
             if (empty($question)) {
                 $this->form_validation->set_message('_check_question_exist', 'Not valid Question ID.');
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+    public function _check_answer_exist($answer_guid)
+    {
+        if (!empty($answer_guid)) {
+            $answer = $this->app->get_row('answers', 'answer_id', ['answer_guid' => $answer_guid]);
+
+            if (empty($answer)) {
+                $this->form_validation->set_message('_check_answer_exist', 'Not valid Answer ID.');
                 return FALSE;
             }
         }

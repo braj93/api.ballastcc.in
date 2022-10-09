@@ -788,7 +788,7 @@ public function register_members_post() {
 		$this->_response["service_name"] = "users/login";
 		// $this->form_validation->set_rules('device_type', 'device type', 'trim|required|in_list[' . implode($this->app->device_types, ",") . ']');
 		// $this->form_validation->set_rules('device_token', 'device token', 'trim');
-		$this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('email', 'email', 'trim|required');
 		$this->form_validation->set_rules('password', 'password', 'trim|required');
 
 		if ($this->form_validation->run() == FALSE) {

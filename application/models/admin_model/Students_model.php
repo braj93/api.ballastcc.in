@@ -71,6 +71,48 @@ class Students_model extends CI_Model {
 		$student_id = $this->db->insert_id();
 		return $student_id;
 	}
+
+	/** create_student_user
+	 * @param type $first_name, 
+	 * @param type $last_name, 
+	 * @param type $father_name,  
+	 * @param type $mother_name, 
+	 * @param type $dob, 
+	 * @param type $class, 
+	 * @param type $board, 
+	 * @param type $medium,
+	 * @param type  $batch, 
+	 * @param type $registration_date, 
+	 * @param type $profile_id, 
+	 * @param type $school, $address, 
+	 * @param type $mobile,
+	 * @param type $status
+	 * @param type $email
+	 * @return type
+	 */
+	public function create_student_user($reg_number, $reg_date, $first_name, $last_name, $father_name,  $mother_name, $dob, $subjects, $class_id, $board_id, $medium,  $total_fee, $remain_fee, $batch_id, $profile_id, $school, $address, $mobile,$alt_mobile, $email, $status) {
+		$allSubjects = base64_encode(serialize($subjects));
+		$this->db->insert('users', [
+			"user_guid" => get_guid(),
+			"user_type" => 'STUDENT',
+			"first_name" => $first_name,
+			"last_name" => $last_name,
+			"email" => $reg_number,
+			"password" => md5($dob),
+			"dob" => $dob,
+			"mobile" => $mobile,
+			// "father_name" => $father_name,
+			// "mother_name" => $mother_name,			
+			"status" => $status,
+			"created_at" => DATETIME,
+			"updated_at" => DATETIME,
+		]);
+		$user_id = $this->db->insert_id();
+		return $user_id;
+	}
+
+
+	
 	
 	// GET STUDENTS LIST
 
@@ -108,6 +150,7 @@ class Students_model extends CI_Model {
 		if (!empty($keyword)) {
 			$this->db->group_start();
 			$this->db->like('s.first_name', $keyword, 'both');
+			$this->db->or_like('s.last_name', $keyword, 'both');
 			$this->db->or_like('s.reg_number', $keyword, 'both');
 			$this->db->or_like('cl.name', $keyword, 'both');
 			$this->db->group_end();

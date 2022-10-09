@@ -52,7 +52,6 @@ class Students extends REST_Controller {
  * STUDENT REGISTERATION
  */
 	public function add_student_post() {
-		// print_r('you are on controller');
 		// die();
 		$this->_response["service_name"] = "admin/addStudent";
 		$session_key = $this->rest->key;
@@ -68,7 +67,7 @@ class Students extends REST_Controller {
 
 		$subjects = safe_array_key($this->_data, "subjects", "");
 		if (empty($subjects)) {
-			$this->form_validation->set_rules('subjects', 'subjects', 'trim|required');
+			$this->form_validation->set_rules('subjects', 'subjects', 'trim');
 		} else {
 			$this->form_validation->set_rules('subjects', 'subjects', 'trim|callback__check_subjects');
 		}
@@ -79,6 +78,8 @@ class Students extends REST_Controller {
 		$this->form_validation->set_rules('address', 'Address', 'trim|required');
 		$this->form_validation->set_rules('mobile', 'Mobile no.', 'trim|required');
 		$this->form_validation->set_rules('status', 'Status', 'trim|required');
+		// print_r($this->form_validation->run());
+		// die();
 		if ($this->form_validation->run() == FALSE) {
 			$errors = $this->form_validation->error_array();
 			$this->_response["message"] = current($errors);
@@ -111,6 +112,7 @@ class Students extends REST_Controller {
 			$status = safe_array_key($this->_data, "status", "");
 
 			$student_id = $this->students_model->create_student($reg_number, $reg_date, $first_name, $last_name, $father_name,  $mother_name, $dob, $subjects, $class_id, $board_id, $medium,  $total_fee, $remain_fee, $batch_id, $profile_id, $school, $address, $mobile,$alt_mobile, $email, $status);
+			$user_id = $this->students_model->create_student_user($reg_number, $reg_date, $first_name, $last_name, $father_name,  $mother_name, $dob, $subjects, $class_id, $board_id, $medium,  $total_fee, $remain_fee, $batch_id, $profile_id, $school, $address, $mobile,$alt_mobile, $email, $status);
 			$this->_response["message"] = 'Student registered successfully';
 			$this->set_response($this->_response);
 	

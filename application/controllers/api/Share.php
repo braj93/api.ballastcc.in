@@ -43,6 +43,7 @@ class Share extends REST_Controller {
 		$this->set_response($this->_response);
 
 	}
+	
 
 	public function get_campaign_list_for_reporting_tikisites_get() {
 		$this->_response["data"] = $this->share_model->get_campaign_list_for_reporting_tikisites();		
