@@ -283,8 +283,9 @@ class Users extends REST_Controller {
 
 public function register_members_post() {
 	$this->_response["service_name"] = "users/register";
-	$this->form_validation->set_rules('name', 'Name', 'trim|required|min_length[2]|max_length[50]|callback__check_alpha_space');
-	$this->form_validation->set_rules('mobile', 'mobile', 'trim|required');
+	$this->form_validation->set_rules('first_name', 'First Name', 'trim|required|min_length[2]|max_length[50]|callback__check_alpha_space');
+	$this->form_validation->set_rules('last_name', 'Last Name', 'trim|required|min_length[2]|max_length[50]|callback__check_alpha_space');
+	$this->form_validation->set_rules('mobile', 'mobile', 'trim');
 	$this->form_validation->set_rules('email', 'email', 'trim|required|valid_email|callback__unique_email');
 	$this->form_validation->set_rules('password', 'password', 'trim|required|min_length[8]|max_length[12]');
 	if ($this->form_validation->run() == FALSE) {
@@ -293,7 +294,7 @@ public function register_members_post() {
 		$this->_response["errors"] = $errors;
 		$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
 	} else {
-		$first_name = safe_array_key($this->_data, "name", "");
+		$first_name = safe_array_key($this->_data, "first_name", "");
 		$last_name = safe_array_key($this->_data, "last_name", "");
 		$mobile = safe_array_key($this->_data, "mobile", "");
 		$email = safe_array_key($this->_data, "email", "");

@@ -92,6 +92,7 @@ class Users_model extends CI_Model {
 			"first_name" => $first_name,
 			"last_name" => $last_name,
 			"mobile" => $mobile,
+			"user_type" => "USER",
 			// "user_sub_type" => $user_sub_type,
 			// "business_name" => $business_name,
 			"status" => "ACTIVE",

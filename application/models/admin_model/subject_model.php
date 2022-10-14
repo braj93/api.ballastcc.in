@@ -24,7 +24,7 @@ class Subject_model extends CI_Model
      */
 
 
-    /** create_user
+    /** create_subject
      * @param type $subject_name, 
      * @param type $user_id, 
      * @param type $status
@@ -45,7 +45,7 @@ class Subject_model extends CI_Model
         return $student_id;
     }
 
-    /** create_user
+    /** edit_subject
      * @param type $subject_id, 
      * @param type $subject_name, 
      * @param type $user_id, 

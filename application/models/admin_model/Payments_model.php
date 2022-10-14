@@ -23,7 +23,7 @@ class Payments_model extends CI_Model {
 
     
 
-    /** create_user
+    /** pay_fees
 	 * @param type $student_id, 
 	 * @param type $amount, 
 	 * @param type $type,  

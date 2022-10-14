@@ -24,7 +24,7 @@ class Course_model extends CI_Model
 	 */
 
 
-	/** create_user
+	/** create_course
 	 * @param type $name, 
 	 * @param type $user_id, 
 	 * @param type $status
@@ -44,7 +44,7 @@ class Course_model extends CI_Model
 		return $student_id;
 	}
 
-	/** create_user
+	/** edit_course
 	 * @param type $course_id, 
 	 * @param type $name, 
 	 * @param type $user_id, 

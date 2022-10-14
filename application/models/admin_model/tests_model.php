@@ -24,7 +24,7 @@ class tests_model extends CI_Model
      */
 
 
-    /** create_user
+    /** create_test
      * @param type $subject_name, 
      * @param type $user_id, 
      * @param type $status
@@ -45,7 +45,7 @@ class tests_model extends CI_Model
         return $test_id;
     }
 
-    /** create_user
+    /** edit_test
      * @param type $test_id, 
      * @param type $test_name, 
      * @param type $user_id, 
@@ -235,7 +235,7 @@ GET TEST list BY CHAPTER ID
 */
 // =========================================== question model start ============================================
 
-    /** create_user
+    /** create_question
      * @param type $test_id, 
      * @param type $question_type, 
      * @param type $grading_type
@@ -263,7 +263,7 @@ GET TEST list BY CHAPTER ID
         return $test_id;
     }
 
-    /** create_user
+    /** edit_question
      * @param type $test_id, 
      * @param type $test_name, 
      * @param type $user_id, 
@@ -476,7 +476,7 @@ GET TEST list BY CHAPTER ID
 */
 // =========================================== answers model start ============================================
 
-    /** create_user
+    /** create_answer
      * @param type $test_id, 
      * @param type $question_type, 
      * @param type $grading_type
@@ -500,7 +500,7 @@ GET TEST list BY CHAPTER ID
         return $answer_id;
     }
 
-    /** create_user
+    /** edit_answer
      * @param type $answer_id, 
      * @param type $answer,
      */

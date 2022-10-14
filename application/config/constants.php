@@ -93,9 +93,9 @@ define('DATETIME', gmdate("Y-m-d H:i:s"));
 define('DATE', gmdate("Y-m-d"));
 define('DATE_FORMAT', "Y-m-d");
 define('NOREPLY_EMAIL', "noreply@marketingtiki.com");
-define('SUPPORT_EMAIL', "support@marketingtiki.com");
-define('CC_EMAIL', "ryan@bciinteractive.com");
-define('FROM_NAME', "Ballast Coaching Classes");
+define('SUPPORT_EMAIL', "ballastcc@gmail.com");
+define('CC_EMAIL', "ballastcc@gmail.com");
+define('FROM_NAME', "BALLAST COACHING CLASSES");
 define('CONTACT_US_EMAIL_SUBMISSION', "ballastcc@gmail.com");
 
 define('ANALYTICS_INTERVAL', '15552000');
@@ -128,8 +128,8 @@ case 'production':
 	define('STRIPE_SKEY', 'sk_test_yzdkYc6t9GzoDMEfTeNBcDuG00rVcpv242');
 	define('STRIPE_PRODUCT_ID', 'prod_I2T0PUIwVRuHto');
 	define('SMTP_HOST',  'smtp.gmail.com');
-	define('SMTP_USER',  'exactrishi@gmail.com');
-	define('SMTP_PASSWORD',  'ugskzxgoftwncdfh');
+	define('SMTP_USER',  'ballastcc@gmail.com');
+	define('SMTP_PASSWORD',  '8370010921');
 	define('CALL_RAIL_TOKEN',  '57b29b5700be014e6a0975fb539a085f');
 	define('CALL_RAIL_ACCOUNT_ID',  'ACCfec31210be444298ba7d66ecae991317');
 	break;
@@ -145,8 +145,8 @@ case 'development':
 	define('STRIPE_SKEY', 'sk_test_yzdkYc6t9GzoDMEfTeNBcDuG00rVcpv242');
 	define('STRIPE_PRODUCT_ID', 'prod_I2T0PUIwVRuHto');
 	define('SMTP_HOST',  'smtp.gmail.com');
-    define('SMTP_USER',  'exactrishi@gmail.com');
-    define('SMTP_PASSWORD',  'ugskzxgoftwncdfh');
+	define('SMTP_USER',  'ballastcc@gmail.com');
+	define('SMTP_PASSWORD',  '8370010921');
 	define('CALL_RAIL_TOKEN',  '57b29b5700be014e6a0975fb539a085f');
 	define('CALL_RAIL_ACCOUNT_ID',  'ACCfec31210be444298ba7d66ecae991317');
 default:	

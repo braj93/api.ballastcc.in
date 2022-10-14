@@ -22,7 +22,7 @@ class Students_model extends CI_Model {
 	 */
 
 
-	/** create_user
+	/** create_student
 	 * @param type $first_name, 
 	 * @param type $last_name, 
 	 * @param type $father_name,  
