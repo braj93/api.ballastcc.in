@@ -218,6 +218,7 @@ $config['auth_override_class_method']['users']['resend_account_verification'] = 
 $config['auth_override_class_method']['users']['check_push_notification'] = 'none';
 $config['auth_override_class_method']['masters']['*'] = 'none';
 $config['auth_override_class_method']['share']['*'] = 'none';
+$config['auth_override_class_method']['common']['*'] = 'none';
 
 // ---Uncomment list line for the wildard unit test
 // $config['auth_override_class_method']['wildcard_test_cases']['*'] = 'basic';
