@@ -61,7 +61,8 @@ class Chapters extends REST_Controller
         $user_id = $this->rest->user_id;
 
         $this->form_validation->set_rules('chapter_name', 'Chapter Name', 'trim|required|callback__check_unique_chapter');
-        $this->form_validation->set_rules('subject_id', 'Subject Id', 'trim|callback__check_subject_exist');
+        $this->form_validation->set_rules('chapter_summary', 'Chapter summary', 'trim');
+        $this->form_validation->set_rules('course_id', 'Course Id', 'trim|required|callback__check_course_exist');
         $this->form_validation->set_rules('status', 'Status', 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
@@ -71,12 +72,13 @@ class Chapters extends REST_Controller
             $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
         } else {
             $name = safe_array_key($this->_data, "chapter_name", "");
-            $subject_guid = safe_array_key($this->_data, "subject_id", "");
-            $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
+            $summary = safe_array_key($this->_data, "chapter_summary", "");
+            $course_guid = safe_array_key($this->_data, "course_id", "");
+            $course = $this->app->get_row('courses', 'course_id', ['course_guid' => $course_guid]);
             $chapter_name = strtolower($name);
-            $subject_id = safe_array_key($subject, "subject_id", "");
+            $course_id = safe_array_key($course, "course_id", "");
             $status = safe_array_key($this->_data, "status", "");
-            $chapter_id = $this->chapter_model->create_chapter($chapter_name, $subject_id, $user_id, $status);
+            $chapter_id = $this->chapter_model->create_chapter($chapter_name,$summary, $course_id, $user_id, $status);
             $this->_response["message"] = 'chapter created successfully';
             $this->set_response($this->_response);
         }
@@ -89,8 +91,9 @@ class Chapters extends REST_Controller
         $this->_response["service_name"] = "admin/edit_subject";
         $user_id = $this->rest->user_id;
         $this->form_validation->set_rules('chapter_id', 'Chapter Id', 'trim|required|callback__check_chapter_exist');
-        $this->form_validation->set_rules('subject_id', 'Subject Id', 'trim|callback__check_subject_exist');
+        $this->form_validation->set_rules('course_id', 'Course Id', 'trim|required|callback__check_course_exist');
         $this->form_validation->set_rules('chapter_name', 'Chapter Name', 'trim|required|callback__check_unique_chapter');
+        $this->form_validation->set_rules('chapter_summary', 'Chapter summary', 'trim');
         $this->form_validation->set_rules('status', 'Status', 'trim|required');
         if ($this->form_validation->run() == FALSE) {
             $errors = $this->form_validation->error_array();
@@ -103,12 +106,13 @@ class Chapters extends REST_Controller
             $chapter_id = safe_array_key($chapter, "chapter_id", "");
 
             $name = safe_array_key($this->_data, "chapter_name", "");
-            $subject_guid = safe_array_key($this->_data, "subject_id", "");
-            $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
+            $summary = safe_array_key($this->_data, "chapter_summary", "");
+            $course_guid = safe_array_key($this->_data, "course_id", "");
+            $course = $this->app->get_row('courses', 'course_id', ['course_guid' => $course_guid]);
             $chapter_name = strtolower($name);
-            $subject_id = safe_array_key($subject, "subject_id", "");
+            $course_id = safe_array_key($course, "course_id", "");
             $status = safe_array_key($this->_data, "status", "");
-            $this->chapter_model->edit_chapter($chapter_id, $subject_id, $chapter_name, $user_id, $status);
+            $this->chapter_model->edit_chapter($chapter_id, $course_id, $chapter_name,$summary, $user_id, $status);
             $this->_response['message'] = "Chapter Updated successfully.";
             $this->set_response($this->_response);
         }
@@ -146,11 +150,11 @@ class Chapters extends REST_Controller
      /**
      * LIST OF SUBJECTS IN COURSE
      */
-    public function chapter_list_by_subject_id_post()
+    public function chapter_list_by_course_id_post()
     {
-        $this->_response["service_name"] = "admin/chapter_list_by_subject_id";
+        $this->_response["service_name"] = "admin/chapter_list_by_course_id";
         $this->form_validation->set_rules('keyword', 'keyword', 'trim');
-        $this->form_validation->set_rules('subject_id', 'Subject Id', 'trim|required|callback__check_subject_exist');
+        $this->form_validation->set_rules('course_id', 'Course Id', 'trim|required|callback__check_course_exist');
         if ($this->form_validation->run() == FALSE) {
             $errors = $this->form_validation->error_array();
             $this->_response["message"] = current($errors);
@@ -169,11 +173,16 @@ class Chapters extends REST_Controller
             $column_name = safe_array_key($sort_by, "column_name", 'chapter_name');
             $order_by = safe_array_key($sort_by, "order_by", 'acs');
 
-            $subject_guid = safe_array_key($this->_data, "subject_id", "");
-            $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
-            $subject_id = safe_array_key($subject, "subject_id", "");
-            $this->_response["data"] = $this->chapter_model->list_by_subject_id($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type,$subject_id);
-            $this->_response["counts"] = $this->chapter_model->list_by_subject_id($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type,$subject_id);
+            $course_guid = safe_array_key($this->_data, "course_id", "");
+            $course = $this->app->get_row('courses', 'course_id', ['course_guid' => $course_guid]);
+            $course_id = safe_array_key($course, "course_id", "");
+
+            // $subject_guid = safe_array_key($this->_data, "subject_id", "");
+            // $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
+            // $subject_id = safe_array_key($subject, "subject_id", "");
+
+            $this->_response["data"] = $this->chapter_model->list_by_course_id($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type,$course_id);
+            $this->_response["counts"] = $this->chapter_model->list_by_course_id($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type,$course_id);
             $this->set_response($this->_response);
         }
     }
@@ -205,27 +214,31 @@ class Chapters extends REST_Controller
 
     public function _check_unique_chapter($str)
     {
-        $subject_guid = safe_array_key($this->_data, "subject_id", "");
-        $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
-        $subject_id = safe_array_key($subject, "subject_id", "");
+        $course_guid = safe_array_key($this->_data, "course_id", "");
+        $course = $this->app->get_row('courses', 'course_id', ['course_guid' => $course_guid]);
+        $course_id = safe_array_key($course, "course_id", "");
+
+        // $subject_guid = safe_array_key($this->_data, "subject_id", "");
+        // $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
+        // $subject_id = safe_array_key($subject, "subject_id", "");
 
         $chapter_guid = safe_array_key($this->_data, "chapter_id", "");
 
         if (!empty($chapter_guid)) {
             $rows = $this->app->get_rows('chapters', 'chapter_guid', [
                 'chapter_name' => strtolower($str),
-                "subject_id " => $subject_id,
+                "course_id " => $course_id,
                 "chapter_guid !=" => $chapter_guid
             ]);
-        } else if (!empty($subject_guid)) {
+        } else if (!empty($course_guid)) {
             $rows = $this->app->get_rows('chapters', 'chapter_guid', [
                 'chapter_name' => strtolower($str),
-                "subject_id " => $subject_id,
+                "course_id " => $course_id,
             ]);
         } else {
             $rows = $this->app->get_rows('chapters', 'chapter_guid', [
                 'chapter_name' => strtolower($str),
-                "subject_id " => $subject_id,
+                "course_id " => $course_id,
             ]);
         }
         if (count($rows) > 0) {
@@ -235,13 +248,13 @@ class Chapters extends REST_Controller
             return TRUE;
         }
     }
-    public function _check_subject_exist($subject_guid)
+    public function _check_course_exist($course_guid)
     {
-        if (!empty($subject_guid)) {
-            $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
+        if (!empty($course_guid)) {
+            $course = $this->app->get_row('courses', 'course_id', ['course_guid' => $course_guid]);
 
-            if (empty($subject)) {
-                $this->form_validation->set_message('_check_subject_exist', 'Not valid Subject ID.');
+            if (empty($course)) {
+                $this->form_validation->set_message('_check_course_exist', 'Not valid Course ID.');
                 return FALSE;
             }
         }

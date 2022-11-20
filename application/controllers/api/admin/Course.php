@@ -56,6 +56,7 @@ class Course extends REST_Controller {
 		$user_id = $this->rest->user_id;
 		
 		$this->form_validation->set_rules('course_name', 'Course Name', 'trim|required|callback__check_unique_course');
+		$this->form_validation->set_rules('description', 'Description', 'trim');
 		$this->form_validation->set_rules('status', 'Status', 'trim|required');
 
 		if ($this->form_validation->run() == FALSE) {
@@ -65,9 +66,10 @@ class Course extends REST_Controller {
 			$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
 		} else {
 			$name = safe_array_key($this->_data, "course_name", "");			
+			$description = safe_array_key($this->_data, "description", "");			
 			$status = safe_array_key($this->_data, "status", "");
 			$course_name = strtolower($name);
-			$course_id = $this->course_model->create_course( $course_name, $user_id, $status);
+			$course_id = $this->course_model->create_course( $course_name,$description, $user_id, $status);
 			$this->_response["message"] = 'Course created successfully';
 			$this->set_response($this->_response);
 	
@@ -81,6 +83,7 @@ class Course extends REST_Controller {
 		$user_id = $this->rest->user_id;
 		$this->form_validation->set_rules('course_id', 'Course Id', 'trim|required|callback__check_course_exist');
 		$this->form_validation->set_rules('course_name', 'Name', 'trim|required|callback__check_unique_course');
+		$this->form_validation->set_rules('description', 'Description', 'trim');
 		$this->form_validation->set_rules('status', 'Status', 'trim|required');
 		if ($this->form_validation->run() == FALSE) {
 			$errors = $this->form_validation->error_array();
@@ -92,9 +95,10 @@ class Course extends REST_Controller {
 			$course = $this->app->get_row('courses', 'course_id', ['course_guid' => $course_guid]);
 			$course_id = safe_array_key($course, "course_id", "");
 			$course_name = safe_array_key($this->_data, "course_name", "");
+			$description = safe_array_key($this->_data, "description", "");
 			$status = safe_array_key($this->_data, "status", "");
-			$this->course_model->edit_course($course_id, $course_name, $user_id, $status);			
-			$this->_response['message'] = "Updated successfully.";
+			$this->course_model->edit_course($course_id, $course_name, $description, $user_id, $status);			
+			$this->_response['message'] = "course Updated successfully.";
 			$this->set_response($this->_response);
 		}
 	}

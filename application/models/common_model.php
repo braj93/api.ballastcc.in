@@ -53,7 +53,7 @@ class Common_model extends CI_Model
 		return $results;
 	}
 
-    public function course_list($keyword = '', $limit = 0, $offset = 0, $column_name, $order_by)
+    public function course_list($keyword = '', $limit = 0, $offset = 0, $column_name, $order_by,$course_id)
     {
         if ($limit > 0 && $offset >= 0) {
             $this->db->limit($limit, $offset);
@@ -70,6 +70,9 @@ class Common_model extends CI_Model
         $this->db->from('courses AS c');
         $this->db->join('users AS u', 'u.user_id = c.added_by', 'LEFT');
         $this->db->where('c.status', "ACTIVE");
+         if (!empty($course_id)) {
+        	$this->db->where('c.course_id', $course_id);
+        }
         $this->db->order_by('c.created_at', 'desc');
 
         // if (!empty($filterBy)) {

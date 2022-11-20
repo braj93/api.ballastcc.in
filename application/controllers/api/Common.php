@@ -50,6 +50,7 @@ class Common extends REST_Controller {
 	public function courses_list_post() {
 		$this->_response["service_name"] = "common/courses_list";
 		$this->form_validation->set_rules('keyword', 'keyword', 'trim');
+		$this->form_validation->set_rules('course_id', 'Course Id', 'trim|callback__check_course_exist');
 		if ($this->form_validation->run() == FALSE) {
 			$errors = $this->form_validation->error_array();
 			$this->_response["message"] = current($errors);
@@ -60,6 +61,12 @@ class Common extends REST_Controller {
 			// $user_id = $this->rest->user_id;
 			// $user = $this->app->get_row('users', 'user_type', ['user_id' => $user_id]);
 			// $user_type = safe_array_key($user, "user_type", "");
+			$course_id="";
+			$course_guid = safe_array_key($this->_data, "course_id", "");
+			if(!empty($course_guid)){
+			$course = $this->app->get_row('courses', 'course_id', ['course_guid' => $course_guid]);
+			$course_id = safe_array_key($course, "course_id", "");			
+			}
 			$keyword = safe_array_key($this->_data, "keyword", "");
 			$pagination = safe_array_key($this->_data, "pagination", []);
 			$limit = safe_array_key($pagination, "limit", 10);
@@ -67,8 +74,8 @@ class Common extends REST_Controller {
 			$sort_by = safe_array_key($this->_data, "sort_by", []);
 			$column_name = safe_array_key($sort_by, "column_name", 'course_name');
 			$order_by = safe_array_key($sort_by, "order_by", 'acs');
-			$this->_response["data"] = $this->common_model->course_list($keyword, $limit, $offset, $column_name, $order_by);
-			$this->_response["counts"] = $this->common_model->course_list($keyword, 0, 0, $column_name, $order_by);
+			$this->_response["data"] = $this->common_model->course_list($keyword, $limit, $offset, $column_name, $order_by,$course_id);
+			$this->_response["counts"] = $this->common_model->course_list($keyword, 0, 0, $column_name, $order_by,$course_id);
 			$this->set_response($this->_response);
 		}
 	}
@@ -102,6 +109,17 @@ class Common extends REST_Controller {
 	}
 
 
+	public function _check_course_exist($course_guid) {
+		if (!empty($course_guid)) {
+			$course_data = $this->app->get_row('courses', 'course_id', ['course_guid' => $course_guid]);
+			
+			if (empty($course_data)) {
+				$this->form_validation->set_message('_check_course_exist', 'Not valid course ID.');
+				return FALSE;
+			}
+		}
+		return TRUE;
+	}
 
 
 }
