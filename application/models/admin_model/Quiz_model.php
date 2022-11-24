@@ -291,6 +291,26 @@ GET CHAPTER list BY SUBJECT ID
         return $affected_rows_count;
     }
 
+    public function get_options($qq_id)
+    {
+
+        $this->db->select('IFNULL(qo.option_guid,"") AS option_guid', FALSE);
+        $this->db->select('IFNULL(qo.option_title,"") AS option_title', FALSE);
+        $this->db->select('IFNULL(qo.option_summary,"") AS option_summary', FALSE);
+        $this->db->select('IFNULL(qq.title,"") AS question_title', FALSE);
+        $this->db->select('IFNULL(qq.created_at,"") AS created_at', FALSE);
+        $this->db->select('IFNULL(qq.updated_at,"") AS updated_at', FALSE);
+        $this->db->from('quiz_options AS qo');
+        $this->db->join('quiz_questions AS qq', 'qq.qq_id = qo.question_id', 'LEFT');
+        $this->db->where('qo.question_id', $qq_id);
+        $this->db->order_by('qo.created_at', 'desc');
+
+        $query = $this->db->get();
+        // echo $this->db->last_query();die();
+        $results = $query->result_array();
+        return $results;
+    }
+
     /*
 ***  
 GET SUBJECTS list
@@ -301,6 +321,7 @@ GET SUBJECTS list
     {
         if ($limit > 0 && $offset >= 0) {
             $this->db->limit($limit, $offset);
+            $this->db->select('IFNULL(qq.qq_id,"") AS qq_id', FALSE);
             $this->db->select('IFNULL(qq.qq_guid,"") AS qq_guid', FALSE);
             $this->db->select('IFNULL(qq.type,"") AS type', FALSE);
             $this->db->select('IFNULL(qq.title,"") AS title', FALSE);
@@ -347,6 +368,7 @@ GET SUBJECTS list
                     $list[$key]['type'] = $value['type'];
                     $list[$key]['title'] = $value['title'];
                     $list[$key]['summary'] = $value['summary'];
+                    $list[$key]['options'] = $this->get_options($value['qq_id']);
                     $list[$key]['marks'] = $value['marks'];
                     $list[$key]['quiz_name'] = $value['quiz_name'];
                     $list[$key]['status'] = $value['status'];
@@ -384,14 +406,14 @@ GET SUBJECTS list
     }
 
     // =============================================================== quiz question option model start =============================================================
-     /** create_lesson
+    /** create_lesson
      * @param type $title, 
      * @param type $summary, 
      * @param type $lesson_id, 
      * @param type $status
      * @return type
      */
-    public function create_quiz_question_option($qq_id,$title, $summary, $user_id)
+    public function create_quiz_question_option($qq_id, $title, $summary, $user_id)
     {
         $this->db->insert('quiz_options', [
             "option_guid" => get_guid(),
@@ -404,9 +426,9 @@ GET SUBJECTS list
         $option_id = $this->db->insert_id();
         return $option_id;
     }
-    
 
-        /** edit_quiz_question_option
+
+    /** edit_quiz_question_option
      * @param type $qa_id, 
      * @param type $lesson_id, 
      * @param type $title, 
@@ -415,13 +437,12 @@ GET SUBJECTS list
      * @param type $status
      * @return type
      */
-    public function edit_quiz_question_option($option_id, $title, $summary,$qq_id, $user_id)
-    {        
+    public function edit_quiz_question_option($option_id, $title, $summary, $qq_id, $user_id)
+    {
         $data = [
             "option_title" => $title,
-            "option_summary" => $summary,            
+            "option_summary" => $summary,
             "question_id" => $qq_id,
-            "created_at" => DATETIME,
             "updated_at" => DATETIME,
         ];
 
@@ -432,5 +453,141 @@ GET SUBJECTS list
         return $affected_rows_count;
     }
 
+    /*
+***  
+GET SUBJECTS list
+***
+    */
+
+    public function options_list($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type, $qq_id = "")
+    {
+        if ($limit > 0 && $offset >= 0) {
+            $this->db->limit($limit, $offset);
+            $this->db->select('IFNULL(qo.option_guid,"") AS option_guid', FALSE);
+            $this->db->select('IFNULL(qo.option_title,"") AS option_title', FALSE);
+            $this->db->select('IFNULL(qo.option_summary,"") AS option_summary', FALSE);
+            $this->db->select('IFNULL(qq.title,"") AS question_title', FALSE);
+            $this->db->select('IFNULL(qq.created_at,"") AS created_at', FALSE);
+            $this->db->select('IFNULL(qq.updated_at,"") AS updated_at', FALSE);
+        } else {
+            $this->db->select('COUNT(qo.option_id) as count', FALSE);
+        }
+        $this->db->from('quiz_options AS qo');
+        $this->db->join('quiz_questions AS qq', 'qq.qq_id = qo.question_id', 'LEFT');
+        if (!empty($qq_id)) {
+            $this->db->where('qo.question_id', $qq_id);
+        }
+        $this->db->order_by('qo.created_at', 'desc');
+
+        // if (!empty($filterBy)) {
+        // 	$this->db->like('u.status', $filterBy);
+        // }
+
+        if (!empty($keyword)) {
+            $this->db->group_start();
+            $this->db->like('qo.option_title', $keyword, 'both');
+            $this->db->group_end();
+        }
+
+        if (($column_name !== '') && ($order_by !== '')) {
+            $this->db->order_by('qo.' . $column_name, $order_by);
+        }
+        // if ($user_type != 'ADMIN') {
+        // 	$this->db->where('c.added_by', $user_id);
+        // }
+
+        $query = $this->db->get();
+        $results = $query->result_array();
+        if (($limit > 0) && ($offset >= 0)) {
+            if ($query->num_rows() > 0) {
+                $list = [];
+                foreach ($results as $key => $value) {
+                    $list[$key]['option_guid'] = $value['option_guid'];
+                    $list[$key]['option_title'] = $value['option_title'];
+                    $list[$key]['option_summary'] = $value['option_summary'];
+                    $list[$key]['question_title'] = $value['question_title'];
+                    $list[$key]['created_at'] = $value['created_at'];
+                    $list[$key]['updated_at'] = $value['updated_at'];
+                }
+                return $list;
+            } else {
+                return [];
+            }
+        } else {
+            return $query->row()->count;
+        }
+    }
+
+
+
+    public function get_options_details_by_id($option_id)
+    {
+        $this->db->select('IFNULL(qo.option_guid,"") AS option_guid', FALSE);
+        $this->db->select('IFNULL(qo.option_title,"") AS option_title', FALSE);
+        $this->db->select('IFNULL(qo.option_summary,"") AS option_summary', FALSE);
+        $this->db->select('IFNULL(qq.title,"") AS question_title', FALSE);
+        $this->db->select('IFNULL(qq.created_at,"") AS created_at', FALSE);
+        $this->db->select('IFNULL(qq.updated_at,"") AS updated_at', FALSE);
+
+        $this->db->from('quiz_options AS qo');
+        $this->db->join('quiz_questions AS qq', 'qq.qq_id = qo.question_id', 'LEFT');
+        $this->db->where('qo.option_id', $option_id);
+        $this->db->order_by('qo.created_at', 'desc');
+        $query = $this->db->get();
+        $reuslt = $query->row_array();
+        // $reuslt['string'] = unique_random_string('campaign_templates', 'unique_string', [], 'alnum', 12);
+        return $reuslt;
+    }
+
     // =============================================================== quiz question option model end =============================================================
+    // =============================================================== quiz question solution model start =============================================================
+
+    
+       /** create_lesson
+     * @param type $title, 
+     * @param type $summary, 
+     * @param type $lesson_id, 
+     * @param type $status
+     * @return type
+     */
+    public function create_quiz_question_solution($qq_id, $solution_text, $option_id, $user_id)
+    {
+        $this->db->insert('quiz_answers', [
+            "qans_guid" => get_guid(),
+            "qq_id" => $qq_id,
+            "soultion" => $solution_text,
+            "quiz_option_id" => $option_id,
+            "created_at" => DATETIME,
+            "updated_at" => DATETIME,
+        ]);
+        $option_id = $this->db->insert_id();
+        return $option_id;
+    }
+
+        /** edit_quiz_question_solution
+     * @param type $qa_id, 
+     * @param type $lesson_id, 
+     * @param type $title, 
+     * @param type $summary, 
+     * @param type $answer, 
+     * @param type $status
+     * @return type
+     */
+    public function edit_quiz_question_solution($qans_id, $solution_text, $qq_id, $option_id, $user_id)
+    {
+        $data = [
+            "soultion" => $solution_text,
+            "qq_id" => $qq_id,
+            "quiz_option_id" => $option_id,
+            "updated_at" => DATETIME,
+        ];
+
+        $this->db->update('quiz_answers', $data, array(
+            'qans_id' => $qans_id,
+        ));
+        $affected_rows_count = $this->db->affected_rows();
+        return $affected_rows_count;
+    }
+
+    // =============================================================== quiz question solution model end =============================================================
 }
