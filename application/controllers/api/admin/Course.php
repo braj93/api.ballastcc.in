@@ -66,10 +66,18 @@ class Course extends REST_Controller {
 			$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
 		} else {
 			$name = safe_array_key($this->_data, "course_name", "");			
-			$description = safe_array_key($this->_data, "description", "");			
+			$description = safe_array_key($this->_data, "description", "");	
+			$course_media_id = safe_array_key($this->_data, "course_media_id", "");		
 			$status = safe_array_key($this->_data, "status", "");
 			$course_name = strtolower($name);
-			$course_id = $this->course_model->create_course( $course_name,$description, $user_id, $status);
+			if ($course_media_id) {
+				$course_media_guid = safe_array_key($this->_data, "course_media_id", "");
+				$media_data = $this->app->get_row('media', 'media_id, name', ['media_guid' => $course_media_guid]);
+				$course_media_id = safe_array_key($media_data, "media_id", "");
+			}
+
+
+			$course_id = $this->course_model->create_course( $course_name,$description,$course_media_id, $user_id, $status);
 			$this->_response["message"] = 'Course created successfully';
 			$this->set_response($this->_response);
 	

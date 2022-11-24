@@ -30,12 +30,13 @@ class Course_model extends CI_Model
 	 * @param type $status
 	 * @return type
 	 */
-	public function create_course($course_name,$description, $user_id, $status)
+	public function create_course($course_name,$description,$course_media_id, $user_id, $status)
 	{
 		$this->db->insert('courses', [
 			"course_guid" => get_guid(),
 			"course_name" => $course_name,
 			"description" => $description,
+			"media" => $course_media_id,
 			"added_by" => $user_id,
 			"status" => $status,
 			"created_at" => DATETIME,
