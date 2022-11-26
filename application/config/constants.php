@@ -134,12 +134,12 @@ case 'production':
 	define('CALL_RAIL_ACCOUNT_ID',  'ACCfec31210be444298ba7d66ecae991317');
 	break;
 case 'development':
-	define('SITE_ROOT', 'http://localhost/bcci');
+	define('SITE_ROOT', 'api.ballastcc.com');
 	define('DB_HOST', 'localhost');
 	define('DB_NAME', 'ballast');
 	define('DB_USERNAME', 'root');
 	define('DB_PASSWORD', '');
-	define('SITE_ADDR', 'http://localhost:4200/');
+	define('SITE_ADDR', 'http://localhost:3000/');
 	// Stripe API configuration
 	define('STRIPE_PUBLISHABLE_KEY', 'pk_test_DSSTxP5NaHXwInGOlRX2rYM300aoJSRuBB');
 	define('STRIPE_SKEY', 'sk_test_yzdkYc6t9GzoDMEfTeNBcDuG00rVcpv242');

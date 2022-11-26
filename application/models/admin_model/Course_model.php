@@ -23,6 +23,10 @@ class Course_model extends CI_Model
 	 * @return type
 	 */
 
+	public function update_media_status($media_id) {
+		$this->db->update('media', ['status' => 'PENDING'], ['media_id' => $media_id]);
+		return TRUE;
+	}
 
 	/** create_course
 	 * @param type $name, 
@@ -94,6 +98,7 @@ class Course_model extends CI_Model
 			$this->db->select('IFNULL(c.course_guid,"") AS course_guid', FALSE);
 			$this->db->select('IFNULL(c.course_name,"") AS course_name', FALSE);
 			$this->db->select('IFNULL(c.description,"") AS description', FALSE);
+			$this->db->select('IFNULL(m.name,"") AS media_name', FALSE);
 			$this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS added_by', FALSE);
 			$this->db->select('IFNULL(c.status,"") AS status', FALSE);
 			$this->db->select('IFNULL(c.created_at,"") AS created_at', FALSE);
@@ -103,6 +108,7 @@ class Course_model extends CI_Model
 		}
 		$this->db->from('courses AS c');
 		$this->db->join('users AS u', 'u.user_id = c.added_by', 'LEFT');
+		$this->db->join('media AS m', 'm.media_id = c.media', 'LEFT');
 		$this->db->order_by('c.created_at', 'desc');
 
 		// if (!empty($filterBy)) {
@@ -131,6 +137,7 @@ class Course_model extends CI_Model
 					$list[$key]['course_guid'] = $value['course_guid'];
 					$list[$key]['course_name'] = $value['course_name'];
 					$list[$key]['description'] = $value['description'];
+					$list[$key]['media_url'] = $value['media_name'] ? site_url('/uploads/images/' . $value['media_name']) : "";
 					// $list[$key]['subjects'] = $this->get_subjects($value['course_id']);
 					$list[$key]['added_by'] = $value['added_by'];
 					$list[$key]['status'] = $value['status'];
@@ -164,4 +171,6 @@ class Course_model extends CI_Model
 		// $reuslt['string'] = unique_random_string('campaign_templates', 'unique_string', [], 'alnum', 12);
 		return $reuslt;
 	}
+
+
 }

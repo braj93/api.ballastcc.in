@@ -1,6 +1,6 @@
 <?php
 
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 // This can be removed if you use __autoload() in config.php OR use Modular Extensions
 /** @noinspection PhpIncludeInspection */
@@ -17,11 +17,13 @@ require APPPATH . '/libraries/REST_Controller.php';
  * @license         MIT
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
-class Course extends REST_Controller {
+class Course extends REST_Controller
+{
 
 	var $_data = array();
 
-	function __construct() {
+	function __construct()
+	{
 		// Construct the parent class
 		parent::__construct();
 
@@ -36,25 +38,29 @@ class Course extends REST_Controller {
 		$this->load->library('form_validation');
 		$this->form_validation->set_data($this->_data);
 		$this->load->model("admin_model/course_model");
+		$this->load->model("uploads_model");
 		$this->load->model("admin_model/master_model");
 		$this->load->library('MY_Form_validation');
 	}
 
-	public function index_get() {
+	public function index_get()
+	{
 		$this->set_response($this->_response);
 	}
 
-	public function test_get() {
+	public function test_get()
+	{
 		echo 'Get Rest Controller of Course';
 	}
 
-    /**
- * CREATE COURSE
- */
-	public function add_course_post() {
-		$this->_response["service_name"] = "admin/addCourse";		
+	/**
+	 * CREATE COURSE
+	 */
+	public function add_course_post()
+	{
+		$this->_response["service_name"] = "admin/addCourse";
 		$user_id = $this->rest->user_id;
-		
+
 		$this->form_validation->set_rules('course_name', 'Course Name', 'trim|required|callback__check_unique_course');
 		$this->form_validation->set_rules('description', 'Description', 'trim');
 		$this->form_validation->set_rules('status', 'Status', 'trim|required');
@@ -65,28 +71,27 @@ class Course extends REST_Controller {
 			$this->_response["errors"] = $errors;
 			$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
 		} else {
-			$name = safe_array_key($this->_data, "course_name", "");			
-			$description = safe_array_key($this->_data, "description", "");	
-			$course_media_id = safe_array_key($this->_data, "course_media_id", "");		
+			$name = safe_array_key($this->_data, "course_name", "");
+			$description = safe_array_key($this->_data, "description", "");
+			$course_media_id = safe_array_key($this->_data, "course_media_id", "");
 			$status = safe_array_key($this->_data, "status", "");
 			$course_name = strtolower($name);
-			if ($course_media_id) {
+			if (!empty($course_media_id)) {
 				$course_media_guid = safe_array_key($this->_data, "course_media_id", "");
 				$media_data = $this->app->get_row('media', 'media_id, name', ['media_guid' => $course_media_guid]);
 				$course_media_id = safe_array_key($media_data, "media_id", "");
+				$media_id = $this->uploads_model->update_media_status($course_media_id, "ACTIVE");
 			}
-
-
-			$course_id = $this->course_model->create_course( $course_name,$description,$course_media_id, $user_id, $status);
+			$course_id = $this->course_model->create_course($course_name, $description, $course_media_id, $user_id, $status);
 			$this->_response["message"] = 'Course created successfully';
 			$this->set_response($this->_response);
-	
 		}
 	}
-    /**
- * EDIT COURSE
- */
-	public function edit_course_post() {
+	/**
+	 * EDIT COURSE
+	 */
+	public function edit_course_post()
+	{
 		$this->_response["service_name"] = "admin/edit_course";
 		$user_id = $this->rest->user_id;
 		$this->form_validation->set_rules('course_id', 'Course Id', 'trim|required|callback__check_course_exist');
@@ -105,15 +110,16 @@ class Course extends REST_Controller {
 			$course_name = safe_array_key($this->_data, "course_name", "");
 			$description = safe_array_key($this->_data, "description", "");
 			$status = safe_array_key($this->_data, "status", "");
-			$this->course_model->edit_course($course_id, $course_name, $description, $user_id, $status);			
+			$this->course_model->edit_course($course_id, $course_name, $description, $user_id, $status);
 			$this->_response['message'] = "course Updated successfully.";
 			$this->set_response($this->_response);
 		}
 	}
-/**
- * LIST COURSE
- */
-	public function courses_list_post() {
+	/**
+	 * LIST COURSE
+	 */
+	public function courses_list_post()
+	{
 		$this->_response["service_name"] = "admin/courses_list";
 		$this->form_validation->set_rules('keyword', 'keyword', 'trim');
 		if ($this->form_validation->run() == FALSE) {
@@ -139,10 +145,11 @@ class Course extends REST_Controller {
 		}
 	}
 
-		/**
+	/**
 	 * GET Course DETAILS BY ID API
 	 */
-	public function get_details_by_id_post() {
+	public function get_details_by_id_post()
+	{
 		$this->_response["service_name"] = "course/get_details_by_id";
 		$this->form_validation->set_rules('course_id', 'Course Id', 'trim|required|callback__check_course_exist');
 		if ($this->form_validation->run() == FALSE) {
@@ -167,14 +174,15 @@ class Course extends REST_Controller {
 
 
 
-	public function _check_unique_course($str) {
+	public function _check_unique_course($str)
+	{
 		$course_guid = safe_array_key($this->_data, "course_id", "");
-		if(!empty($course_guid)){
+		if (!empty($course_guid)) {
 			$rows = $this->app->get_rows('courses', 'course_guid', [
 				'course_name' => strtolower($str),
 				"course_guid !=" => $course_guid
 			]);
-		}else{
+		} else {
 			$rows = $this->app->get_rows('courses', 'course_guid', [
 				'course_name' => strtolower($str),
 			]);
@@ -188,10 +196,11 @@ class Course extends REST_Controller {
 			return TRUE;
 		}
 	}
-	public function _check_course_exist($course_guid) {
+	public function _check_course_exist($course_guid)
+	{
 		if (!empty($course_guid)) {
 			$course_data = $this->app->get_row('courses', 'course_id', ['course_guid' => $course_guid]);
-			
+
 			if (empty($course_data)) {
 				$this->form_validation->set_message('_check_course_exist', 'Not valid course ID.');
 				return FALSE;

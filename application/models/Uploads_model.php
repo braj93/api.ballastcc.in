@@ -11,12 +11,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Uploads_model extends CI_Model {
 
 	var $image_server = "local";
-	var $upload_path = "./uploads";
+	var $upload_path = "uploads/";
 	public function __construct() {
 		// Call the CI_Model constructor
 		parent::__construct();
 		$this->image_server = "local";
-		$this->upload_path = "./uploads";
+		$this->upload_path = "uploads/";
 		
 	}
 
@@ -88,21 +88,17 @@ class Uploads_model extends CI_Model {
 	}
 
 	public function upload_image($data, $user_id) {
-		// $this->check_directory_exist($this->upload_path);
-		$config['upload_path'] = $this->upload_path . "/images/";
+		$this->check_directory_exist($this->upload_path. "images/");
+		$config['upload_path'] = $this->upload_path . "images/";
 		$config['allowed_types'] = 'gif|jpg|png|JPG|GIF|PNG|jpeg|JPEG|mp3|wav';
 		$config['max_size'] = 10024;
 		$config['encrypt_name'] = TRUE;
-		// $this->load->library('upload', $config);
-		
-		$this->load->library('upload');		
-		// print_r($this->upload->do_upload('my_file_input_name'));
-		// die();
-		// print_r($this->upload);die();
+		$this->load->library('upload');	
+		$this->upload->initialize($config);		
 		if (!$this->upload->do_upload('qqfile')) {
 			$return['upload_status'] = FALSE;
 			$errors = $this->upload->error_msg;
-			// print_r($errors);die();
+			print_r($errors);die();
 			if (!empty($errors)) {
 				$return['message'] = $errors['0']; // first message
 			} else {
@@ -112,7 +108,7 @@ class Uploads_model extends CI_Model {
 			//Shows all error messages as a string
 		} else {
 			$upload_data = $this->upload->data();
-			print_r($upload_data);die();
+			// print_r($upload_data);die();
 			$file_name_ext = explode('.', $upload_data['file_name']);
 			$ext = strtolower(end($file_name_ext));
 
@@ -209,7 +205,9 @@ class Uploads_model extends CI_Model {
 	}
 
 	public function check_directory_exist($dir_name) {
-		$d = $_SERVER['DOCUMENT_ROOT'] . '/' . $dir_name;
+		$d = $_SERVER['DOCUMENT_ROOT']. '/' .SITE_ROOT.'/'. $dir_name;
+		// print_r($d);
+		// die();
 		if (!is_dir($d)) {
 			mkdir($d, 0777);
 		}
