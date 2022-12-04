@@ -53,7 +53,7 @@ class Common_model extends CI_Model
 		return $results;
 	}
 
-    public function course_list($keyword = '', $limit = 0, $offset = 0, $column_name, $order_by,$course_id)
+    public function course_list($column_name, $order_by,$course_id,$keyword = '', $limit = 0, $offset = 0)
     {
         if ($limit > 0 && $offset >= 0) {
             $this->db->limit($limit, $offset);
@@ -124,7 +124,7 @@ GET SUBJECTS list
 ***
     */
 
-    public function subject_list($keyword = '', $limit = 0, $offset = 0, $column_name, $order_by)
+    public function subject_list($column_name, $order_by,$keyword = '', $limit = 0, $offset = 0)
     {
         if ($limit > 0 && $offset >= 0) {
             $this->db->limit($limit, $offset);

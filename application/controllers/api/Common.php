@@ -74,8 +74,8 @@ class Common extends REST_Controller {
 			$sort_by = safe_array_key($this->_data, "sort_by", []);
 			$column_name = safe_array_key($sort_by, "column_name", 'course_name');
 			$order_by = safe_array_key($sort_by, "order_by", 'acs');
-			$this->_response["data"] = $this->common_model->course_list($keyword, $limit, $offset, $column_name, $order_by,$course_id);
-			$this->_response["counts"] = $this->common_model->course_list($keyword, 0, 0, $column_name, $order_by,$course_id);
+			$this->_response["data"] = $this->common_model->course_list($column_name, $order_by,$course_id,$keyword, $limit, $offset);
+			$this->_response["counts"] = $this->common_model->course_list($column_name, $order_by,$course_id,$keyword, 0, 0);
 			$this->set_response($this->_response);
 		}
 	}
@@ -103,8 +103,8 @@ class Common extends REST_Controller {
 			$sort_by = safe_array_key($this->_data, "sort_by", []);
 			$column_name = safe_array_key($sort_by, "column_name", 'subject_name');
 			$order_by = safe_array_key($sort_by, "order_by", 'acs');
-			$this->_response["data"] = $this->common_model->subject_list($keyword, $limit, $offset, $column_name, $order_by);
-			$this->_response["counts"] = $this->common_model->subject_list($keyword, 0, 0, $column_name, $order_by);
+			$this->_response["data"] = $this->common_model->subject_list($column_name, $order_by,$keyword, $limit, $offset);
+			$this->_response["counts"] = $this->common_model->subject_list($column_name, $order_by,$keyword, 0, 0);
 			$this->set_response($this->_response);
 		}
 	}
