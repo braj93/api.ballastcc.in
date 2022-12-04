@@ -60,6 +60,7 @@ class Common_model extends CI_Model
             $this->db->select('IFNULL(c.course_id,"") AS course_id', FALSE);
             $this->db->select('IFNULL(c.course_guid,"") AS course_guid', FALSE);
             $this->db->select('IFNULL(c.course_name,"") AS course_name', FALSE);
+            $this->db->select('IFNULL(m.name,"") AS media_name', FALSE);
             $this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS added_by', FALSE);
             $this->db->select('IFNULL(c.status,"") AS status', FALSE);
             $this->db->select('IFNULL(c.created_at,"") AS created_at', FALSE);
@@ -69,6 +70,7 @@ class Common_model extends CI_Model
         }
         $this->db->from('courses AS c');
         $this->db->join('users AS u', 'u.user_id = c.added_by', 'LEFT');
+        $this->db->join('media AS m', 'm.media_id = c.media', 'LEFT');
         $this->db->where('c.status', "ACTIVE");
          if (!empty($course_id)) {
         	$this->db->where('c.course_id', $course_id);
@@ -100,7 +102,8 @@ class Common_model extends CI_Model
                 foreach ($results as $key => $value) {
                     $list[$key]['course_guid'] = $value['course_guid'];
                     $list[$key]['course_name'] = $value['course_name'];
-                    $list[$key]['subjects'] = $this->get_subjects($value['course_id']);
+                    $list[$key]['media_url'] = $value['media_name'] ? site_url('/uploads/images/' . $value['media_name']) : "";
+                    // $list[$key]['subjects'] = $this->get_subjects($value['course_id']);
                     $list[$key]['added_by'] = $value['added_by'];
                     $list[$key]['status'] = $value['status'];
                     $list[$key]['created_at'] = $value['created_at'];

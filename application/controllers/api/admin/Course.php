@@ -39,7 +39,7 @@ class Course extends REST_Controller
 		$this->form_validation->set_data($this->_data);
 		$this->load->model("admin_model/course_model");
 		$this->load->model("uploads_model");
-		$this->load->model("admin_model/master_model");
+		$this->load->model("admin_model/chapter_model");
 		$this->load->library('MY_Form_validation');
 	}
 
@@ -63,6 +63,7 @@ class Course extends REST_Controller
 
 		$this->form_validation->set_rules('course_name', 'Course Name', 'trim|required|callback__check_unique_course');
 		$this->form_validation->set_rules('description', 'Description', 'trim');
+		$this->form_validation->set_rules('course_media_id', 'Course Media', 'trim|required');
 		$this->form_validation->set_rules('status', 'Status', 'trim|required');
 
 		if ($this->form_validation->run() == FALSE) {
@@ -96,6 +97,7 @@ class Course extends REST_Controller
 		$user_id = $this->rest->user_id;
 		$this->form_validation->set_rules('course_id', 'Course Id', 'trim|required|callback__check_course_exist');
 		$this->form_validation->set_rules('course_name', 'Name', 'trim|required|callback__check_unique_course');
+		$this->form_validation->set_rules('course_media_id', 'Course Media', 'trim|required');
 		$this->form_validation->set_rules('description', 'Description', 'trim');
 		$this->form_validation->set_rules('status', 'Status', 'trim|required');
 		if ($this->form_validation->run() == FALSE) {
@@ -109,8 +111,15 @@ class Course extends REST_Controller
 			$course_id = safe_array_key($course, "course_id", "");
 			$course_name = safe_array_key($this->_data, "course_name", "");
 			$description = safe_array_key($this->_data, "description", "");
+			$course_media_id = safe_array_key($this->_data, "course_media_id", "");
 			$status = safe_array_key($this->_data, "status", "");
-			$this->course_model->edit_course($course_id, $course_name, $description, $user_id, $status);
+			if (!empty($course_media_id)) {
+				$course_media_guid = safe_array_key($this->_data, "course_media_id", "");
+				$media_data = $this->app->get_row('media', 'media_id, name', ['media_guid' => $course_media_guid]);
+				$course_media_id = safe_array_key($media_data, "media_id", "");
+				$media_id = $this->uploads_model->update_media_status($course_media_id, "ACTIVE");
+			}
+			$this->course_model->edit_course($course_id, $course_name, $description,$course_media_id, $user_id, $status);
 			$this->_response['message'] = "course Updated successfully.";
 			$this->set_response($this->_response);
 		}
@@ -161,12 +170,16 @@ class Course extends REST_Controller
 			// $campaign_guid = safe_array_key($this->_data, "campaign_id", "");
 			// $campaign = $this->app->get_row('campaigns', 'campaign_id', ['campaign_guid' => $campaign_guid]);
 			// $campaign_id = safe_array_key($campaign, "campaign_id", "");
+			$user_id = $this->rest->user_id;
+			$user = $this->app->get_row('users', 'user_type', ['user_id' => $user_id]);
+			$user_type = safe_array_key($user, "user_type", "");
+
 			$course_guid = safe_array_key($this->_data, "course_id", "");
 			$course = $this->app->get_row('courses', 'course_id', ['course_guid' => $course_guid]);
 			$course_id = safe_array_key($course, "course_id", "");
 			$data = $this->course_model->get_details_by_id($course_id);
 			$this->_response["data"] = $data;
-			$this->_response["data"]['subjects'] = $this->course_model->get_subjects($course_id);
+			$this->_response["data"]['chapters'] = $this->chapter_model->get_chapters($course_id);
 			$this->_response["message"] = "course details";
 			$this->set_response($this->_response);
 		}

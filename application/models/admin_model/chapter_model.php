@@ -225,4 +225,23 @@ GET CHAPTER list BY SUBJECT ID
         // $reuslt['string'] = unique_random_string('campaign_templates', 'unique_string', [], 'alnum', 12);
         return $reuslt;
     }
+
+    	public function get_chapters($course_id) {
+
+        $this->db->select('IFNULL(ch.chapter_guid,"") AS chapter_guid', FALSE);
+        $this->db->select('IFNULL(ch.chapter_name,"") AS chapter_name', FALSE);
+        $this->db->select('IFNULL(ch.chapter_summary,"") AS chapter_summary', FALSE);
+        $this->db->select('IFNULL(c.course_name,"") AS course_name', FALSE);
+        $this->db->select('IFNULL(ch.status,"") AS status', FALSE);
+        $this->db->select('IFNULL(ch.created_at,"") AS created_at', FALSE);
+        $this->db->select('IFNULL(ch.updated_at,"") AS updated_at', FALSE);
+        $this->db->from('chapters AS ch');        
+        $this->db->join('courses AS c', 'c.course_id = ch.course_id', 'LEFT');        
+        $this->db->where('ch.course_id', $course_id);
+        $this->db->order_by('ch.created_at', 'desc');		
+		$query = $this->db->get();
+		// echo $this->db->last_query();die();
+		$results = $query->result_array();
+		return $results;
+	}
 }

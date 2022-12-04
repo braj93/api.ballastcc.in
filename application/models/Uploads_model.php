@@ -133,6 +133,7 @@ class Uploads_model extends CI_Model {
 			$media_id = $this->db->insert_id();
 			$media['upload_status'] = TRUE;
 			$media['media_id'] = $media_id;
+			$media['media_url'] = $upload_data['file_name'] ? site_url('/uploads/images/' . $upload_data['file_name']) : "";
 			return $media;
 		}
 	}
