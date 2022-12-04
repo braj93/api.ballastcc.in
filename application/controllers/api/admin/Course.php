@@ -147,9 +147,9 @@ class Course extends REST_Controller
 			$offset = safe_array_key($pagination, "offset", 0);
 			$sort_by = safe_array_key($this->_data, "sort_by", []);
 			$column_name = safe_array_key($sort_by, "column_name", 'course_name');
-			$order_by = safe_array_key($sort_by, "order_by", 'acs');
-			$this->_response["data"] = $this->course_model->list($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type);
-			$this->_response["counts"] = $this->course_model->list($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type);
+			$order_by = safe_array_key($sort_by, "order_by", 'acs');			
+			$this->_response["data"] = $this->course_model->list($user_id,  $column_name, $order_by, $user_type,$keyword, $limit, $offset);
+			$this->_response["counts"] = $this->course_model->list($user_id,  $column_name, $order_by, $user_type,$keyword, 0, 0);
 			$this->set_response($this->_response);
 		}
 	}

@@ -141,8 +141,8 @@ class Chapters extends REST_Controller
             $sort_by = safe_array_key($this->_data, "sort_by", []);
             $column_name = safe_array_key($sort_by, "column_name", 'chapter_name');
             $order_by = safe_array_key($sort_by, "order_by", 'acs');
-            $this->_response["data"] = $this->chapter_model->list($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type);
-            $this->_response["counts"] = $this->chapter_model->list($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type);
+            $this->_response["data"] = $this->chapter_model->list($user_id, $column_name, $order_by, $user_type, $keyword, $limit, $offset);
+            $this->_response["counts"] = $this->chapter_model->list($user_id, $column_name, $order_by, $user_type, $keyword, 0, 0);
             $this->set_response($this->_response);
         }
     }
@@ -181,8 +181,8 @@ class Chapters extends REST_Controller
             // $subject = $this->app->get_row('subjects', 'subject_id', ['subject_guid' => $subject_guid]);
             // $subject_id = safe_array_key($subject, "subject_id", "");
 
-            $this->_response["data"] = $this->chapter_model->list_by_course_id($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type,$course_id);
-            $this->_response["counts"] = $this->chapter_model->list_by_course_id($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type,$course_id);
+            $this->_response["data"] = $this->chapter_model->list_by_course_id($user_id, $column_name, $order_by, $user_type,$course_id, $keyword, $limit, $offset);
+            $this->_response["counts"] = $this->chapter_model->list_by_course_id($user_id, $column_name, $order_by, $user_type,$course_id, $keyword, 0, 0);
             $this->set_response($this->_response);
         }
     }

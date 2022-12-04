@@ -91,7 +91,7 @@ class Course_model extends CI_Model
 	// 	return $results;
 	// }
 
-	public function list($user_id, $keyword = '', $limit = 0, $offset = 0, $column_name, $order_by, $user_type)
+	public function list($user_id, $column_name, $order_by, $user_type, $keyword = '', $limit = 0, $offset = 0)
 	{
 		if ($limit > 0 && $offset >= 0) {
 			$this->db->limit($limit, $offset);

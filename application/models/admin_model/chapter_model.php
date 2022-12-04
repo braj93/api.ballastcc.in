@@ -75,7 +75,7 @@ GET SUBJECTS list
 ***
     */
 
-    public function list($user_id, $keyword = '', $limit = 0, $offset = 0, $column_name, $order_by, $user_type)
+    public function list($user_id, $column_name, $order_by, $user_type, $keyword = '', $limit = 0, $offset = 0)
     {
         if ($limit > 0 && $offset >= 0) {
             $this->db->limit($limit, $offset);
@@ -140,7 +140,7 @@ GET CHAPTER list BY SUBJECT ID
 ***
     */
 
-    public function list_by_course_id($user_id, $keyword = '', $limit = 0, $offset = 0, $column_name, $order_by, $user_type, $course_id)
+    public function list_by_course_id($user_id, $column_name, $order_by, $user_type, $course_id, $keyword = '', $limit = 0, $offset = 0)
     {
         if ($limit > 0 && $offset >= 0) {
             $this->db->limit($limit, $offset);

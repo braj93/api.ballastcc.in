@@ -147,8 +147,8 @@ class Notice extends REST_Controller
             $sort_by = safe_array_key($this->_data, "sort_by", []);
             $column_name = safe_array_key($sort_by, "column_name", 'subject');
             $order_by = safe_array_key($sort_by, "order_by", 'acs');
-            $this->_response["data"] = $this->Imp_notice_model->list($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type);
-            $this->_response["counts"] = $this->Imp_notice_model->list($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type);
+            $this->_response["data"] = $this->Imp_notice_model->list($user_id, $column_name, $order_by, $user_type, $keyword, $limit, $offset);
+            $this->_response["counts"] = $this->Imp_notice_model->list($user_id, $column_name, $order_by, $user_type, $keyword, 0, 0);
             $this->set_response($this->_response);
         }
     }
