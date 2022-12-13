@@ -57,14 +57,24 @@ class Common_model extends CI_Model
     {
         if ($limit > 0 && $offset >= 0) {
             $this->db->limit($limit, $offset);
+            // $this->db->select('IFNULL(c.course_id,"") AS course_id', FALSE);
+            // $this->db->select('IFNULL(c.course_guid,"") AS course_guid', FALSE);
+            // $this->db->select('IFNULL(c.course_name,"") AS course_name', FALSE);
+            // $this->db->select('IFNULL(m.name,"") AS media_name', FALSE);
+            // $this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS added_by', FALSE);
+            // $this->db->select('IFNULL(c.status,"") AS status', FALSE);
+            // $this->db->select('IFNULL(c.created_at,"") AS created_at', FALSE);
+            // $this->db->select('IFNULL(c.updated_at,"") AS updated_at', FALSE);
             $this->db->select('IFNULL(c.course_id,"") AS course_id', FALSE);
-            $this->db->select('IFNULL(c.course_guid,"") AS course_guid', FALSE);
-            $this->db->select('IFNULL(c.course_name,"") AS course_name', FALSE);
-            $this->db->select('IFNULL(m.name,"") AS media_name', FALSE);
-            $this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS added_by', FALSE);
-            $this->db->select('IFNULL(c.status,"") AS status', FALSE);
-            $this->db->select('IFNULL(c.created_at,"") AS created_at', FALSE);
-            $this->db->select('IFNULL(c.updated_at,"") AS updated_at', FALSE);
+			$this->db->select('IFNULL(c.course_guid,"") AS course_guid', FALSE);
+			$this->db->select('IFNULL(c.course_name,"") AS course_name', FALSE);
+			$this->db->select('IFNULL(c.description,"") AS description', FALSE);
+			$this->db->select('IFNULL(m.name,"") AS media_name', FALSE);
+			$this->db->select('IFNULL(m.media_guid,"") AS media_id', FALSE);
+			$this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS added_by', FALSE);
+			$this->db->select('IFNULL(c.status,"") AS status', FALSE);
+			$this->db->select('IFNULL(c.created_at,"") AS created_at', FALSE);
+			$this->db->select('IFNULL(c.updated_at,"") AS updated_at', FALSE);
         } else {
             $this->db->select('COUNT(c.course_id) as count', FALSE);
         }
@@ -101,13 +111,15 @@ class Common_model extends CI_Model
                 $list = [];
                 foreach ($results as $key => $value) {
                     $list[$key]['course_guid'] = $value['course_guid'];
-                    $list[$key]['course_name'] = $value['course_name'];
-                    $list[$key]['media_url'] = $value['media_name'] ? site_url('/uploads/images/' . $value['media_name']) : "";
-                    // $list[$key]['subjects'] = $this->get_subjects($value['course_id']);
-                    $list[$key]['added_by'] = $value['added_by'];
-                    $list[$key]['status'] = $value['status'];
-                    $list[$key]['created_at'] = $value['created_at'];
-                    $list[$key]['updated_at'] = $value['updated_at'];
+					$list[$key]['course_name'] = $value['course_name'];
+					$list[$key]['description'] = $value['description'];
+					$list[$key]['media_url'] = $value['media_name'] ? site_url('/uploads/images/' . $value['media_name']) : "";
+					// $list[$key]['subjects'] = $this->get_subjects($value['course_id']);
+					$list[$key]['media_id'] = $value['media_id'];
+					$list[$key]['added_by'] = $value['added_by'];
+					$list[$key]['status'] = $value['status'];
+					$list[$key]['created_at'] = $value['created_at'];
+					$list[$key]['updated_at'] = $value['updated_at'];
                 }
                 return $list;
             } else {
@@ -117,6 +129,29 @@ class Common_model extends CI_Model
             return $query->row()->count;
         }
     }
+
+	public function get_course_details_by_id($course_id) {
+        $this->db->select('IFNULL(c.course_guid,"") AS course_guid', FALSE);
+        $this->db->select('IFNULL(c.course_name,"") AS course_name', FALSE);
+        $this->db->select('IFNULL(c.description,"") AS description', FALSE);
+        $this->db->select('IFNULL(m.name,"") AS media_name', FALSE);
+        $this->db->select('IFNULL(m.media_guid,"") AS media_id', FALSE);
+        $this->db->select('CONCAT(u.first_name, " ", IFNULL (u.last_name, "")) AS added_by');
+        $this->db->select('IFNULL(c.status,"") AS status', FALSE);
+        $this->db->select('IFNULL(c.created_at,"") AS created_at', FALSE);
+        $this->db->select('IFNULL(c.updated_at,"") AS updated_at', FALSE);			
+        $this->db->from('courses AS c');
+    // $this->db->join('campaign_templates AS ct', 'ct.campaign_template_id = c.campaign_template_id', 'LEFT');
+    // $this->db->join('media AS m', 'm.media_id = ct.preview_media_id', 'LEFT');
+    $this->db->join('users AS u', 'u.user_id = c.added_by', 'LEFT');
+    $this->db->join('media AS m', 'm.media_id = c.media', 'LEFT');
+    $this->db->where('c.course_id', $course_id);
+    $query = $this->db->get();
+    $reuslt = $query->row_array();
+    $reuslt['media_url'] = $reuslt['media_name'] ? site_url('/uploads/images/' . $reuslt['media_name']) : "";
+    // $reuslt['string'] = unique_random_string('campaign_templates', 'unique_string', [], 'alnum', 12);
+    return $reuslt;
+}
 
     /*
 ***  

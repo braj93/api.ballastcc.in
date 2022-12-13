@@ -63,7 +63,7 @@ class Course extends REST_Controller
 
 		$this->form_validation->set_rules('course_name', 'Course Name', 'trim|required|callback__check_unique_course');
 		$this->form_validation->set_rules('description', 'Description', 'trim');
-		$this->form_validation->set_rules('course_media_id', 'Course Media', 'trim|required');
+		$this->form_validation->set_rules('course_media_id', 'Course Media', 'trim');
 		$this->form_validation->set_rules('status', 'Status', 'trim|required');
 
 		if ($this->form_validation->run() == FALSE) {
@@ -97,7 +97,7 @@ class Course extends REST_Controller
 		$user_id = $this->rest->user_id;
 		$this->form_validation->set_rules('course_id', 'Course Id', 'trim|required|callback__check_course_exist');
 		$this->form_validation->set_rules('course_name', 'Name', 'trim|required|callback__check_unique_course');
-		$this->form_validation->set_rules('course_media_id', 'Course Media', 'trim|required');
+		$this->form_validation->set_rules('course_media_id', 'Course Media', 'trim');
 		$this->form_validation->set_rules('description', 'Description', 'trim');
 		$this->form_validation->set_rules('status', 'Status', 'trim|required');
 		if ($this->form_validation->run() == FALSE) {

@@ -36,6 +36,7 @@ class Common extends REST_Controller {
 		$this->load->library('form_validation');
 		$this->form_validation->set_data($this->_data);
 		$this->load->model("common_model");
+		$this->load->model("admin_model/chapter_model");
 		$this->load->library('MY_Form_validation');
 	}
 
@@ -76,6 +77,30 @@ class Common extends REST_Controller {
 			$order_by = safe_array_key($sort_by, "order_by", 'acs');
 			$this->_response["data"] = $this->common_model->course_list($column_name, $order_by,$course_id,$keyword, $limit, $offset);
 			$this->_response["counts"] = $this->common_model->course_list($column_name, $order_by,$course_id,$keyword, 0, 0);
+			$this->set_response($this->_response);
+		}
+	}
+
+		/**
+	 * GET Course DETAILS BY ID API
+	 */
+	public function get_course_details_by_id_post()
+	{
+		$this->_response["service_name"] = "common/get_course_details_by_id";
+		$this->form_validation->set_rules('course_id', 'Course Id', 'trim|required|callback__check_course_exist');
+		if ($this->form_validation->run() == FALSE) {
+			$errors = $this->form_validation->error_array();
+			$this->_response["message"] = current($errors);
+			$this->_response["errors"] = $errors;
+			$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+		} else {
+			$course_guid = safe_array_key($this->_data, "course_id", "");
+			$course = $this->app->get_row('courses', 'course_id', ['course_guid' => $course_guid]);
+			$course_id = safe_array_key($course, "course_id", "");
+			$data = $this->common_model->get_course_details_by_id($course_id);
+			$this->_response["data"] = $data;
+			$this->_response["data"]['chapters'] = $this->chapter_model->get_chapters($course_id);
+			$this->_response["message"] = "course details";
 			$this->set_response($this->_response);
 		}
 	}
