@@ -472,6 +472,32 @@ public function register_members_post() {
 		}
 	}
 
+	public function save_contact_form_post() {
+		$this->_response["service_name"] = "users/save_contact_form";
+		$this->form_validation->set_rules('first_name', 'First Name', 'trim|required|min_length[2]|max_length[50]|callback__check_alpha_space');
+		$this->form_validation->set_rules('last_name', 'Last Name', 'trim|required|min_length[2]|max_length[50]|callback__check_alpha_space');		
+		$this->form_validation->set_rules('email', 'email', 'trim|required|valid_email');
+		$this->form_validation->set_rules('subject', 'Subject', 'trim|required');
+		$this->form_validation->set_rules('message', 'Message', 'trim|required');
+
+		if ($this->form_validation->run() == FALSE) {
+			$errors = $this->form_validation->error_array();
+			$this->_response["message"] = current($errors);
+			$this->_response["errors"] = $errors;
+			$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+		} else {
+			$first_name = safe_array_key($this->_data, "first_name", "");
+			$last_name = safe_array_key($this->_data, "last_name", "");
+			$email = safe_array_key($this->_data, "email", "");
+			$subject = safe_array_key($this->_data, "subject", "");
+			$message = safe_array_key($this->_data, "message", "");
+			$user_id = $this->users_model->submit_contact_form($first_name, $last_name, $email,$subject,  $message);
+			$this->_response["message"] = 'Your response recorded successfully';
+			$this->set_response($this->_response);
+	
+		}
+	}
+
 	// public function register_post() {
 	// 	$this->_response["service_name"] = "users/register";
 	// 	//$this->form_validation->set_rules('device_type', 'device type', 'trim|required|in_list[' . implode($this->app->device_types, ",") . ']');

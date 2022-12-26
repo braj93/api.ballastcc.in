@@ -105,6 +105,28 @@ class Users_model extends CI_Model {
 		$user_id = $this->db->insert_id();
 		return $user_id;
 	}
+	/** create_user
+	 * @param type $name
+	 * @param String $email
+	 * @param String $password
+	 * @return type
+	 */
+	public function submit_contact_form($first_name, $last_name, $email,$subject,  $message) {
+
+		$email = strtolower($email);
+		$this->db->insert('contact_submission', [
+			"contact_guid" => get_guid(),
+			"first_name" => $first_name,
+			"last_name" => $last_name,
+			"email" => $email,
+			"email" => $subject,
+			"email" => $message,
+			"seen" => 0,
+			"created_at" => DATETIME,
+		]);
+		$user_id = $this->db->insert_id();
+		return $user_id;
+	}
 	// public function create_user($first_name, $last_name, $user_sub_type, $business_name, $email, $password, $device_type_id) {
 
 	// 	$email = strtolower($email);
@@ -156,6 +178,8 @@ class Users_model extends CI_Model {
 		$this->email->message($body);
 		$this->email->send();
 	}
+
+
 
 	/**
 	 *
@@ -406,7 +430,7 @@ class Users_model extends CI_Model {
 	 *
 	 * @param type $device_type_id
 	 * @param type $password_reset_code
-	 * @param type $password
+	 * @param String $password
 	 */
 	public function reset_user_password_by_password_reset_code($device_type_id, $password_reset_code, $password) {
 		if (in_array($device_type_id, array("1"))) {
@@ -2189,182 +2213,6 @@ class Users_model extends CI_Model {
 		}
 	}
 
-
-	/**
-	 *
-	 * @param type $user_id
-	 * @param type $device_type
-	 */
-	public function send_retail_contact_email($name,$email,$phone,$contact_message, $to_email, $cc_email) {
-		$this->load->helper('email');
-		$subject ="Retail.";
-		$email_data = array("name" => $name, "email" => $email, "phone" => $phone, "contact_message" => $contact_message);
-		$email_template = "emailer/web_retail_contact";
-		$message = $this->load->view($email_template, $email_data, TRUE);
-		$this->load->library('email');
-		$this->email->from(SUPPORT_EMAIL, FROM_NAME);
-		$this->email->to($to_email);
-		$this->email->cc($cc_email);
-		$this->email->subject($subject);
-		$this->email->message($message);
-		$this->email->send();
-	}
-
-	public function get_upcoming_invoice($stripe_subscription_id) {
-
-		try{
-			\Stripe\Stripe::setApiKey(STRIPE_SKEY);
-			// $stripe_response = \Stripe\Invoice::upcoming(["customer" => $customer]);
-			$stripe_response = \Stripe\Invoice::upcoming(["subscription" => $stripe_subscription_id]);
-			return ['status' => "success", 'upcoming_invoice' =>  $stripe_response, 'error' => null];
-		}
-	
-		catch(\Stripe\Error\Card $e){
-				$body = $e->getJsonBody();
-				$err  = $body['error'];
-						
-		}
-
-		catch (\Stripe\Error\RateLimit $e) {
-		// Too many requests made to the API too quickly
-				$body = $e->getJsonBody();
-				$err  = $body['error'];
-			
-		} catch (\Stripe\Error\InvalidRequest $e) {
-		// Invalid parameters were supplied to Stripe's API
-				$body = $e->getJsonBody();
-				$err  = $body['error'];
-			
-		} catch (\Stripe\Error\Authentication $e) {
-		// Authentication with Stripe's API failed
-		// (maybe you changed API keys recently)
-				$body = $e->getJsonBody();
-				$err  = $body['error'];
-			
-		} catch (\Stripe\Error\ApiConnection $e) {
-		// Network communication with Stripe failed
-				$body = $e->getJsonBody();
-				$err  = $body['error'];
-			
-
-		} catch (\Stripe\Error\Base $e) {
-		// Display a very generic error to the user, and maybe send
-		// yourself an email
-				$body = $e->getJsonBody();
-				$err  = $body['error'];
-			
-		} catch (Exception $e) {
-		// Something else happened, completely unrelated to Stripe
-				$body = $e->getJsonBody();
-				$err  = $body['error'];
-				
-		}
-		return ['status'=>'failed', 'error' => $err, 'charge' => null];
-	}
-
-	public function get_invoices($subscription_id) {
-
-		try{
-			\Stripe\Stripe::setApiKey(STRIPE_SKEY);
-			$stripe_response = \Stripe\Invoice::all(["subscription" => $subscription_id]);
-
-			return ['status' => "success", 'invoices' =>  $stripe_response, 'error' => null];
-		 }
-	 
-		  catch(\Stripe\Error\Card $e){
-				 $body = $e->getJsonBody();
-				   $err  = $body['error'];
-						 
-		  }
- 
-		  catch (\Stripe\Error\RateLimit $e) {
-			// Too many requests made to the API too quickly
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-				
-		 } catch (\Stripe\Error\InvalidRequest $e) {
-		   // Invalid parameters were supplied to Stripe's API
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-			 
-		 } catch (\Stripe\Error\Authentication $e) {
-		   // Authentication with Stripe's API failed
-		   // (maybe you changed API keys recently)
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-				
-		 } catch (\Stripe\Error\ApiConnection $e) {
-		   // Network communication with Stripe failed
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-			 
- 
-		 } catch (\Stripe\Error\Base $e) {
-		   // Display a very generic error to the user, and maybe send
-		   // yourself an email
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-			 
-		 } catch (Exception $e) {
-		   // Something else happened, completely unrelated to Stripe
-				 $body = $e->getJsonBody();
-				   $err  = $body['error'];
-				   
-		 }
-		 return ['status'=>'failed', 'error' => $err, 'charge' => null];
-	}
-
-	public function get_subscription_details($stripe_subscription_id) {
-
-		try{
-			\Stripe\Stripe::setApiKey(STRIPE_SKEY);
-			$stripe_response = \Stripe\Subscription::retrieve($stripe_subscription_id,[]);
-			return ['status' => "success", 'subscription' =>  $stripe_response, 'error' => null];
-		 }
-	 
-		  catch(\Stripe\Error\Card $e){
-				 $body = $e->getJsonBody();
-				   $err  = $body['error'];
-						 
-		  }
- 
-		  catch (\Stripe\Error\RateLimit $e) {
-			// Too many requests made to the API too quickly
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-				
-		 } catch (\Stripe\Error\InvalidRequest $e) {
-		   // Invalid parameters were supplied to Stripe's API
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-			 
-		 } catch (\Stripe\Error\Authentication $e) {
-		   // Authentication with Stripe's API failed
-		   // (maybe you changed API keys recently)
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-				
-		 } catch (\Stripe\Error\ApiConnection $e) {
-		   // Network communication with Stripe failed
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-			 
- 
-		 } catch (\Stripe\Error\Base $e) {
-		   // Display a very generic error to the user, and maybe send
-		   // yourself an email
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-			 
-		 } catch (Exception $e) {
-		   // Something else happened, completely unrelated to Stripe
-				 $body = $e->getJsonBody();
-				   $err  = $body['error'];
-				   
-		 }
-		 return ['status'=>'failed', 'error' => $err, 'charge' => null];
-	}
-
 	public function get_user_role($user_id) {
 		$this->db->select('IFNULL(om.role,"") AS role', FALSE);
 		$this->db->select('IFNULL(om.added_by,"") AS added_by', FALSE);
@@ -2378,67 +2226,7 @@ class Users_model extends CI_Model {
 		return $user;
 	}
 
-	public function update_plan($stripe_subscription_id, $plan_id) {
-		try{
-			\Stripe\Stripe::setApiKey(STRIPE_SKEY);
-			$subscription = \Stripe\Subscription::retrieve($stripe_subscription_id);
 
-			$subscription_update = \Stripe\Subscription::update($stripe_subscription_id, [
-				'cancel_at_period_end' => false,
-				'proration_behavior' => 'create_prorations',
-					'items' => [
-						[
-						'id' => $subscription->items->data[0]->id,
-						'price' => $plan_id,
-						],
-					],
-			]);
-
-			return ['status' => "success", 'subscription' =>  $subscription_update, 'error' => null];
-		 }
-	 
-		  catch(\Stripe\Error\Card $e){
-				 $body = $e->getJsonBody();
-				   $err  = $body['error'];
-						 
-		  }
- 
-		  catch (\Stripe\Error\RateLimit $e) {
-			// Too many requests made to the API too quickly
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-				
-		 } catch (\Stripe\Error\InvalidRequest $e) {
-		   // Invalid parameters were supplied to Stripe's API
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-			 
-		 } catch (\Stripe\Error\Authentication $e) {
-		   // Authentication with Stripe's API failed
-		   // (maybe you changed API keys recently)
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-				
-		 } catch (\Stripe\Error\ApiConnection $e) {
-		   // Network communication with Stripe failed
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-			 
- 
-		 } catch (\Stripe\Error\Base $e) {
-		   // Display a very generic error to the user, and maybe send
-		   // yourself an email
-				 $body = $e->getJsonBody();
-				 $err  = $body['error'];
-			 
-		 } catch (Exception $e) {
-		   // Something else happened, completely unrelated to Stripe
-				 $body = $e->getJsonBody();
-				   $err  = $body['error'];
-				   
-		 }
-		 return ['status'=>'failed', 'error' => $err, 'charge' => null];
-	}
 
 	public function update_user_plan($user_id, $pricing_plan_id) {
 		$this->db->update('organization_members', ['pricing_plan_id' => $pricing_plan_id, 'updated_at' => DATETIME], ['user_id' => $user_id]);

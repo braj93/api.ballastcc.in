@@ -225,21 +225,22 @@ GET CHAPTER list BY SUBJECT ID
     }
 
 
+
+
     // ============================================= question answer model start =========================================================
 
     /** create_lesson
-     * @param type $title, 
-     * @param type $summary, 
+     * @param type $question, 
+     * @param type $answer, 
      * @param type $lesson_id, 
      * @param type $status
      * @return type
      */
-    public function create_question_answer($lesson_id, $title, $summary, $answer, $user_id, $status)
+    public function create_question_answer($lesson_id, $question, $answer, $user_id, $status)
     {
         $this->db->insert('questions_answers', [
             "qa_guid" => get_guid(),
-            "question_title" => $title,
-            "question_summary" => $summary,
+            "question" => $question,
             "answer" => $answer,
             "lesson_id" => $lesson_id,
             "status" => $status,
@@ -261,12 +262,11 @@ GET CHAPTER list BY SUBJECT ID
      * @param type $status
      * @return type
      */
-    public function edit_question_answer($qa_id, $lesson_id, $title, $summary, $answer, $user_id, $status)
+    public function edit_question_answer($qa_id, $lesson_id, $question, $answer, $user_id, $status)
     {
         $data = [
             "lesson_id" => $lesson_id,
-            "question_title" => $title,
-            "question_summary" => $summary,
+            "question" => $question,
             "answer" => $answer,
             "status" => $status,
             "updated_at" => DATETIME,
@@ -292,8 +292,7 @@ GET SUBJECTS list
 
 
             $this->db->select('IFNULL(qa.qa_guid,"") AS qa_guid', FALSE);
-            $this->db->select('IFNULL(qa.question_title,"") AS question_title', FALSE);
-            $this->db->select('IFNULL(qa.question_summary,"") AS question_summary', FALSE);
+            $this->db->select('IFNULL(qa.question,"") AS question', FALSE);
             $this->db->select('IFNULL(qa.answer,"") AS answer', FALSE);
             $this->db->select('IFNULL(l.lesson_name,"") AS lesson_name', FALSE);
             $this->db->select('IFNULL(qa.status,"") AS status', FALSE);
@@ -330,8 +329,7 @@ GET SUBJECTS list
                 $list = [];
                 foreach ($results as $key => $value) {
                     $list[$key]['qa_guid'] = $value['qa_guid'];
-                    $list[$key]['title'] = $value['question_title'];
-                    $list[$key]['summary'] = $value['question_summary'];
+                    $list[$key]['question'] = $value['question'];
                     $list[$key]['answer'] = $value['answer'];
                     $list[$key]['lesson_name'] = $value['lesson_name'];
                     $list[$key]['status'] = $value['status'];
@@ -350,37 +348,18 @@ GET SUBJECTS list
 
     /*
 ***  
-GET CHAPTER list BY SUBJECT ID
+GET QUESTION LIST BY LESSION ID
 ***
     */
 
     public function list_by_lesson_id($user_id, $column_name, $order_by, $user_type, $lesson_id, $keyword = '', $limit = 0, $offset = 0)
     {
-        // if ($limit > 0 && $offset >= 0) {
-        //     $this->db->limit($limit, $offset);
-
-
-        //     $this->db->select('IFNULL(l.lesson_guid,"") AS lesson_guid', FALSE);
-        //     $this->db->select('IFNULL(l.lesson_name,"") AS lesson_name', FALSE);
-        //     $this->db->select('IFNULL(l.lesson_summary,"") AS lesson_summary', FALSE);
-        //     $this->db->select('IFNULL(c.chapter_name,"") AS chapter_name', FALSE);
-        //     $this->db->select('IFNULL(l.status,"") AS status', FALSE);
-        //     $this->db->select('IFNULL(l.created_at,"") AS created_at', FALSE);
-        //     $this->db->select('IFNULL(l.updated_at,"") AS updated_at', FALSE);
-        // } else {
-        //     $this->db->select('COUNT(l.lesson_id) as count', FALSE);
-        // }
-        // $this->db->from('lessons AS l');
-        // $this->db->join('chapters AS c', 'c.chapter_id = l.chapter_id', 'LEFT');
-        // $this->db->where('l.chapter_id', $chapter_id);
-        // $this->db->order_by('l.created_at', 'desc');
         if ($limit > 0 && $offset >= 0) {
             $this->db->limit($limit, $offset);
 
 
             $this->db->select('IFNULL(qa.qa_guid,"") AS qa_guid', FALSE);
-            $this->db->select('IFNULL(qa.question_title,"") AS question_title', FALSE);
-            $this->db->select('IFNULL(qa.question_summary,"") AS question_summary', FALSE);
+            $this->db->select('IFNULL(qa.question,"") AS question', FALSE);
             $this->db->select('IFNULL(qa.answer,"") AS answer', FALSE);
             $this->db->select('IFNULL(l.lesson_name,"") AS lesson_name', FALSE);
             $this->db->select('IFNULL(qa.status,"") AS status', FALSE);
@@ -419,8 +398,7 @@ GET CHAPTER list BY SUBJECT ID
                 $list = [];
                 foreach ($results as $key => $value) {
                     $list[$key]['qa_guid'] = $value['qa_guid'];
-                    $list[$key]['title'] = $value['question_title'];
-                    $list[$key]['summary'] = $value['question_summary'];
+                    $list[$key]['question'] = $value['question'];
                     $list[$key]['answer'] = $value['answer'];
                     $list[$key]['lesson_name'] = $value['lesson_name'];
                     $list[$key]['status'] = $value['status'];
@@ -439,8 +417,7 @@ GET CHAPTER list BY SUBJECT ID
     public function get_qa_details_by_id($qa_id)
     {
         $this->db->select('IFNULL(qa.qa_guid,"") AS qa_guid', FALSE);
-        $this->db->select('IFNULL(qa.question_title,"") AS question_title', FALSE);
-        $this->db->select('IFNULL(qa.question_summary,"") AS question_summary', FALSE);
+        $this->db->select('IFNULL(qa.question,"") AS question', FALSE);
         $this->db->select('IFNULL(qa.answer,"") AS answer', FALSE);
         $this->db->select('IFNULL(l.lesson_name,"") AS lesson_name', FALSE);
         $this->db->select('IFNULL(qa.status,"") AS status', FALSE);

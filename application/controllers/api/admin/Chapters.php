@@ -205,6 +205,8 @@ class Chapters extends REST_Controller
             $chapter_id = safe_array_key($chapter, "chapter_id", "");
             $data = $this->chapter_model->get_details_by_id($chapter_id);
             $this->_response["data"] = $data;
+            $this->_response["data"]['lessons'] = $this->app->get_rows('lessons','lesson_guid,lesson_name,lesson_summary,status,created_at,updated_at', ['chapter_id' => $chapter_id]);;
+            $this->_response["data"]['quizs'] = $this->app->get_rows('quizs','quiz_guid,quiz_name,quiz_summary,quiz_time,status,created_at,updated_at', ['chapter_id' => $chapter_id]);
             $this->_response["message"] = "chapter details";
             $this->set_response($this->_response);
         }

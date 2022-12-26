@@ -220,9 +220,7 @@ class Lessons extends REST_Controller
         $this->_response["service_name"] = "admin/lessons/add_question_answer";
         $user_id = $this->rest->user_id;
 
-        $this->form_validation->set_rules('question_title', 'Lesson Name', 'trim|required');
-        $this->form_validation->set_rules('question_summary', 'Question summary', 'trim');
-        $this->form_validation->set_rules('answer', 'Answer', 'trim|required');
+        $this->form_validation->set_rules('question', 'Question', 'trim|required');
         $this->form_validation->set_rules('lesson_id', 'Chapter Id', 'trim|required|callback__check_lesson_exist');
         $this->form_validation->set_rules('status', 'Status', 'trim|required');
 
@@ -232,8 +230,7 @@ class Lessons extends REST_Controller
             $this->_response["errors"] = $errors;
             $this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
         } else {
-            $title = safe_array_key($this->_data, "question_title", "");
-            $summary = safe_array_key($this->_data, "question_summary", "");
+            $question = safe_array_key($this->_data, "question", "");
             $answer = safe_array_key($this->_data, "answer", "");
 
             $lesson_guid = safe_array_key($this->_data, "lesson_id", "");
@@ -241,7 +238,7 @@ class Lessons extends REST_Controller
             $lesson_id = safe_array_key($lesson, "lesson_id", "");
 
             $status = safe_array_key($this->_data, "status", "");
-            $lesson_id = $this->lesson_model->create_question_answer($lesson_id, $title, $summary, $answer, $user_id, $status);
+            $lesson_id = $this->lesson_model->create_question_answer($lesson_id, $question, $answer, $user_id, $status);
             $this->_response["message"] = 'question answer added successfully';
             $this->set_response($this->_response);
         }
@@ -257,9 +254,7 @@ class Lessons extends REST_Controller
         $user_id = $this->rest->user_id;
         $this->form_validation->set_rules('qa_id', 'Lesson Id', 'trim|required|callback__check_question_answer_exist');
         $this->form_validation->set_rules('lesson_id', 'Lesson Id', 'trim|required|callback__check_lesson_exist');
-        $this->form_validation->set_rules('question_title', 'Lesson Name', 'trim|required');
-        $this->form_validation->set_rules('question_summary', 'Question summary', 'trim');
-        $this->form_validation->set_rules('answer', 'Answer', 'trim|required');
+        $this->form_validation->set_rules('question', 'Question', 'trim|required');
         $this->form_validation->set_rules('status', 'Status', 'trim|required');
 
         if ($this->form_validation->run() == FALSE) {
@@ -272,8 +267,7 @@ class Lessons extends REST_Controller
             $qa = $this->app->get_row('questions_answers', 'qa_id', ['qa_guid' => $qa_guid]);
             $qa_id = safe_array_key($qa, "qa_id", "");
 
-            $title = safe_array_key($this->_data, "question_title", "");
-            $summary = safe_array_key($this->_data, "question_summary", "");
+            $question = safe_array_key($this->_data, "question", "");
             $answer = safe_array_key($this->_data, "answer", "");
 
             $lesson_guid = safe_array_key($this->_data, "lesson_id", "");
@@ -282,7 +276,7 @@ class Lessons extends REST_Controller
 
             $status = safe_array_key($this->_data, "status", "");
 
-            $this->lesson_model->edit_question_answer($qa_id, $lesson_id, $title, $summary, $answer, $user_id, $status);
+            $this->lesson_model->edit_question_answer($qa_id, $lesson_id, $question, $answer, $user_id, $status);
             $this->_response['message'] = "Question answer Updated successfully.";
             $this->set_response($this->_response);
         }

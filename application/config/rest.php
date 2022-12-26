@@ -204,6 +204,7 @@ $config['auth_override_class_method']['users']['test'] = 'none';
 
 $config['auth_override_class_method']['users']['get_email_by_id'] = 'none';
 $config['auth_override_class_method']['users']['register'] = 'none';
+$config['auth_override_class_method']['users']['save_contact_form'] = 'none';
 $config['auth_override_class_method']['users']['get_countries'] = 'none';
 $config['auth_override_class_method']['users']['register_members'] = 'none';
 $config['auth_override_class_method']['users']['register_team_member'] = 'none';

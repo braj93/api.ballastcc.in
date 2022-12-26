@@ -30,7 +30,7 @@ class Chapter_model extends CI_Model
      * @param type $status
      * @return type
      */
-    public function create_chapter($chapter_name,$summary, $course_id, $user_id, $status)
+    public function create_chapter($chapter_name, $summary, $course_id, $user_id, $status)
     {
         $this->db->insert('chapters', [
             "chapter_guid" => get_guid(),
@@ -52,12 +52,12 @@ class Chapter_model extends CI_Model
      * @param type $status
      * @return type
      */
-    public function edit_chapter($chapter_id, $course_id, $chapter_name,$summary, $user_id, $status)
+    public function edit_chapter($chapter_id, $course_id, $chapter_name, $summary, $user_id, $status)
     {
         $data = [
             "course_id" => $course_id,
             "chapter_name" => $chapter_name,
-            "chapter_summary" => $summary,           
+            "chapter_summary" => $summary,
             "status" => $status,
             "updated_at" => DATETIME,
         ];
@@ -79,8 +79,8 @@ GET SUBJECTS list
     {
         if ($limit > 0 && $offset >= 0) {
             $this->db->limit($limit, $offset);
-            
-           
+
+
             $this->db->select('IFNULL(ch.chapter_guid,"") AS chapter_guid', FALSE);
             $this->db->select('IFNULL(ch.chapter_name,"") AS chapter_name', FALSE);
             $this->db->select('IFNULL(ch.chapter_summary,"") AS chapter_summary', FALSE);
@@ -91,7 +91,7 @@ GET SUBJECTS list
         } else {
             $this->db->select('COUNT(ch.chapter_id) as count', FALSE);
         }
-        $this->db->from('chapters AS ch');        
+        $this->db->from('chapters AS ch');
         $this->db->join('courses AS c', 'c.course_id = ch.course_id', 'LEFT');
         $this->db->order_by('ch.created_at', 'desc');
 
@@ -134,6 +134,9 @@ GET SUBJECTS list
             return $query->row()->count;
         }
     }
+
+
+
     /*
 ***  
 GET CHAPTER list BY SUBJECT ID
@@ -144,8 +147,7 @@ GET CHAPTER list BY SUBJECT ID
     {
         if ($limit > 0 && $offset >= 0) {
             $this->db->limit($limit, $offset);
-            
-           
+            $this->db->select('IFNULL(ch.chapter_id,"") AS chapter_id', FALSE);
             $this->db->select('IFNULL(ch.chapter_guid,"") AS chapter_guid', FALSE);
             $this->db->select('IFNULL(ch.chapter_name,"") AS chapter_name', FALSE);
             $this->db->select('IFNULL(ch.chapter_summary,"") AS chapter_summary', FALSE);
@@ -156,7 +158,7 @@ GET CHAPTER list BY SUBJECT ID
         } else {
             $this->db->select('COUNT(ch.chapter_id) as count', FALSE);
         }
-        $this->db->from('chapters AS ch');        
+        $this->db->from('chapters AS ch');
         $this->db->join('courses AS c', 'c.course_id = ch.course_id', 'LEFT');
         // $this->db->join('users AS u', 'u.user_id = ch.added_by', 'LEFT');
         $this->db->where('ch.course_id', $course_id);
@@ -190,6 +192,10 @@ GET CHAPTER list BY SUBJECT ID
                     $list[$key]['chapter_summary'] = $value['chapter_summary'];
                     $list[$key]['course_name'] = $value['course_name'];
                     $list[$key]['status'] = $value['status'];
+                    $list[$key]['lessons'] = $this->app->get_rows('lessons','lesson_guid,lesson_name,lesson_summary,status,created_at,updated_at', ['chapter_id' => $value['chapter_id']]);
+                    $list[$key]['quizs'] = $this->app->get_rows('quizs','quiz_guid,quiz_name,quiz_summary,quiz_time,status,created_at,updated_at', ['chapter_id' => $value['chapter_id']]);
+                    // $list[$key]['lessons'] = $this->get_lessons($value['chapter_id ']);
+                    // $list[$key]['quizs'] = $this->get_quizs($value['chapter_id ']);
                     $list[$key]['created_at'] = $value['created_at'];
                     $list[$key]['updated_at'] = $value['updated_at'];
                 }
@@ -202,10 +208,10 @@ GET CHAPTER list BY SUBJECT ID
         }
     }
 
-    
+
 
     public function get_details_by_id($chapter_id)
-    {   
+    {
         $this->db->select('IFNULL(ch.chapter_guid,"") AS chapter_guid', FALSE);
         $this->db->select('IFNULL(ch.chapter_name,"") AS chapter_name', FALSE);
         $this->db->select('IFNULL(ch.chapter_summary,"") AS chapter_summary', FALSE);
@@ -214,9 +220,9 @@ GET CHAPTER list BY SUBJECT ID
         $this->db->select('IFNULL(ch.created_at,"") AS created_at', FALSE);
         $this->db->select('IFNULL(ch.updated_at,"") AS updated_at', FALSE);
 
-         
-        $this->db->from('chapters AS ch');        
-        $this->db->join('courses AS c', 'c.course_id = ch.course_id', 'LEFT');        
+
+        $this->db->from('chapters AS ch');
+        $this->db->join('courses AS c', 'c.course_id = ch.course_id', 'LEFT');
         $this->db->where('ch.chapter_id', $chapter_id);
         $this->db->order_by('ch.created_at', 'desc');
 
@@ -226,7 +232,8 @@ GET CHAPTER list BY SUBJECT ID
         return $reuslt;
     }
 
-    	public function get_chapters($course_id) {
+    public function get_chapters($course_id)
+    {
 
         $this->db->select('IFNULL(ch.chapter_guid,"") AS chapter_guid', FALSE);
         $this->db->select('IFNULL(ch.chapter_name,"") AS chapter_name', FALSE);
@@ -235,13 +242,13 @@ GET CHAPTER list BY SUBJECT ID
         $this->db->select('IFNULL(ch.status,"") AS status', FALSE);
         $this->db->select('IFNULL(ch.created_at,"") AS created_at', FALSE);
         $this->db->select('IFNULL(ch.updated_at,"") AS updated_at', FALSE);
-        $this->db->from('chapters AS ch');        
-        $this->db->join('courses AS c', 'c.course_id = ch.course_id', 'LEFT');        
+        $this->db->from('chapters AS ch');
+        $this->db->join('courses AS c', 'c.course_id = ch.course_id', 'LEFT');
         $this->db->where('ch.course_id', $course_id);
-        $this->db->order_by('ch.created_at', 'desc');		
-		$query = $this->db->get();
-		// echo $this->db->last_query();die();
-		$results = $query->result_array();
-		return $results;
-	}
+        $this->db->order_by('ch.created_at', 'desc');
+        $query = $this->db->get();
+        // echo $this->db->last_query();die();
+        $results = $query->result_array();
+        return $results;
+    }
 }

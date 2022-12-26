@@ -150,8 +150,8 @@ class Quizs extends REST_Controller
             $sort_by = safe_array_key($this->_data, "sort_by", []);
             $column_name = safe_array_key($sort_by, "column_name", 'quiz_name');
             $order_by = safe_array_key($sort_by, "order_by", 'acs');
-            $this->_response["data"] = $this->quiz_model->list($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type);
-            $this->_response["counts"] = $this->quiz_model->list($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type);
+            $this->_response["data"] = $this->quiz_model->list($user_id, $column_name, $order_by, $user_type,$keyword, $limit, $offset);
+            $this->_response["counts"] = $this->quiz_model->list($user_id,$column_name, $order_by, $user_type,$keyword, 0, 0);
             $this->set_response($this->_response);
         }
     }
@@ -184,8 +184,8 @@ class Quizs extends REST_Controller
             $chapter_guid = safe_array_key($this->_data, "chapter_id", "");
             $chapter = $this->app->get_row('chapters', 'chapter_id', ['chapter_guid' => $chapter_guid]);
             $chapter_id = safe_array_key($chapter, "chapter_id", "");
-            $this->_response["data"] = $this->quiz_model->list_by_chapter_id($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type, $chapter_id);
-            $this->_response["counts"] = $this->quiz_model->list_by_chapter_id($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type, $chapter_id);
+            $this->_response["data"] = $this->quiz_model->list_by_chapter_id($user_id, $column_name, $order_by, $user_type, $chapter_id,$keyword, $limit, $offset, );
+            $this->_response["counts"] = $this->quiz_model->list_by_chapter_id($user_id,$column_name, $order_by, $user_type, $chapter_id,$keyword, 0, 0);
             $this->set_response($this->_response);
         }
     }
@@ -320,8 +320,8 @@ class Quizs extends REST_Controller
             $sort_by = safe_array_key($this->_data, "sort_by", []);
             $column_name = safe_array_key($sort_by, "column_name", 'created_at');
             $order_by = safe_array_key($sort_by, "order_by", 'acs');
-            $this->_response["data"] = $this->quiz_model->qq_list($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type);
-            $this->_response["counts"] = $this->quiz_model->qq_list($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type);
+            $this->_response["data"] = $this->quiz_model->qq_list($user_id, $column_name, $order_by, $user_type,$keyword, $limit, $offset);
+            $this->_response["counts"] = $this->quiz_model->qq_list($user_id,$column_name, $order_by, $user_type, $keyword, 0, 0);
             $this->set_response($this->_response);
         }
     }
@@ -355,8 +355,8 @@ class Quizs extends REST_Controller
             $quiz = $this->app->get_row('quizs', 'quiz_id', ['quiz_guid' => $quiz_guid]);
             $quiz_id = safe_array_key($quiz, "quiz_id", "");
 
-            $this->_response["data"] = $this->quiz_model->qq_list($user_id, $keyword, $limit, $offset, $column_name, $order_by, $user_type, $quiz_id);
-            $this->_response["counts"] = $this->quiz_model->qq_list($user_id, $keyword, 0, 0, $column_name, $order_by, $user_type, $quiz_id);
+            $this->_response["data"] = $this->quiz_model->qq_list($user_id, $column_name, $order_by, $user_type, $quiz_id,$keyword, $limit, $offset);
+            $this->_response["counts"] = $this->quiz_model->qq_list($user_id, $column_name, $order_by, $user_type, $quiz_id,$keyword, 0, 0,);
             $this->set_response($this->_response);
         }
     }
