@@ -274,6 +274,7 @@ GET CHAPTER list BY SUBJECT ID
 
         $this->db->update('questions_answers', $data, array(
             'qa_id' => $qa_id,
+            'lesson_id'=>$lesson_id
         ));
         $affected_rows_count = $this->db->affected_rows();
         return $affected_rows_count;
