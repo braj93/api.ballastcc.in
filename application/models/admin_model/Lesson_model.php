@@ -255,17 +255,15 @@ GET CHAPTER list BY SUBJECT ID
 
     /** edit_question_answer
      * @param type $qa_id, 
-     * @param type $lesson_id, 
-     * @param type $title, 
-     * @param type $summary, 
+     * @param type $question, 
      * @param type $answer, 
      * @param type $status
      * @return type
      */
-    public function edit_question_answer($qa_id, $lesson_id, $question, $answer, $user_id, $status)
+    
+    public function edit_question_answer($qa_id, $question, $answer, $user_id, $status)
     {
         $data = [
-            "lesson_id" => $lesson_id,
             "question" => $question,
             "answer" => $answer,
             "status" => $status,
@@ -273,8 +271,7 @@ GET CHAPTER list BY SUBJECT ID
         ];
 
         $this->db->update('questions_answers', $data, array(
-            'qa_id' => $qa_id,
-            'lesson_id'=>$lesson_id
+            'qa_id' => $qa_id
         ));
         $affected_rows_count = $this->db->affected_rows();
         return $affected_rows_count;
@@ -295,6 +292,7 @@ GET SUBJECTS list
             $this->db->select('IFNULL(qa.qa_guid,"") AS qa_guid', FALSE);
             $this->db->select('IFNULL(qa.question,"") AS question', FALSE);
             $this->db->select('IFNULL(qa.answer,"") AS answer', FALSE);
+            $this->db->select('IFNULL(l.lesson_guid,"") AS lesson_id', FALSE);
             $this->db->select('IFNULL(l.lesson_name,"") AS lesson_name', FALSE);
             $this->db->select('IFNULL(qa.status,"") AS status', FALSE);
             $this->db->select('IFNULL(qa.created_at,"") AS created_at', FALSE);
@@ -332,6 +330,7 @@ GET SUBJECTS list
                     $list[$key]['qa_guid'] = $value['qa_guid'];
                     $list[$key]['question'] = $value['question'];
                     $list[$key]['answer'] = $value['answer'];
+                    $list[$key]['lesson_id'] = $value['lesson_id'];
                     $list[$key]['lesson_name'] = $value['lesson_name'];
                     $list[$key]['status'] = $value['status'];
                     $list[$key]['created_at'] = $value['created_at'];

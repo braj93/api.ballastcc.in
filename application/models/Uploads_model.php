@@ -206,7 +206,7 @@ class Uploads_model extends CI_Model {
 	}
 
 	public function check_directory_exist($dir_name) {
-		$d = $_SERVER['DOCUMENT_ROOT']. '/' .SITE_ROOT.'/'. $dir_name;
+		$d = $_SERVER['DOCUMENT_ROOT'].'/'. $dir_name ;
 		// print_r($d);
 		// die();
 		if (!is_dir($d)) {
