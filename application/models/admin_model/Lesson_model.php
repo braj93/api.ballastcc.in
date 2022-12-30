@@ -302,7 +302,7 @@ GET SUBJECTS list
         }
         $this->db->from('questions_answers AS qa');
         $this->db->join('lessons AS l', 'l.lesson_id = qa.lesson_id', 'LEFT');
-        $this->db->order_by('l.created_at', 'desc');
+        $this->db->order_by('qa.created_at', 'desc');
 
         // if (!empty($filterBy)) {
         // 	$this->db->like('u.status', $filterBy);
@@ -371,7 +371,7 @@ GET QUESTION LIST BY LESSION ID
         $this->db->from('questions_answers AS qa');
         $this->db->join('lessons AS l', 'l.lesson_id = qa.lesson_id', 'LEFT');
         $this->db->where('qa.lesson_id', $lesson_id);
-        $this->db->order_by('qa.created_at', 'desc');
+        $this->db->order_by('qa.created_at', 'ASC');
 
 
         // if (!empty($filterBy)) {
