@@ -252,6 +252,67 @@ class Master_model extends CI_Model
         // return TRUE;
     }
 
+    public function contact_submission_list($user_id, $column_name, $order_by, $user_type, $keyword = '', $limit = 0, $offset = 0)
+	{        
+		if ($limit > 0 && $offset >= 0) {
+			$this->db->limit($limit, $offset);
+			$this->db->select('IFNULL(c.contact_id,"") AS contact_id', FALSE);
+			$this->db->select('IFNULL(c.contact_guid,"") AS contact_guid', FALSE);
+			$this->db->select('IFNULL(c.first_name,"") AS first_name', FALSE);
+			$this->db->select('IFNULL(c.last_name,"") AS last_name', FALSE);			
+			$this->db->select('IFNULL(c.subject,"") AS subject', FALSE);			
+			$this->db->select('IFNULL(c.email,"") AS email', FALSE);			
+			$this->db->select('IFNULL(c.message,"") AS message', FALSE);			
+			$this->db->select('IFNULL(c.seen,"") AS seen', FALSE);	
+			$this->db->select('IFNULL(c.created_at,"") AS created_at', FALSE);
+		} else {
+			$this->db->select('COUNT(c.contact_id) as count', FALSE);
+		}
+		$this->db->from('contact_submission AS c');
+		$this->db->order_by('c.created_at', 'desc');
+		// if (!empty($filterBy)) {
+		// 	$this->db->like('u.status', $filterBy);
+		// }
+
+		if (!empty($keyword)) {
+			$this->db->group_start();
+			$this->db->like('c.subject', $keyword, 'both');
+			$this->db->group_end();
+		}
+
+		if (($column_name !== '') && ($order_by !== '')) {
+			$this->db->order_by('c.' . $column_name, $order_by);
+		}
+		// if ($user_type != 'ADMIN') {
+		// 	$this->db->where('c.added_by', $user_id);
+		// }
+
+		$query = $this->db->get();       
+		$results = $query->result_array();       
+		if (($limit > 0) && ($offset >= 0)) {
+			if ($query->num_rows() > 0) {
+				$list = [];
+				foreach ($results as $key => $value) {
+					$list[$key]['contact_guid'] = $value['contact_guid'];
+					$list[$key]['first_name'] = $value['first_name'];
+					$list[$key]['last_name'] = $value['last_name'];
+					$list[$key]['subject'] = $value['subject'];
+					$list[$key]['email'] = $value['email'];					
+					$list[$key]['message'] = $value['message'];
+					$list[$key]['seen'] = $value['seen'];
+					$list[$key]['created_at'] = $value['created_at'];
+				}
+				return $list;
+			} else {
+				return [];
+			}
+		} else {
+			return $query->row()->count;
+		}
+	}
+
+
+
     // public function get_dashboard($added_by = NULL){
       
 		

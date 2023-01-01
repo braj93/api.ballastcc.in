@@ -119,7 +119,7 @@ class Users_model extends CI_Model {
 			"first_name" => $first_name,
 			"last_name" => $last_name,
 			"email" => $email,
-			"email" => $subject,
+			"subject" => $subject,
 			"email" => $message,
 			"seen" => 0,
 			"created_at" => DATETIME,

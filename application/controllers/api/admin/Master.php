@@ -416,4 +416,35 @@ class Master extends REST_Controller
         $this->_response["message"] = "Master List details";
         $this->set_response($this->_response);
 	}
+
+    	/**
+	 * LIST COURSE
+	 */
+	public function contact_form_submission_list_post()
+	{
+		$this->_response["service_name"] = "admin/contact_form_submission_list";
+		$this->form_validation->set_rules('keyword', 'keyword', 'trim');
+		if ($this->form_validation->run() == FALSE) {
+			$errors = $this->form_validation->error_array();
+			$this->_response["message"] = current($errors);
+			$this->_response["errors"] = $errors;
+			$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+		} else {
+			// $this->load->model("users_model");
+			$user_id = $this->rest->user_id;
+			$user = $this->app->get_row('users', 'user_type', ['user_id' => $user_id]);
+			$user_type = safe_array_key($user, "user_type", "");
+			$keyword = safe_array_key($this->_data, "keyword", "");
+			$pagination = safe_array_key($this->_data, "pagination", []);
+			$limit = safe_array_key($pagination, "limit", 10);
+			$offset = safe_array_key($pagination, "offset", 0);
+			$sort_by = safe_array_key($this->_data, "sort_by", []);
+			$column_name = safe_array_key($sort_by, "column_name", 'subject');
+			$order_by = safe_array_key($sort_by, "order_by", 'acs');			
+			$this->_response["data"] = $this->master_model->contact_submission_list($user_id,  $column_name, $order_by, $user_type,$keyword, $limit, $offset);
+			$this->_response["counts"] = $this->master_model->contact_submission_list($user_id,  $column_name, $order_by, $user_type,$keyword, 0, 0);
+			$this->set_response($this->_response);
+		}
+	}
+
 }
