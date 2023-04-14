@@ -251,4 +251,40 @@ GET CHAPTER list BY SUBJECT ID
         $results = $query->result_array();
         return $results;
     }
+
+    public function get_chapters_with_lessons_and_quiz_by_course_id($course_id)
+    {
+        $this->db->select('IFNULL(ch.chapter_id,"") AS chapter_id', FALSE);
+        $this->db->select('IFNULL(ch.chapter_guid,"") AS chapter_guid', FALSE);
+        $this->db->select('IFNULL(ch.chapter_name,"") AS chapter_name', FALSE);
+        $this->db->select('IFNULL(ch.chapter_summary,"") AS chapter_summary', FALSE);
+        $this->db->select('IFNULL(c.course_name,"") AS course_name', FALSE);
+        $this->db->select('IFNULL(ch.status,"") AS status', FALSE);
+        $this->db->select('IFNULL(ch.created_at,"") AS created_at', FALSE);
+        $this->db->select('IFNULL(ch.updated_at,"") AS updated_at', FALSE);
+        $this->db->from('chapters AS ch');
+        $this->db->join('courses AS c', 'c.course_id = ch.course_id', 'LEFT');
+        $this->db->where('ch.course_id', $course_id);
+        $this->db->order_by('ch.created_at', 'desc');
+        $query = $this->db->get();
+        // echo $this->db->last_query();die();
+        $results = $query->result_array();
+        $list = [];
+        foreach ($results as $key => $value) {
+            $list[$key]['chapter_guid'] = $value['chapter_guid'];
+            $list[$key]['chapter_name'] = $value['chapter_name'];
+            $list[$key]['chapter_summary'] = $value['chapter_summary'];
+            $list[$key]['course_name'] = $value['course_name'];
+            $list[$key]['status'] = $value['status'];
+            $list[$key]['lessons'] = $this->app->get_rows('lessons','lesson_guid,lesson_name,lesson_summary,status,created_at,updated_at', ['chapter_id' => $value['chapter_id']]);
+            $list[$key]['quizs'] = $this->app->get_rows('quizs','quiz_guid,quiz_name,quiz_summary,quiz_time,status,created_at,updated_at', ['chapter_id' => $value['chapter_id']]);
+            // $list[$key]['lessons'] = $this->get_lessons($value['chapter_id ']);
+            // $list[$key]['quizs'] = $this->get_quizs($value['chapter_id ']);
+            $list[$key]['created_at'] = $value['created_at'];
+            $list[$key]['updated_at'] = $value['updated_at'];
+        }
+        return $list;
+    }
+
+
 }

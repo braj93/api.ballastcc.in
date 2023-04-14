@@ -179,7 +179,9 @@ class Course extends REST_Controller
 			$course_id = safe_array_key($course, "course_id", "");
 			$data = $this->course_model->get_details_by_id($course_id);
 			$this->_response["data"] = $data;
-			$this->_response["data"]['chapters'] = $this->chapter_model->get_chapters($course_id);
+			$this->_response["data"]['chapters'] = $this->chapter_model->get_chapters_with_lessons_and_quiz_by_course_id($course_id);
+			// $this->_response["data"]['chapters'] = $this->chapter_model->get_chapters($course_id);
+			// $this->_response["data"]['chapters']['lessons'] = $this->chapter_model->get_chapters($course_id);
 			$this->_response["message"] = "course details";
 			$this->set_response($this->_response);
 		}

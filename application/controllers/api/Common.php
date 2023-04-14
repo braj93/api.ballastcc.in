@@ -99,7 +99,66 @@ class Common extends REST_Controller {
 			$course_id = safe_array_key($course, "course_id", "");
 			$data = $this->common_model->get_course_details_by_id($course_id);
 			$this->_response["data"] = $data;
-			$this->_response["data"]['chapters'] = $this->chapter_model->get_chapters($course_id);
+			$this->_response["data"]['chapters'] = $this->chapter_model->get_chapters_with_lessons_and_quiz_by_course_id($course_id);
+			// $this->_response["data"]['chapters'] = $this->chapter_model->list_by_course_id($course_id);
+			// $this->_response["data"]['chapters']['lessons'] = $this->chapter_model->get_chapters($course_id);
+			$this->_response["message"] = "course details";
+			$this->set_response($this->_response);
+		}
+	}
+
+		/**
+	 * GET CHAPTERS DETAILS BY ID API
+	 */
+	public function get_chapter_details_by_id_post()
+	{
+		$this->_response["service_name"] = "common/get_chapter_details_by_id";
+		$this->form_validation->set_rules('chapter_id', 'Chapter Id', 'trim|required|callback__check_chapter_exist');
+		if ($this->form_validation->run() == FALSE) {
+			$errors = $this->form_validation->error_array();
+			$this->_response["message"] = current($errors);
+			$this->_response["errors"] = $errors;
+			$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+		} else {
+
+			$chapter_guid = safe_array_key($this->_data, "chapter_id", "");
+
+			$chapter = $this->app->get_row('chapters', 'course_id', ['chapter_guid' => $chapter_guid]);
+			$course_id = safe_array_key($chapter, "course_id", "");
+
+			$data = $this->common_model->get_course_details_by_id($course_id);
+			$this->_response["data"] = $data;
+			$this->_response["data"]['chapters'] = $this->chapter_model->get_chapters_with_lessons_and_quiz_by_course_id($course_id);
+			// $this->_response["data"]['chapters'] = $this->chapter_model->list_by_course_id($course_id);
+			// $this->_response["data"]['chapters']['lessons'] = $this->chapter_model->get_chapters($course_id);
+			$this->_response["message"] = "course details";
+			$this->set_response($this->_response);
+		}
+	}
+		/**
+	 * GET LESSONS DETAILS BY ID API
+	 */
+	public function get_lesson_details_by_id_post()
+	{
+		$this->_response["service_name"] = "common/get_lesson_details_by_id";
+		$this->form_validation->set_rules('lesson_id', 'Lesson Id', 'trim|required|callback__check_lesson_exist');
+		if ($this->form_validation->run() == FALSE) {
+			$errors = $this->form_validation->error_array();
+			$this->_response["message"] = current($errors);
+			$this->_response["errors"] = $errors;
+			$this->set_response($this->_response, REST_Controller::HTTP_FORBIDDEN);
+		} else {
+
+			$lesson_guid = safe_array_key($this->_data, "lesson_id", "");
+
+			$lesson = $this->app->get_row('lessons', 'lesson_id', ['lesson_guid' => $lesson_guid]);
+			$lesson_id = safe_array_key($lesson, "lesson_id", "");			
+			$lessons = $this->app->get_row('lessons', 'lesson_guid, lesson_name,lesson_summary,created_at,updated_at', ['lesson_id' => $lesson_id]);
+			$this->_response["data"] = $lessons;			
+			$this->_response["data"] ['qa_list']= $this->app->get_rows('questions_answers', 'qa_guid,question,answer,created_at,updated_at', ['lesson_id' => $lesson_id]);
+			// $this->_response["data"]['chapters'] = $this->chapter_model->get_chapters_with_lessons_and_quiz_by_course_id($course_id);
+			// $this->_response["data"]['chapters'] = $this->chapter_model->list_by_course_id($course_id);
+			// $this->_response["data"]['chapters']['lessons'] = $this->chapter_model->get_chapters($course_id);
 			$this->_response["message"] = "course details";
 			$this->set_response($this->_response);
 		}
@@ -150,6 +209,30 @@ class Common extends REST_Controller {
 		}
 		return TRUE;
 	}
+    public function _check_chapter_exist($chapter_guid)
+    {
+        if (!empty($chapter_guid)) {
+            $chapter = $this->app->get_row('chapters', 'chapter_id', ['chapter_guid' => $chapter_guid]);
+
+            if (empty($chapter)) {
+                $this->form_validation->set_message('_check_chapter_exist', 'Not valid Chapter ID.');
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
+	public function _check_lesson_exist($lesson_guid)
+    {
+        if (!empty($lesson_guid)) {
+            $lesson = $this->app->get_row('lessons', 'lesson_id', ['lesson_guid' => $lesson_guid]);
+
+            if (empty($lesson)) {
+                $this->form_validation->set_message('_check_lesson_exist', 'Not valid lesson ID.');
+                return FALSE;
+            }
+        }
+        return TRUE;
+    }
 
 
 }

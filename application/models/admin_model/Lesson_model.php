@@ -277,6 +277,75 @@ GET CHAPTER list BY SUBJECT ID
         return $affected_rows_count;
     }
 
+        /*
+***  
+GET CHAPTER list BY SUBJECT ID
+***
+    */
+
+    public function lesson_list_by_chapter_id($user_id, $column_name, $order_by, $user_type, $chapter_id, $keyword = '', $limit = 0, $offset = 0)
+    {
+        if ($limit > 0 && $offset >= 0) {
+            $this->db->limit($limit, $offset);
+
+
+            $this->db->select('IFNULL(l.lesson_guid,"") AS lesson_guid', FALSE);
+            $this->db->select('IFNULL(l.lesson_name,"") AS lesson_name', FALSE);
+            $this->db->select('IFNULL(l.lesson_summary,"") AS lesson_summary', FALSE);
+            $this->db->select('IFNULL(c.chapter_name,"") AS chapter_name', FALSE);
+            $this->db->select('IFNULL(l.status,"") AS status', FALSE);
+            $this->db->select('IFNULL(l.created_at,"") AS created_at', FALSE);
+            $this->db->select('IFNULL(l.updated_at,"") AS updated_at', FALSE);
+        } else {
+            $this->db->select('COUNT(l.lesson_id) as count', FALSE);
+        }
+        $this->db->from('lessons AS l');
+        $this->db->join('chapters AS c', 'c.chapter_id = l.chapter_id', 'LEFT');
+        $this->db->where('l.chapter_id', $chapter_id);
+        $this->db->order_by('l.created_at', 'desc');
+
+        // if (!empty($filterBy)) {
+        // 	$this->db->like('u.status', $filterBy);
+        // }
+
+        if (!empty($keyword)) {
+            $this->db->group_start();
+            $this->db->like('l.lesson_name', $keyword, 'both');
+            $this->db->group_end();
+        }
+
+        if (($column_name !== '') && ($order_by !== '')) {
+            $this->db->order_by('l.' . $column_name, $order_by);
+        }
+        // if ($user_type != 'ADMIN') {
+        // 	$this->db->where('c.added_by', $user_id);
+        // }
+
+        $query = $this->db->get();
+        $results = $query->result_array();
+        if (($limit > 0) && ($offset >= 0)) {
+            if ($query->num_rows() > 0) {
+                $list = [];
+                foreach ($results as $key => $value) {
+                    $list[$key]['lesson_guid'] = $value['lesson_guid'];
+                    $list[$key]['lesson_name'] = $value['lesson_name'];
+                    $list[$key]['lesson_summary'] = $value['lesson_summary'];
+                    $list[$key]['chapter_name'] = $value['chapter_name'];
+                    $list[$key]['status'] = $value['status'];
+                    $list[$key]['created_at'] = $value['created_at'];
+                    $list[$key]['updated_at'] = $value['updated_at'];
+                }
+                return $list;
+            } else {
+                return [];
+            }
+        } else {
+            return $query->row()->count;
+        }
+    }
+
+
+
     /*
 ***  
 GET SUBJECTS list
