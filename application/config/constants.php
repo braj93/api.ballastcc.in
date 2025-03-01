@@ -119,9 +119,9 @@ switch (ENVIRONMENT) {
 case 'production':
 	define('SITE_ROOT', 'https://api.ballastcc.in');
 	define('DB_HOST', 'localhost');
-	define('DB_NAME', 'balla699_api');
+	define('DB_NAME', 'balla699_bcci');
 	define('DB_USERNAME', 'balla699_bcci');
-	define('DB_PASSWORD', '%5[q;TzAxHl7');
+	define('DB_PASSWORD', 'A+ZTZUQ@P8W;');
 	define('SITE_ADDR', 'https://ballastcc.in/');
 	// Stripe API configuration
 	define('STRIPE_PUBLISHABLE_KEY', 'pk_test_DSSTxP5NaHXwInGOlRX2rYM300aoJSRuBB');
