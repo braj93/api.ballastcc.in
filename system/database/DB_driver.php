@@ -354,6 +354,13 @@ abstract class CI_DB_driver {
 	 */
 	protected $_count_string = 'SELECT COUNT(*) AS ';
 
+	/**
+	 * Failover database connection
+	 *
+	 * @var	object|resource
+	 */
+	public $failover		= FALSE;
+
 	// --------------------------------------------------------------------
 
 	/**

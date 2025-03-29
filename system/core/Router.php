@@ -49,6 +49,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  * @link		https://codeigniter.com/user_guide/general/routing.html
  */
 class CI_Router {
+	
+	public $uri; // Explicitly declare the property
 
 	/**
 	 * CI_Config class object

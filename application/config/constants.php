@@ -136,7 +136,7 @@ case 'production':
 case 'development':
 	define('SITE_ROOT', 'api.ballastcc.com');
 	define('DB_HOST', 'localhost');
-	define('DB_NAME', 'ballast');
+	define('DB_NAME', 'balla699_bcci');
 	define('DB_USERNAME', 'root');
 	define('DB_PASSWORD', '');
 	define('SITE_ADDR', 'http://localhost:3000/');

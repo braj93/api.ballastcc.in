@@ -124,6 +124,111 @@ class CI_Loader {
 		'user_agent' => 'agent'
 	);
 
+	/**
+	 * CI_Benchmark
+	 *
+	 * @var	CI_Benchmark
+	 */
+	public $benchmark;
+
+	/**
+	 * CI_Load
+	 *
+	 * @var	CI_Load
+	 */
+	public $load;
+
+	/**
+	 * CI_Hooks
+	 *
+	 * @var	CI_Hooks
+	 */
+	public $hooks;
+
+	/**
+	 * CI_Config
+	 *
+	 * @var	CI_Config
+	 */
+	public $config;
+
+	/**
+	 * CI_Log
+	 *
+	 * @var	CI_Log
+	 */
+	public $log;
+
+	/**
+	 * CI_UTF8
+	 *
+	 * @var	CI_UTF8
+	 */
+	public $utf8;
+
+	/**
+	 * CI_URI
+	 *
+	 * @var	CI_URI
+	 */
+	public $uri;
+
+	/**
+	 * CI_Router
+	 *
+	 * @var	CI_Router
+	 */
+	public $router;
+
+	/**
+	 * CI_Output
+	 *
+	 * @var	CI_Output
+	 */
+	public $output;
+
+	/**
+	 * CI_Security
+	 *
+	 * @var	CI_Security
+	 */
+	public $security;
+
+	/**
+	 * CI_Input
+	 *
+	 * @var	CI_Input
+	 */
+	public $input;
+
+	/**
+	 * CI_Lang
+	 *
+	 * @var	CI_Lang
+	 */
+	public $lang;
+
+	/**
+	 * CI_DB
+	 *
+	 * @var	CI_DB
+	 */
+	public $db;
+
+	/**
+	 * CI_Form_validation
+	 *
+	 * @var	CI_Form_validation
+	 */
+	public $form_validation;
+
+	/**
+	 * CI_App
+	 *
+	 * @var	CI_App
+	 */
+	public $app;
+
 	// --------------------------------------------------------------------
 
 	/**
