@@ -18,8 +18,25 @@ require APPPATH . '/libraries/REST_Controller.php';
  * @link            https://github.com/chriskacerguis/codeigniter-restserver
  */
 class Users extends REST_Controller {
-
-	var $_data = array();
+	/**
+	 * @var array Response data
+	 */
+	protected $_data = [];
+	
+	/**
+	 * @var array Response data
+	 */
+	protected $_response = [];
+	
+	/**
+	 * @var object Users model
+	 */
+	public $users_model;
+	
+	/**
+	 * @var object Form validation library
+	 */
+	public $my_form_validation;
 
 	function __construct() {
 		// Construct the parent class

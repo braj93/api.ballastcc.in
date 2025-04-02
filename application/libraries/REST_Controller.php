@@ -16,7 +16,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 abstract class REST_Controller extends CI_Controller {
     
-    protected $format;
+    public $format;
+    /**
+     * Property to store auth override status
+     * @var bool
+     */
+    protected $auth_override = FALSE;
 
     // Note: Only the widely used HTTP status codes are documented
     // Informational
@@ -906,7 +911,10 @@ abstract class REST_Controller extends CI_Controller {
                 $method = $this->input->server('HTTP_X_HTTP_METHOD_OVERRIDE');
             }
 
-            $method = strtolower($method);
+            // Only call strtolower() if $method is not NULL
+            if ($method !== NULL) {
+                $method = strtolower($method);
+            }
         }
 
         if (empty($method)) {
